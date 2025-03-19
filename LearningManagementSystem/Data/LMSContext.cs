@@ -9,23 +9,63 @@ namespace LearningManagementSystem.Data
         {
         }
 
-        public DbSet<NguoiDung> NguoiDung { get; set; }
-        public DbSet<KhoaHoc> KhoaHoc { get; set; }
-        public DbSet<DangKyKhoaHoc> DangKyKhoaHoc { get; set; }
-        public DbSet<BaiHoc> BaiHoc { get; set; }
-        public DbSet<TuongTac> TuongTac { get; set; }
-        public DbSet<BaiKiemTra> BaiKiemTra { get; set; }
-        public DbSet<KetQuaBaiKiemTra> KetQuaBaiKiemTra { get; set; }
-        public DbSet<NgonNgu> NgonNgu { get; set; }
-        public DbSet<DichKhoaHoc> DichKhoaHoc { get; set; }
-        public DbSet<DichBaiHoc> DichBaiHoc { get; set; }
-        public DbSet<ThongBao> ThongBao { get; set; }
-        public DbSet<LichSuDangNhap> LichSuDangNhap { get; set; }
-        public DbSet<DanhMuc> DanhMuc { get; set; }
-        public DbSet<LichTrinh> LichTrinh { get; set; }
-        public DbSet<Nhom> Nhom { get; set; }
-        public DbSet<ThanhVienNhom> ThanhVienNhom { get; set; }
-        public DbSet<XepHang> XepHang { get; set; }
-        public DbSet<NhatKyHoatDong> NhatKyHoatDong { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<Progress> Progresses { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Cấu hình khóa ngoại cho User - Role
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Roles)
+                .WithMany(r => r.Users)
+                .HasForeignKey(u => u.RoleId)
+                .OnDelete(DeleteBehavior.Restrict); // Không xóa cascade
+
+            // Cấu hình khóa ngoại cho Course - Instructor
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.Instructor)
+                .WithMany(u => u.Courses)
+                .HasForeignKey(c => c.InstructorId)
+                .OnDelete(DeleteBehavior.Restrict); // Không xóa cascade
+
+            // Cấu hình khóa ngoại cho Enrollment - User
+            modelBuilder.Entity<Enrollment>()
+                .HasOne(e => e.User)
+                .WithMany(u => u.Enrollments)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Restrict); // Không xóa cascade
+
+            // Cấu hình khóa ngoại cho Enrollment - Course
+            modelBuilder.Entity<Enrollment>()
+                .HasOne(e => e.Course)
+                .WithMany(c => c.Enrollments)
+                .HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.Cascade); // Giữ cascade ở đây
+
+            // Cấu hình khóa ngoại cho Lesson - Course
+            modelBuilder.Entity<Lesson>()
+                .HasOne(l => l.Course)
+                .WithMany(c => c.Lessons)
+                .HasForeignKey(l => l.CourseId)
+                .OnDelete(DeleteBehavior.Cascade); // Giữ cascade ở đây
+
+            // Cấu hình khóa ngoại cho Progress - User
+            modelBuilder.Entity<Progress>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Progresses)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Restrict); // Không xóa cascade
+
+            // Cấu hình khóa ngoại cho Progress - Lesson
+            modelBuilder.Entity<Progress>()
+                .HasOne(p => p.Lesson)
+                .WithMany(l => l.Progresses)
+                .HasForeignKey(p => p.LessonId)
+                .OnDelete(DeleteBehavior.Cascade); // Giữ cascade ở đây
+        }
     }
 }
