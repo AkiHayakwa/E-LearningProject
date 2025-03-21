@@ -1,0 +1,24 @@
+﻿@model LearningManagementSystem.Models.Course
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Thêm khóa học";
+}
+
+<h1 class="text-center mb-4">Thêm khóa học</h1>
+<form asp-action="CreateCourse" method="post">
+    <div class="form-group">
+        <label>Tên khóa học</label>
+        <input asp-for="CourseName" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Mô tả</label>
+        <textarea asp-for="Description" class="form-control" required></textarea>
+    </div>
+    <div class="form-group">
+        <label>Giảng viên</label>
+        <select asp-for="InstructorId" class="form-control" asp-items="@(new SelectList(ViewBag.Instructors, "UserId", "FullName"))">
+            <option value="">Chọn giảng viên</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Thêm</button>
+</form>

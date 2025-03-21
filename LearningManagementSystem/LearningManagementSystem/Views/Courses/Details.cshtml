@@ -1,0 +1,30 @@
+﻿@model LearningManagementSystem.Models.Course
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = @Model.CourseName;
+}
+
+<h1>@Model.CourseName</h1>
+<p>@Model.Description</p>
+@if (User.Identity.IsAuthenticated)
+{
+    <form asp-action="Enroll" method="post">
+        <input type="hidden" name="courseId" value="@Model.CourseId" />
+        <button type="submit" class="btn btn-success">Đăng ký</button>
+    </form>
+}
+<h3 class="mt-4">Danh sách bài học</h3>
+<ul>
+    @foreach (var lesson in Model.Lessons)
+    {
+        <li><a href="@Url.Action("Details", "Lesson", new { lessonId = lesson.LessonId })">@lesson.LessonTitle</a></li>
+    }
+</ul>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}

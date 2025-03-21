@@ -1,0 +1,42 @@
+﻿@model LearningManagementSystem.Models.Lesson
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Thảo luận - " + Model.LessonTitle;
+}
+
+<h1>Thảo luận: @Model.LessonTitle</h1>
+<div class="mb-5">
+    @foreach (var comment in ViewBag.Comments)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                <span>@comment.User.FullName</span>
+                <small>@comment.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
+            </div>
+            <div class="card-body">
+                <p>@comment.Content</p>
+                @if (User.IsInRole("Admin") || User.IsInRole("Instructor"))
+                {
+                    <form asp-action="DeleteComment" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@comment.CommentId" />
+                        <input type="hidden" name="lessonId" value="@Model.LessonId" />
+                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                    </form>
+                }
+            </div>
+        </div>
+    }
+</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="card p-4">
+        <h3>Thêm bình luận</h3>
+        <form asp-action="AddComment" method="post">
+            <input type="hidden" name="lessonId" value="@Model.LessonId" />
+            <div class="mb-3">
+                <textarea class="form-control" name="content" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Gửi</button>
+        </form>
+    </div>
+}

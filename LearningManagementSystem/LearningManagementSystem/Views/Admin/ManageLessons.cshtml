@@ -1,0 +1,33 @@
+﻿@model IEnumerable<LearningManagementSystem.Models.Lesson>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Quản lý bài học";
+}
+
+<h1 class="text-center mb-4">Quản lý bài học</h1>
+<a href="@Url.Action("CreateLesson", new { courseId = ViewBag.CourseId })" class="btn btn-success mb-3">Thêm bài học</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tiêu đề</th>
+            <th>Thứ tự</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lesson in Model)
+        {
+            <tr>
+                <td>@lesson.LessonTitle</td>
+                <td>@lesson.OrderNumber</td>
+                <td>
+                    <form asp-action="DeleteLesson" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@lesson.LessonId" />
+                        <input type="hidden" name="courseId" value="@ViewBag.CourseId" />
+                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

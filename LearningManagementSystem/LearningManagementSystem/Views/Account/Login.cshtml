@@ -1,0 +1,34 @@
+﻿@model dynamic
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Đăng nhập - E-Learning System";
+}
+
+<div class="text-center">
+    <h1 class="display-4 fw-bold mb-3" style="color: #1a73e8;">Học tập trực tuyến dễ dàng</h1>
+    <p class="lead mb-5" style="color: #666;">Tham gia nền tảng học tập trực tuyến hàng đầu, nơi bạn có thể học mọi lúc, mọi nơi.</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card shadow-sm p-4" style="background-color: #ffffff; border: 1px solid #dee2e6;">
+            <h3 class="text-center mb-4" style="color: #333;">Đăng nhập</h3>
+            <form asp-action="Login" method="post">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="username" placeholder="Tên đăng nhập" required style="background-color: #f1f3f5; color: #333; border: 1px solid #ced4da;" />
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Mật khẩu" required style="background-color: #f1f3f5; color: #333; border: 1px solid #ced4da;" />
+                </div>
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger" role="alert">@ViewBag.Error</div>
+                }
+                <button type="submit" class="btn btn-primary w-100" style="background-color: #1a73e8; border: none;">Đăng nhập</button>
+            </form>
+            <p class="text-center mt-3" style="color: #666;">
+                Chưa có tài khoản? <a href="/Account/Register" class="text-primary" style="color: #1a73e8 !important;">Đăng ký ngay</a>
+            </p>
+        </div>
+    </div>
+</div>

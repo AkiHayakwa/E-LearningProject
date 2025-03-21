@@ -1,0 +1,16 @@
+﻿@model LearningManagementSystem.Models.Lesson
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = @Model.LessonTitle;
+}
+
+<h1>@Model.LessonTitle</h1>
+<p>Khóa học: @ViewBag.CourseName</p>
+<div class="card">
+    <div class="card-body">@Model.Content</div>
+</div>
+<a href="@Url.Action("Index", "Discussion", new { lessonId = Model.LessonId })" class="btn btn-info mt-3">Thảo luận</a>
+<form asp-controller="Progress" asp-action="MarkComplete" method="post" class="d-inline">
+    <input type="hidden" name="lessonId" value="@Model.LessonId" />
+    <button type="submit" class="btn btn-success mt-3">Đánh dấu hoàn thành</button>
+</form>

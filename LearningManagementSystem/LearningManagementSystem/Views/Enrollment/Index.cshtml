@@ -1,0 +1,36 @@
+﻿@model IEnumerable<LearningManagementSystem.Models.Enrollment>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Khóa học đã đăng ký";
+}
+
+<h1 class="text-center mb-4">Khóa học đã đăng ký</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tên khóa học</th>
+            <th>Ngày đăng ký</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var enrollment in Model)
+        {
+            <tr>
+                <td>@enrollment.Course.CourseName</td>
+                <td>@enrollment.EnrollmentDate.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a href="@Url.Action("Index", "Progress", new { courseId = enrollment.CourseId })" class="btn btn-info btn-sm">Xem tiến độ</a>
+                    <form asp-action="Unenroll" method="post" class="d-inline">
+                        <input type="hidden" name="enrollmentId" value="@enrollment.EnrollmentId" />
+                        <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}

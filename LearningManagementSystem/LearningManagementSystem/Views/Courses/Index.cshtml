@@ -1,0 +1,21 @@
+﻿@model IEnumerable<LearningManagementSystem.Models.Course>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Danh sách khóa học";
+}
+
+<h1 class="text-center mb-4">Danh sách khóa học</h1>
+<div class="row">
+    @foreach (var course in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">@course.CourseName</h5>
+                    <p class="card-text">@course.Description</p>
+                    <a href="@Url.Action("Details", "Course", new { courseId = course.CourseId })" class="btn btn-primary">Xem chi tiết</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

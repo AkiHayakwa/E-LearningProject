@@ -1,0 +1,44 @@
+﻿@model dynamic
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Đăng ký - E-Learning System";
+}
+
+<div class="text-center">
+    <h1 class="display-4 fw-bold mb-3" style="color: #1a73e8;">Tham gia ngay hôm nay</h1>
+    <p class="lead mb-5" style="color: #666;">Tạo tài khoản để bắt đầu hành trình học tập của bạn.</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card shadow-sm p-4" style="background-color: #ffffff; border: 1px solid #dee2e6;">
+            <h3 class="text-center mb-4" style="color: #333;">Đăng ký</h3>
+            <form asp-action="Register" method="post">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="username" placeholder="Tên đăng nhập" required style="background-color: #f1f3f5; color: #333; border: 1px solid #ced4da;" />
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Mật khẩu" required style="background-color: #f1f3f5; color: #333; border: 1px solid #ced4da;" />
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="fullName" placeholder="Họ và tên" required style="background-color: #f1f3f5; color: #333; border: 1px solid #ced4da;" />
+                </div>
+                <div class="mb-3">
+                    <input type="email" class="form-control" name="email" placeholder="Email" required style="background-color: #f1f3f5; color: #333; border: 1px solid #ced4da;" />
+                </div>
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger" role="alert">@ViewBag.Error</div>
+                }
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success" role="alert">@TempData["Success"]</div>
+                }
+                <button type="submit" class="btn btn-primary w-100" style="background-color: #1a73e8; border: none;">Đăng ký</button>
+            </form>
+            <p class="text-center mt-3" style="color: #666;">
+                Đã có tài khoản? <a href="/Account/Login" class="text-primary" style="color: #1a73e8 !important;">Đăng nhập</a>
+            </p>
+        </div>
+    </div>
+</div>
