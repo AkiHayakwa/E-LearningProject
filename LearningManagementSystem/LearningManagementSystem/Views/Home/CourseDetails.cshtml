@@ -1,0 +1,95 @@
+﻿@model LearningManagementSystem.Models.ViewModels.CourseDetailsViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = $"{Model.Course.CourseName} - E-Learning System";
+}
+
+<style>
+    .course-details {
+        background-color: #f8f9fa;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+
+    .section-title {
+        color: #1a73e8;
+        border-bottom: 2px solid #1a73e8;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .comment-card {
+        background-color: #ffffff;
+        border-left: 4px solid #1a73e8;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 5px;
+    }
+
+    .comment-form {
+        margin-top: 1rem;
+    }
+</style>
+
+<!-- Hiển thị thông báo thành công hoặc lỗi -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Thông tin khóa học -->
+<div class="course-details">
+    <h1>@Model.Course.CourseName</h1>
+    <p class="lead">@Model.Course.Description</p>
+    <p><strong>Giảng viên:</strong> @Model.Course.Instructor.FullName</p>
+    <p><strong>Ngày tạo:</strong> @Model.Course.CreatedDate.ToString("dd/MM/yyyy")</p>
+
+    @if (Model.IsEnrolled)
+    {
+        <span class="badge bg-success">Đã đăng ký</span>
+    }
+    else
+    {
+        <a href="@Url.Action("Enroll", "Enrollment", new { courseId = Model.Course.CourseId })" class="btn btn-success">Đăng ký khóa học</a>
+    }
+</div>
+
+<!-- Phần bình luận/đánh giá -->
+<div class="mb-5">
+    <h2 class="section-title">Bình luận và đánh giá</h2>
+    @if (Model.Comments.Any())
+    {
+        foreach (var comment in Model.Comments)
+        {
+            <div class="comment-card">
+                <p class="mb-1" style="color: #333;"><strong>@comment.User.FullName</strong></p>
+                <p class="mb-1" style="color: #666;">@comment.Content</p>
+                <small class="text-muted">Đăng vào: @comment.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="text-muted">Chưa có bình luận nào. Hãy là người đầu tiên đánh giá khóa học này!</p>
+    }
+
+    <!-- Form bình luận -->
+    <form asp-action="AddComment" asp-controller="Comment" method="post" class="comment-form">
+        <input type="hidden" name="courseId" value="@Model.Course.CourseId" />
+        <div class="mb-3">
+            <textarea name="content" class="form-control" rows="3" placeholder="Viết bình luận hoặc đánh giá của bạn..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="background-color: #1a73e8; border: none;">Gửi bình luận</button>
+    </form>
+</div>

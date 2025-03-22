@@ -11,6 +11,8 @@ namespace LearningManagementSystem.Models
         [Required, StringLength(50)]
         public string LessonId { get; set; }
 
+        public string CourseId  { get; set; }
+
         [Required, StringLength(50)]
         public string UserId { get; set; }
 

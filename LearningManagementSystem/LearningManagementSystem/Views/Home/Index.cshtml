@@ -1,8 +1,181 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model LearningManagementSystem.Models.ViewModels.HomeViewModel
+@using System.Linq
+@using Newtonsoft.Json
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Trang chủ - E-Learning System";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .welcome-section {
+        background: linear-gradient(135deg, #1a73e8, #4285f4);
+        color: #ffffff;
+        padding: 3rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+
+    .course-card {
+        transition: transform 0.3s;
+    }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .section-title {
+        color: #1a73e8;
+        border-bottom: 2px solid #1a73e8;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .comment-card, .notification-card {
+        background-color: #f8f9fa;
+        border-left: 4px solid #1a73e8;
+    }
+
+        .notification-card.unread {
+            background-color: #e3f2fd;
+        }
+</style>
+
+<!-- Hiển thị thông báo thành công hoặc lỗi -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Phần chào mừng -->
+<div class="welcome-section text-center">
+    <h1 class="display-4">Chào mừng, @Model.User.FullName!</h1>
+    <p class="lead">Bạn đang đăng nhập với vai trò: <strong>@Model.User.Roles.RoleName</strong></p>
+    <a href="/Account/Logout" class="btn btn-light">Đăng xuất</a>
+</div>
+
+<!-- Thông báo gần đây -->
+<div class="mb-5">
+    <h2 class="section-title">Thông báo gần đây</h2>
+    @if (Model.Notifications.Any())
+    {
+        <div class="row">
+            @foreach (var notification in Model.Notifications)
+            {
+                // Phân tích JSON từ Content
+                var jsonContent = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(notification.Content);
+                bool isRead = jsonContent.read;
+                string message = jsonContent.message;
+
+                <div class="col-md-6 mb-3">
+                    <div class="card notification-card p-3 @(isRead ? "" : "unread")">
+                        <p class="mb-1" style="color: #333;">@message</p>
+                        <small class="text-muted">Nhận vào: @notification.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">Bạn chưa có thông báo nào.</p>
+    }
+</div>
+
+<!-- Khóa học có sẵn -->
+<div class="mb-5">
+    <h2 class="section-title">Khóa học có sẵn</h2>
+    <p>Bạn chưa có khóa học nào. <a href="@Url.Action("Courses", "Home")" class="text-primary">Hãy khám phá các khóa học có sẵn!</a></p>
+</div>
+
+<!-- Khóa học đã đăng ký -->
+<div class="mb-5">
+    <h2 class="section-title">Khóa học đã đăng ký</h2>
+    @if (Model.Enrollments.Any())
+    {
+        <div class="row">
+            @foreach (var enrollment in Model.Enrollments)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card course-card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: #333;">@enrollment.Course.CourseName</h5>
+                            <p class="card-text" style="color: #666;">Ngày đăng ký: @enrollment.EnrollmentDate.ToString("dd/MM/yyyy")</p>
+                            <a href="@Url.Action("Index", "Progress", new { courseId = enrollment.CourseId })" class="btn btn-primary" style="background-color: #1a73e8; border: none;">Xem tiến độ</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">Bạn chưa đăng ký khóa học nào. <a href="@Url.Action("Courses", "Home")" class="btn btn-success">Đăng ký khóa học</a></p>
+    }
+</div>
+
+<!-- Tiến độ học tập gần đây -->
+<div class="mb-5">
+    <h2 class="section-title">Tiến độ học tập gần đây</h2>
+    @if (Model.Progresses.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Khóa học</th>
+                    <th>Bài học</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày hoàn thành</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var progress in Model.Progresses)
+                {
+                    <tr class="@(progress.CompletionStatus ? "table-success" : "")">
+                        <td style="color: #333;">@progress.Lesson.Course.CourseName</td>
+                        <td style="color: #333;">@progress.Lesson.LessonTitle</td>
+                        <td style="color: #666;">@(progress.CompletionStatus ? "Hoàn thành" : "Chưa hoàn thành")</td>
+                        <td style="color: #666;">@(progress.CompletionDate?.ToString("dd/MM/yyyy") ?? "Chưa có")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-muted">Bạn chưa có tiến độ học tập nào.</p>
+    }
+</div>
+
+<!-- Bình luận gần đây -->
+<div class="mb-5">
+    <h2 class="section-title">Bình luận gần đây</h2>
+    @if (Model.Comments.Any())
+    {
+        <div class="row">
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="col-md-6 mb-3">
+                    <div class="card comment-card p-3">
+                        <p class="mb-1" style="color: #333;"><strong>@comment.User.FullName</strong> đã bình luận trong <strong>@comment.Lesson.LessonTitle</strong> (Khóa học: @comment.Lesson.Course.CourseName)</p>
+                        <p class="mb-1" style="color: #666;">@comment.Content</p>
+                        <small class="text-muted">Đăng vào: @comment.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">Chưa có bình luận nào.</p>
+    }
 </div>

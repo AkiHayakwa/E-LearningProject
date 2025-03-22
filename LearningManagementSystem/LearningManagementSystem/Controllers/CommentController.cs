@@ -1,22 +1,21 @@
 ﻿using LearningManagementSystem.Data;
 using LearningManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace LearningManagementSystem.Controllers
 {
-    public class EnrollmentController : Controller
+    public class CommentController : Controller
     {
         private readonly LMSContext _context;
 
-        public EnrollmentController(LMSContext context)
+        public CommentController(LMSContext context)
         {
             _context = context;
         }
 
-        [HttpGet]
-        public IActionResult Enroll(string courseId)
+        [HttpPost]
+        public IActionResult AddComment(string courseId, string content)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
@@ -24,27 +23,25 @@ namespace LearningManagementSystem.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Kiểm tra xem người dùng đã đăng ký khóa học này chưa
-            var existingEnrollment = _context.Enrollments
-                                            .FirstOrDefault(e => e.UserId == userId && e.CourseId == courseId);
-            if (existingEnrollment != null)
+            if (string.IsNullOrEmpty(content))
             {
-                TempData["Error"] = "Bạn đã đăng ký khóa học này rồi!";
+                TempData["Error"] = "Nội dung bình luận không được để trống!";
                 return RedirectToAction("CourseDetails", "Home", new { courseId });
             }
 
-            // Tạo bản ghi đăng ký mới
-            var enrollment = new Enrollment
+            var comment = new Comment
             {
                 UserId = userId,
                 CourseId = courseId,
-                EnrollmentDate = DateTime.Now
+                LessonId = null, // Bình luận trực tiếp cho khóa học
+                Content = content,
+                CreatedDate = DateTime.Now
             };
 
-            _context.Enrollments.Add(enrollment);
+            _context.Comments.Add(comment);
             _context.SaveChanges();
 
-            TempData["Success"] = "Đăng ký khóa học thành công!";
+            TempData["Success"] = "Bình luận đã được gửi thành công!";
             return RedirectToAction("CourseDetails", "Home", new { courseId });
         }
     }

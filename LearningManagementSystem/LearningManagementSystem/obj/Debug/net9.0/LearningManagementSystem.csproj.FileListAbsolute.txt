@@ -235,3 +235,8 @@ D:\doan\LearningManagementSystem\LearningManagementSystem\obj\Debug\net9.0\refin
 D:\doan\LearningManagementSystem\LearningManagementSystem\obj\Debug\net9.0\LearningManagementSystem.pdb
 D:\doan\LearningManagementSystem\LearningManagementSystem\obj\Debug\net9.0\LearningManagementSystem.genruntimeconfig.cache
 D:\doan\LearningManagementSystem\LearningManagementSystem\obj\Debug\net9.0\ref\LearningManagementSystem.dll
+D:\doan\LearningManagementSystem\LearningManagementSystem\obj\Debug\net9.0\LearningManagementSystem.sourcelink.json
+D:\doan\LearningManagementSystem\LearningManagementSystem\bin\Debug\net9.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\doan\LearningManagementSystem\LearningManagementSystem\bin\Debug\net9.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\doan\LearningManagementSystem\LearningManagementSystem\bin\Debug\net9.0\Newtonsoft.Json.dll
+D:\doan\LearningManagementSystem\LearningManagementSystem\bin\Debug\net9.0\Newtonsoft.Json.Bson.dll
