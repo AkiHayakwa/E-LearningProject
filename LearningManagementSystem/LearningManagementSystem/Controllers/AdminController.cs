@@ -1,8 +1,10 @@
-﻿using LearningManagementSystem.Data;
-using LearningManagementSystem.Models;
+﻿using LearningManagementSystem.Models;
+using LearningManagementSystem.Models.ViewModels;
 using LearningManagementSystem.Repositories;
+using LearningManagementSystem.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace LearningManagementSystem.Controllers
 {
@@ -12,134 +14,113 @@ namespace LearningManagementSystem.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ICourseRepository _courseRepository;
         private readonly ILessonRepository _lessonRepository;
-        private readonly LMSContext _context;
+        private readonly ICommentRepository _commentRepository;
+        private readonly IProgressRepository _progressRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
 
-        public AdminController(IUserRepository userRepository, ICourseRepository courseRepository, ILessonRepository lessonRepository, LMSContext context)
+        public AdminController(
+            IUserRepository userRepository,
+            ICourseRepository courseRepository,
+            ILessonRepository lessonRepository,
+            ICommentRepository commentRepository,
+            IProgressRepository progressRepository,
+            IEnrollmentRepository enrollmentRepository)
         {
             _userRepository = userRepository;
             _courseRepository = courseRepository;
             _lessonRepository = lessonRepository;
-            _context = context;
+            _commentRepository = commentRepository;
+            _progressRepository = progressRepository;
+            _enrollmentRepository = enrollmentRepository;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Dashboard()
         {
-            return View();
+            var model = new AdminDashboardViewModel
+            {
+                TotalUsers = _userRepository.GetAll().Count(),
+                TotalCourses = _courseRepository.GetAll().Count(),
+                TotalLessons = _lessonRepository.GetLessonsByCourseId(null).Count(),
+                TotalComments = _commentRepository.GetCommentsByCourse(null).Count(),
+                TotalEnrollments = _enrollmentRepository.GetEnrollmentsByUser(null).Count(),
+                TotalProgresses = _progressRepository.GetProgressByUser(null).Count()
+            };
+
+            return View(model); // Trả về Views/Admin/Dashboard.cshtml
         }
 
-        // Quản lý người dùng
+        // Các action quản lý người dùng
+        [HttpGet]
         public IActionResult ManageUsers()
         {
             var users = _userRepository.GetAll();
             return View(users);
         }
 
+        // Các action quản lý khóa học
         [HttpGet]
-        public IActionResult CreateUser()
-        {
-            ViewBag.Roles = _context.Roles.ToList();
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult CreateUser(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                user.UserId = Guid.NewGuid().ToString();
-                _userRepository.Add(user);
-                _context.SaveChanges();
-                return RedirectToAction("ManageUsers");
-            }
-            ViewBag.Roles = _context.Roles.ToList();
-            return View(user);
-        }
-
-        [HttpPost]
-        public IActionResult DeleteUser(string id)
-        {
-            var user = _userRepository.GetById(id);
-            if (user == null) return NotFound();
-            _userRepository.Delete(user);
-            _context.SaveChanges();
-            return RedirectToAction("ManageUsers");
-        }
-
-        // Quản lý khóa học
         public IActionResult ManageCourses()
         {
-            var courses = _courseRepository.GetAll();
+            var courses = _courseRepository.GetAllWithInstructor();
             return View(courses);
         }
 
+        // Các action quản lý bài học
         [HttpGet]
-        public IActionResult CreateCourse()
+        public IActionResult ManageLessons()
         {
-            ViewBag.Instructors = _userRepository.GetAll().Where(u => u.Roles.RoleName == "Instructor");
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult CreateCourse(Course course)
-        {
-            if (ModelState.IsValid)
-            {
-                course.CourseId = Guid.NewGuid().ToString();
-                _courseRepository.Add(course);
-                _context.SaveChanges();
-                return RedirectToAction("ManageCourses");
-            }
-            ViewBag.Instructors = _userRepository.GetAll().Where(u => u.Roles.RoleName == "Instructor");
-            return View(course);
-        }
-
-        [HttpPost]
-        public IActionResult DeleteCourse(string id)
-        {
-            var course = _courseRepository.GetById(id);
-            if (course == null) return NotFound();
-            _courseRepository.Delete(course);
-            _context.SaveChanges();
-            return RedirectToAction("ManageCourses");
-        }
-
-        // Quản lý bài học
-        public IActionResult ManageLessons(string courseId)
-        {
-            var lessons = _lessonRepository.GetLessonsByCourseId(courseId);
-            ViewBag.CourseId = courseId;
+            var lessons = _lessonRepository.GetLessonsByCourseId(null);
             return View(lessons);
         }
 
+        // Các action quản lý bình luận
         [HttpGet]
-        public IActionResult CreateLesson(string courseId)
+        public IActionResult ManageComments()
         {
-            ViewBag.CourseId = courseId;
-            return View();
+            var comments = _commentRepository.GetCommentsByCourse(null);
+            return View(comments);
         }
 
-        [HttpPost]
-        public IActionResult CreateLesson(Lesson lesson)
+        // Các action quản lý tiến độ
+        [HttpGet]
+        public IActionResult ManageProgress()
         {
-            if (ModelState.IsValid)
+            var progresses = _progressRepository.GetProgressByUser(null);
+            return View(progresses);
+        }
+
+        [HttpGet]
+        public IActionResult ViewProgress(string userId, string lessonId)
+        {
+            // Lấy thông tin bài học
+            var lesson = _lessonRepository.GetById(lessonId);
+            if (lesson == null)
             {
-                lesson.LessonId = Guid.NewGuid().ToString();
-                _lessonRepository.Add(lesson);
-                _context.SaveChanges();
-                return RedirectToAction("ManageLessons", new { courseId = lesson.CourseId });
+                return NotFound("Bài học không tồn tại.");
             }
-            ViewBag.CourseId = lesson.CourseId;
-            return View(lesson);
+
+            // Lấy tiến độ của người dùng cho bài học này
+            var progress = _progressRepository.GetProgressByUserAndCourse(userId, lesson.CourseId)
+                                             .FirstOrDefault(p => p.LessonId == lessonId);
+
+            // Tạo ViewModel để hiển thị thông tin
+            var viewModel = new AdminProgressViewModel
+            {
+                UserId = userId,
+                Lesson = lesson,
+                Progress = progress
+            };
+
+            return View(viewModel); // Trả về Views/Admin/ViewProgress.cshtml
         }
 
-        [HttpPost]
-        public IActionResult DeleteLesson(string id, string courseId)
+        // Các action quản lý đăng ký
+        [HttpGet]
+        public IActionResult ManageEnrollments()
         {
-            var lesson = _lessonRepository.GetById(id);
-            if (lesson == null) return NotFound();
-            _lessonRepository.Delete(lesson);
-            _context.SaveChanges();
-            return RedirectToAction("ManageLessons", new { courseId });
+            var enrollments = _enrollmentRepository.GetEnrollmentsByUser(null);
+            return View(enrollments);
         }
     }
 }

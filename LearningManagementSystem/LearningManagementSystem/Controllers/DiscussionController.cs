@@ -11,14 +11,11 @@ namespace LearningManagementSystem.Controllers
     {
         private readonly ILessonRepository _lessonRepository;
         private readonly ICommentRepository _commentRepository;
-        private readonly LMSContext _context;
 
-        // Constructor nhận các dependency qua DI
-        public DiscussionController(ILessonRepository lessonRepository, ICommentRepository commentRepository, LMSContext context)
+        public DiscussionController(ILessonRepository lessonRepository, ICommentRepository commentRepository)
         {
             _lessonRepository = lessonRepository;
             _commentRepository = commentRepository;
-            _context = context;
         }
 
         // Hiển thị danh sách bình luận cho một bài học
@@ -46,13 +43,12 @@ namespace LearningManagementSystem.Controllers
             {
                 CommentId = Guid.NewGuid().ToString(),
                 LessonId = lessonId,
-                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier), // Lấy UserId từ Identity
+                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
                 Content = content,
                 CreatedDate = DateTime.Now
             };
 
             _commentRepository.Add(comment);
-            _context.SaveChanges(); // Lưu thay đổi vào database
 
             return RedirectToAction("Index", new { lessonId });
         }
@@ -66,7 +62,6 @@ namespace LearningManagementSystem.Controllers
             if (comment == null) return NotFound("Không tìm thấy bình luận.");
 
             _commentRepository.Delete(comment);
-            _context.SaveChanges(); // Lưu thay đổi vào database
 
             return RedirectToAction("Index", new { lessonId });
         }

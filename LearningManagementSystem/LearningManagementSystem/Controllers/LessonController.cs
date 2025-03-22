@@ -1,6 +1,9 @@
-﻿using LearningManagementSystem.Repositories;
+﻿using LearningManagementSystem.Models;
+using LearningManagementSystem.Models.ViewModels;
+using LearningManagementSystem.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace LearningManagementSystem.Controllers
 {
@@ -8,22 +11,43 @@ namespace LearningManagementSystem.Controllers
     public class LessonController : Controller
     {
         private readonly ILessonRepository _lessonRepository;
-        private readonly ICourseRepository _courseRepository;
+        private readonly IProgressRepository _progressRepository;
 
-        public LessonController(ILessonRepository lessonRepository, ICourseRepository courseRepository)
+        public LessonController(ILessonRepository lessonRepository, IProgressRepository progressRepository)
         {
             _lessonRepository = lessonRepository;
-            _courseRepository = courseRepository;
+            _progressRepository = progressRepository;
         }
 
-        public IActionResult Details(string lessonId)
+        [HttpGet]
+        public IActionResult ViewLesson(string lessonId)
         {
+            // Lấy thông tin bài học
             var lesson = _lessonRepository.GetById(lessonId);
-            if (lesson == null) return NotFound();
+            if (lesson == null)
+            {
+                return NotFound();
+            }
 
-            var course = _courseRepository.GetById(lesson.CourseId);
-            ViewBag.CourseName = course?.CourseName;
-            return View(lesson);
+            // Lấy userId từ thông tin người dùng hiện tại (dựa trên Claims)
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            // Lấy tiến độ của người dùng cho bài học này
+            var progress = _progressRepository.GetProgressByUserAndCourse(userId, lesson.CourseId)
+                                             .FirstOrDefault(p => p.LessonId == lessonId);
+
+            // Tạo ViewModel để hiển thị thông tin bài học và tiến độ
+            var viewModel = new LessonViewModel
+            {
+                Lesson = lesson,
+                Progress = progress
+            };
+
+            return View(viewModel);
         }
     }
 }

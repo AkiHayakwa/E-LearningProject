@@ -1,6 +1,8 @@
 ﻿using LearningManagementSystem.Data;
 using LearningManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LearningManagementSystem.Repositories
 {
@@ -8,27 +10,71 @@ namespace LearningManagementSystem.Repositories
     {
         private readonly LMSContext _context;
 
-        // Constructor nhận DbContext qua DI
         public ProgressRepository(LMSContext context)
         {
             _context = context;
         }
 
+        public IEnumerable<Progress> GetProgressByUser(string userId)
+        {
+            var query = _context.Progresses
+                                .Include(p => p.User)
+                                .Include(p => p.Lesson)
+                                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                query = query.Where(p => p.UserId == userId);
+            }
+
+            return query.ToList();
+        }
+
         public IEnumerable<Progress> GetProgressByUserAndCourse(string userId, string courseId)
         {
-            return _context.Progresses.Include(p => p.Lesson)
-                                      .Where(p => p.UserId == userId && p.Lesson.CourseId == courseId)
-                                      .ToList();
+            var query = _context.Progresses
+                                .Include(p => p.User)
+                                .Include(p => p.Lesson)
+                                    .ThenInclude(l => l.Course)
+                                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                query = query.Where(p => p.UserId == userId);
+            }
+
+            if (!string.IsNullOrEmpty(courseId))
+            {
+                query = query.Where(p => p.Lesson.CourseId == courseId);
+            }
+
+            return query.ToList();
+        }
+
+        public Progress GetById(string progressId)
+        {
+            return _context.Progresses
+                           .Include(p => p.User)
+                           .Include(p => p.Lesson)
+                           .FirstOrDefault(p => p.ProgressId == progressId);
         }
 
         public void Add(Progress progress)
         {
             _context.Progresses.Add(progress);
+            _context.SaveChanges();
         }
 
         public void Update(Progress progress)
         {
             _context.Progresses.Update(progress);
+            _context.SaveChanges();
+        }
+
+        public void Delete(Progress progress)
+        {
+            _context.Progresses.Remove(progress);
+            _context.SaveChanges();
         }
     }
 }

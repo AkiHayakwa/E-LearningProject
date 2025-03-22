@@ -1,5 +1,5 @@
-﻿using LearningManagementSystem.Data;
-using LearningManagementSystem.Models;
+﻿using LearningManagementSystem.Models;
+using LearningManagementSystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -7,11 +7,11 @@ namespace LearningManagementSystem.Controllers
 {
     public class CommentController : Controller
     {
-        private readonly LMSContext _context;
+        private readonly ICommentRepository _commentRepository;
 
-        public CommentController(LMSContext context)
+        public CommentController(ICommentRepository commentRepository)
         {
-            _context = context;
+            _commentRepository = commentRepository;
         }
 
         [HttpPost]
@@ -38,8 +38,7 @@ namespace LearningManagementSystem.Controllers
                 CreatedDate = DateTime.Now
             };
 
-            _context.Comments.Add(comment);
-            _context.SaveChanges();
+            _commentRepository.Add(comment);
 
             TempData["Success"] = "Bình luận đã được gửi thành công!";
             return RedirectToAction("CourseDetails", "Home", new { courseId });

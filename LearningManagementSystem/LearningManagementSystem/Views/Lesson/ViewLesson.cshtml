@@ -1,0 +1,79 @@
+﻿@model LearningManagementSystem.Models.ViewModels.LessonViewModel
+
+@{
+    ViewData["Title"] = "Xem bài học";
+}
+
+<h1>@Model.Lesson.LessonTitle</h1>
+
+<div class="lesson-details">
+    <h3>Thông tin bài học</h3>
+    <div class="card mb-3">
+        <div class="card-body">
+            <p><strong>Khóa học:</strong> @(Model.Lesson.Course != null ? Model.Lesson.Course.CourseName : "Không có thông tin khóa học")</p>
+            <p><strong>Thứ tự bài học:</strong> @Model.Lesson.OrderNumber</p>
+            <p><strong>Nội dung:</strong> @(string.IsNullOrEmpty(Model.Lesson.Content) ? "Không có nội dung" : Model.Lesson.Content)</p>
+        </div>
+    </div>
+
+    <h3>Tiến độ học tập</h3>
+    <div class="card">
+        <div class="card-body">
+            @if (Model.Progress != null)
+            {
+                <p>
+                    <strong>Trạng thái hoàn thành:</strong>
+                    <span class="@(Model.Progress.CompletionStatus ? "text-success" : "text-danger")">
+                        @(Model.Progress.CompletionStatus ? "Đã hoàn thành" : "Chưa hoàn thành")
+                    </span>
+                </p>
+                <p>
+                    <strong>Ngày hoàn thành:</strong>
+                    @(Model.Progress.CompletionDate?.ToString("dd/MM/yyyy") ?? "Chưa có")
+                </p>
+            }
+            else
+            {
+                <p class="text-muted">Chưa có tiến độ cho bài học này.</p>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        .lesson-details {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .text-success {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .text-muted {
+            color: #6c757d;
+        }
+
+        h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
+}

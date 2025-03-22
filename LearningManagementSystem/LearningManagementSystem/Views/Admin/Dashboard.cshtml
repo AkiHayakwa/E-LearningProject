@@ -1,0 +1,76 @@
+﻿@model LearningManagementSystem.Models.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Bảng điều khiển Admin";
+}
+
+<h1>Bảng điều khiển Admin</h1>
+
+<div class="dashboard-stats">
+    <div class="card">
+        <div class="card-body">
+            <h3>Tổng số người dùng</h3>
+            <p>@Model.TotalUsers</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h3>Tổng số khóa học</h3>
+            <p>@Model.TotalCourses</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h3>Tổng số bài học</h3>
+            <p>@Model.TotalLessons</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h3>Tổng số bình luận</h3>
+            <p>@Model.TotalComments</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h3>Tổng số đăng ký</h3>
+            <p>@Model.TotalEnrollments</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h3>Tổng số tiến độ</h3>
+            <p>@Model.TotalProgresses</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    h3 {
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+    }
+
+    p {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #007bff;
+    }
+</style>

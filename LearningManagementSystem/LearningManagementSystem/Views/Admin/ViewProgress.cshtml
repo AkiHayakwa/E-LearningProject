@@ -1,0 +1,27 @@
+﻿@model LearningManagementSystem.Models.ViewModels.AdminProgressViewModel
+
+@{
+    ViewData["Title"] = "Xem tiến độ";
+}
+
+<h1>Xem tiến độ</h1>
+
+<div>
+    <h3>Thông tin bài học</h3>
+    <p><strong>Tiêu đề:</strong> @Model.Lesson.LessonTitle</p>
+    <p><strong>Khóa học:</strong> @(Model.Lesson.Course != null ? Model.Lesson.Course.CourseName : "Không có thông tin khóa học")</p>
+    <p><strong>Nội dung:</strong> @Model.Lesson.Content</p>
+
+    <h3>Tiến độ học tập</h3>
+    @if (Model.Progress != null)
+    {
+        <p><strong>Trạng thái hoàn thành:</strong> @(Model.Progress.CompletionStatus ? "Đã hoàn thành" : "Chưa hoàn thành")</p>
+        <p><strong>Ngày hoàn thành:</strong> @(Model.Progress.CompletionDate?.ToString("dd/MM/yyyy") ?? "Chưa có")</p>
+    }
+    else
+    {
+        <p>Người dùng chưa có tiến độ cho bài học này.</p>
+    }
+
+    <a asp-action="ManageProgress" class="btn btn-primary mt-3">Quay lại</a>
+</div>

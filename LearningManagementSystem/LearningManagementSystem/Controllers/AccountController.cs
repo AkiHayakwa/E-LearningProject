@@ -5,16 +5,19 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace LearningManagementSystem.Controllers
 {
     public class AccountController : Controller
     {
         private readonly LMSContext _context;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public AccountController(LMSContext context)
+        public AccountController(LMSContext context, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpGet]
@@ -26,9 +29,11 @@ namespace LearningManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            var user = _context.Users.Include(u => u.Roles)
-                                     .FirstOrDefault(u => u.UserName == username && u.Password == password);
-            if (user == null)
+            var user = await _context.Users
+                                     .Include(u => u.Roles)
+                                     .FirstOrDefaultAsync(u => u.UserName == username);
+
+            if (user == null || !user.VerifyPassword(_passwordHasher, password))
             {
                 ViewBag.Error = "Tên đăng nhập hoặc mật khẩu không đúng.";
                 return View();
@@ -45,7 +50,21 @@ namespace LearningManagementSystem.Controllers
             var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-            return RedirectToAction("Index", "Home");
+
+            // Điều hướng dựa trên vai trò
+            var role = user.Roles?.RoleName;
+            if (role == "Admin")
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
+            else if (role == "Student")
+            {
+                return RedirectToAction("Dashboard", "Student");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]
@@ -94,11 +113,13 @@ namespace LearningManagementSystem.Controllers
                 {
                     UserId = Guid.NewGuid().ToString(),
                     UserName = username,
-                    Password = password, // Lưu ý: Nên mã hóa mật khẩu trong thực tế
                     FullName = fullName,
                     Email = email,
                     RoleId = "role-student" // Vai trò mặc định là Student
                 };
+
+                // Băm mật khẩu trước khi lưu
+                user.HashPassword(_passwordHasher, password);
 
                 _context.Users.Add(user);
                 _context.SaveChanges();
@@ -125,6 +146,12 @@ namespace LearningManagementSystem.Controllers
         [HttpGet]
         public IActionResult AccessDenied()
         {
+            // Điều hướng dựa trên vai trò nếu cần
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (role == "Student")
+            {
+                return RedirectToAction("Dashboard", "Student");
+            }
             return View();
         }
     }

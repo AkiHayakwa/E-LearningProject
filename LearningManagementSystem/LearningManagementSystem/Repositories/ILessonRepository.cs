@@ -1,11 +1,12 @@
 ﻿using LearningManagementSystem.Models;
+using System.Collections.Generic;
 
 namespace LearningManagementSystem.Repositories
 {
     public interface ILessonRepository
     {
-        Lesson GetById(string lessonId);
         IEnumerable<Lesson> GetLessonsByCourseId(string courseId);
+        Lesson GetById(string lessonId); // Đổi từ GetLessonById thành GetById
         void Add(Lesson lesson);
         void Update(Lesson lesson);
         void Delete(Lesson lesson);

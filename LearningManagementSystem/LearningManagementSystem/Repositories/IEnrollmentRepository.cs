@@ -4,9 +4,9 @@ namespace LearningManagementSystem.Repositories
 {
     public interface IEnrollmentRepository
     {
-        Enrollment GetById(string enrollmentId);
-        IEnumerable<Enrollment> GetEnrollmentsByUserId(string userId);
+        IEnumerable<Enrollment> GetEnrollmentsByUser(string userId); // Phương thức đã có trước đó
+        IEnumerable<Enrollment> GetEnrollmentsByUserId(string userId); // Thêm phương thức mới
+        bool IsEnrolled(string userId, string courseId);
         void Add(Enrollment enrollment);
-        void Delete(Enrollment enrollment);
     }
 }

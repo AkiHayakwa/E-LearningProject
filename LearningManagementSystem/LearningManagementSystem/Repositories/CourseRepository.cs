@@ -14,29 +14,40 @@ namespace LearningManagementSystem.Repositories
             _context = context;
         }
 
-        public Course GetById(string courseId)
+        public Course GetCourseWithInstructor(string courseId)
         {
-            return _context.Courses.Include(c => c.Lessons).FirstOrDefault(c => c.CourseId == courseId);
+            return _context.Courses
+                           .Include(c => c.Instructor)
+                           .FirstOrDefault(c => c.CourseId == courseId);
+        }
+
+        public IEnumerable<Course> GetAllWithInstructor()
+        {
+            return _context.Courses
+                           .Include(c => c.Instructor)
+                           .ToList();
         }
 
         public IEnumerable<Course> GetAll()
         {
-            return _context.Courses.Include(c => c.Instructor).ToList();
+            return _context.Courses.ToList();
+        }
+
+        public Course GetById(string id)
+        {
+            return _context.Courses.FirstOrDefault(c => c.CourseId == id);
         }
 
         public void Add(Course course)
         {
             _context.Courses.Add(course);
-        }
-
-        public void Update(Course course)
-        {
-            _context.Courses.Update(course);
+            _context.SaveChanges();
         }
 
         public void Delete(Course course)
         {
             _context.Courses.Remove(course);
+            _context.SaveChanges();
         }
     }
 }

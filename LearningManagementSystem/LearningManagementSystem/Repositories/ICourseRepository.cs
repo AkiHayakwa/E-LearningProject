@@ -4,10 +4,11 @@ namespace LearningManagementSystem.Repositories
 {
     public interface ICourseRepository
     {
-        Course GetById(string courseId);
+        Course GetCourseWithInstructor(string courseId);
+        IEnumerable<Course> GetAllWithInstructor();
         IEnumerable<Course> GetAll();
+        Course GetById(string id);
         void Add(Course course);
-        void Update(Course course);
         void Delete(Course course);
     }
 }
