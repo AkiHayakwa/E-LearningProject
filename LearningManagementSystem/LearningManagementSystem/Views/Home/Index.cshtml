@@ -75,7 +75,6 @@
 <div class="mb-5">
     <h2 class="section-title">Đăng ký khóa học</h2>
     @{
-        // Lấy danh sách các khóa học có sẵn từ cơ sở dữ liệu
         var availableCourses = ViewBag.AvailableCourses as IEnumerable<LearningManagementSystem.Models.Course>;
     }
     @if (availableCourses != null && availableCourses.Any())
@@ -170,7 +169,11 @@
             {
                 <div class="col-md-6 mb-3">
                     <div class="card comment-card p-3">
-                        <p class="mb-1" style="color: #333;"><strong>@comment.User.FullName</strong> đã bình luận trong <strong>@comment.Lesson.LessonTitle</strong> (Khóa học: @comment.Lesson.Course.CourseName)</p>
+                        <p class="mb-1" style="color: #333;">
+                            <strong>@comment.User.FullName</strong> đã bình luận trong
+                            @(comment.Lesson != null ? $"bài học <strong>{comment.Lesson.LessonTitle}</strong>" : "khóa học")
+                            (Khóa học: @comment..CourseName)
+                        </p>
                         <p class="mb-1" style="color: #666;">@comment.Content</p>
                         <small class="text-muted">Đăng vào: @comment.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
                     </div>
@@ -212,7 +215,6 @@
                         <textarea class="form-control" id="commentContent" name="content" rows="3" required></textarea>
                     </div>
                     <input type="hidden" id="commentCourseId" name="courseId" />
-                    <input type="hidden" id="commentLessonId" name="lessonId" value="default-lesson-id" /> <!-- Giả định lessonId mặc định -->
                     <button type="submit" class="btn btn-primary">Gửi bình luận</button>
                 </form>
             </div>
@@ -292,7 +294,7 @@
                         const commentDiv = document.createElement('div');
                         commentDiv.className = 'comment-item';
                         commentDiv.innerHTML = `
-                            <p class="mb-1"><strong>${comment.userName}</strong> (${comment.lessonTitle}): ${comment.content}</p>
+                            <p class="mb-1"><strong>${comment.userName}</strong> ${comment.lessonTitle ? '(' + comment.lessonTitle + ')' : ''}: ${comment.content}</p>
                             <small class="text-muted">Đăng vào: ${comment.createdDate}</small>
                         `;
                         commentSection.appendChild(commentDiv);

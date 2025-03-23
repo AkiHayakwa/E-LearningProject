@@ -1,0 +1,79 @@
+﻿@model LearningManagementSystem.Models.ViewModels.EnrollCourseViewModel
+
+@{
+    ViewData["Title"] = "Đăng ký khóa học";
+    Layout = "_Layout";
+}
+
+<h1>Chi tiết khóa học</h1>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<h2>@Model.Course.CourseName</h2>
+<p><strong>Mô tả:</strong> @Model.Course.Description</p>
+<p><strong>Giảng viên:</strong> @Model.Instructor?.FullName</p>
+<p><strong>Ngày tạo:</strong> @Model.Course.CreatedDate.ToString("dd/MM/yyyy")</p>
+
+<h3>Bài học</h3>
+@if (Model.Lessons != null && Model.Lessons.Any())
+{
+    <ul>
+        @foreach (var lesson in Model.Lessons)
+        {
+            <li>
+                <a href="@Url.Action("EnrollCourse", new { courseId = Model.Course.CourseId, lessonId = lesson.LessonId })">@lesson.LessonTitle</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Khóa học này chưa có bài học.</p>
+}
+
+@if (Model.SelectedLesson != null)
+{
+    <h4>@Model.SelectedLesson.LessonTitle</h4>
+    <p>@Model.SelectedLesson.Content</p>
+
+    <h5>Bình luận</h5>
+    @if (Model.Comments != null && Model.Comments.Any())
+    {
+        foreach (var comment in Model.Comments)
+        {
+            <p><strong>@comment.User?.FullName:</strong> @comment.Content <small>(@comment.CreatedDate.ToString("dd/MM/yyyy HH:mm"))</small></p>
+        }
+    }
+    else
+    {
+        <p>Chưa có bình luận nào.</p>
+    }
+
+    <h5>Thêm bình luận:</h5>
+    <form asp-action="AddComment" method="post">
+        <input type="hidden" name="lessonId" value="@Model.SelectedLesson.LessonId" />
+        <div class="form-group">
+            <textarea name="content" class="form-control" placeholder="Nhập bình luận của bạn..." required maxlength="1000"></textarea>
+            <small class="form-text text-muted">Tối đa 1000 ký tự.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+    </form>
+}
+else
+{
+    <p>Không tìm thấy bài học được chọn. Vui lòng chọn một bài học từ danh sách trên.</p>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Đóng</a>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
