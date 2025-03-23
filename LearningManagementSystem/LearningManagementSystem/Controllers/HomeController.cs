@@ -1,107 +1,71 @@
 ﻿using LearningManagementSystem.Data;
 using LearningManagementSystem.Models;
 using LearningManagementSystem.Models.ViewModels;
+using LearningManagementSystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
+using System;
+using System.Linq;
 
-namespace LearningManagementSystem.Controllers
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly IUserRepository _userRepository;
+    private readonly ICourseRepository _courseRepository;
+    private readonly IEnrollmentRepository _enrollmentRepository;
+    private readonly IProgressRepository _progressRepository;
+    private readonly ICommentRepository _commentRepository;
+
+    public HomeController(
+        IUserRepository userRepository,
+        ICourseRepository courseRepository,
+        IEnrollmentRepository enrollmentRepository,
+        IProgressRepository progressRepository,
+        ICommentRepository commentRepository)
     {
-        private readonly LMSContext _context;
+        _userRepository = userRepository;
+        _courseRepository = courseRepository;
+        _enrollmentRepository = enrollmentRepository;
+        _progressRepository = progressRepository;
+        _commentRepository = commentRepository;
+    }
 
-        public HomeController(LMSContext context)
+    public IActionResult Index()
+    {
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrWhiteSpace(userId))
         {
-            _context = context;
+            return RedirectToAction("Login", "Account");
         }
 
-        // Trang dashboard
-        public IActionResult Index()
+        var user = _userRepository.GetById(userId);
+        if (user == null)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var user = _context.Users.Include(u => u.Roles)
-                                     .FirstOrDefault(u => u.UserId == userId);
-            var enrollments = _context.Enrollments.Include(e => e.Course)
-                                                  .Where(e => e.UserId == userId)
-                                                  .ToList();
-            var progresses = _context.Progresses.Include(p => p.Lesson)
-                                                .ThenInclude(l => l.Course)
-                                                .Where(p => p.UserId == userId)
-                                                .OrderByDescending(p => p.CompletionDate ?? DateTime.MinValue)
-                                                .Take(5)
-                                                .ToList();
-            var comments = _context.Comments.Include(c => c.User)
-                                            .Include(c => c.Lesson)
-                                            .ThenInclude(l => l.Course)
-                                            .Where(c => c.LessonId != "notification")
-                                            .OrderByDescending(c => c.CreatedDate)
-                                            .Take(5)
-                                            .ToList();
-            var notifications = _context.Comments
-                                        .Where(c => c.LessonId == "notification" && c.UserId == userId)
-                                        .OrderByDescending(c => c.CreatedDate)
-                                        .Take(5)
-                                        .ToList();
-
-            var viewModel = new HomeViewModel
-            {
-                User = user,
-                Enrollments = enrollments,
-                Progresses = progresses,
-                Comments = comments,
-                Notifications = notifications
-            };
-
-            return View(viewModel);
+            return RedirectToAction("Login", "Account");
         }
 
-        // Trang danh sách khóa học
-        public IActionResult Courses()
+        var model = new HomeViewModel
         {
-            var courses = _context.Courses.Include(c => c.Instructor)
-                                          .ToList();
-            return View(courses);
-        }
+            User = user,
+            Enrollments = _enrollmentRepository.GetEnrollmentsByUser(userId)
+                .OrderByDescending(e => e.EnrollmentDate)
+                .Take(5)
+                .ToList(),
+            Progresses = _progressRepository.GetProgressByUser(userId)
+                .OrderByDescending(p => p.CompletionDate)
+                .Take(5)
+                .ToList(),
+            Comments = _commentRepository.GetCommentsByUser(userId)
+                .OrderByDescending(c => c.CreatedDate)
+                .Take(5)
+                .ToList()
+        };
 
-        // Trang chi tiết khóa học
-        public IActionResult CourseDetails(string courseId)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
+        var enrolledCourseIds = model.Enrollments.Select(e => e.CourseId).ToList();
+        var availableCourses = _courseRepository.GetAll()
+            .Where(c => !enrolledCourseIds.Contains(c.CourseId))
+            .OrderBy(c => c.CreatedDate)
+            .ToList();
 
-            var course = _context.Courses.Include(c => c.Instructor)
-                                         .FirstOrDefault(c => c.CourseId == courseId);
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            var isEnrolled = _context.Enrollments
-                                     .Any(e => e.UserId == userId && e.CourseId == courseId);
-
-            var comments = _context.Comments
-                                  .Include(c => c.User)
-                                  .Where(c => c.CourseId == courseId && c.LessonId == null)
-                                  .OrderByDescending(c => c.CreatedDate)
-                                  .ToList();
-
-            var viewModel = new CourseDetailsViewModel
-            {
-                Course = course,
-                IsEnrolled = isEnrolled,
-                Comments = comments
-            };
-
-            return View(viewModel);
-        }
+        ViewBag.AvailableCourses = availableCourses;
+        return View(model);
     }
 }

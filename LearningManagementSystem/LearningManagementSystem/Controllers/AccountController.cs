@@ -59,7 +59,7 @@ namespace LearningManagementSystem.Controllers
             }
             else if (role == "Student")
             {
-                return RedirectToAction("Dashboard", "Student");
+                return RedirectToAction("Index", "Home");
             }
             else
             {

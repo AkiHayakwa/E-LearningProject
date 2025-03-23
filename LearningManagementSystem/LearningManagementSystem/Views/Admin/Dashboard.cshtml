@@ -1,51 +1,74 @@
 ﻿@model LearningManagementSystem.Models.ViewModels.AdminDashboardViewModel
 
 @{
+    Layout = "_Layout";
     ViewData["Title"] = "Bảng điều khiển Admin";
 }
 
-<h1>Bảng điều khiển Admin</h1>
+<div class="container py-5">
+    <h1 class="text-center mb-4">Bảng điều khiển Admin</h1>
 
-<div class="dashboard-stats">
-    <div class="card">
-        <div class="card-body">
-            <h3>Tổng số người dùng</h3>
-            <p>@Model.TotalUsers</p>
-        </div>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <div class="dashboard-actions mb-4 d-flex justify-content-center">
+        <a asp-action="AddUser" asp-controller="Admin" class="btn btn-success me-2">Thêm người dùng</a>
+        <a asp-action="AddCourse" asp-controller="Admin" class="btn btn-success me-2">Thêm khóa học</a>
+        <a asp-action="AddLesson" asp-controller="Admin" class="btn btn-success">Thêm bài học</a>
     </div>
-    <div class="card">
-        <div class="card-body">
-            <h3>Tổng số khóa học</h3>
-            <p>@Model.TotalCourses</p>
+
+    <div class="dashboard-stats">
+        <div class="card">
+            <div class="card-body">
+                <h3>Tổng số người dùng</h3>
+                <p><a asp-action="ManageUsers" asp-controller="Admin" class="text-primary">@Model.TotalUsers</a></p>
+            </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <h3>Tổng số bài học</h3>
-            <p>@Model.TotalLessons</p>
+        <div class="card">
+            <div class="card-body">
+                <h3>Tổng số khóa học</h3>
+                <p><a asp-action="ManageCourses" asp-controller="Admin" class="text-primary">@Model.TotalCourses</a></p>
+            </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <h3>Tổng số bình luận</h3>
-            <p>@Model.TotalComments</p>
+        <div class="card">
+            <div class="card-body">
+                <h3>Tổng số bài học</h3>
+                <p><a asp-action="ManageLessons" asp-controller="Admin" class="text-primary">@Model.TotalLessons</a></p>
+            </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <h3>Tổng số đăng ký</h3>
-            <p>@Model.TotalEnrollments</p>
+        <div class="card">
+            <div class="card-body">
+                <h3>Tổng số bình luận</h3>
+                <p><a asp-action="ManageComments" asp-controller="Admin" class="text-primary">@Model.TotalComments</a></p>
+            </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            <h3>Tổng số tiến độ</h3>
-            <p>@Model.TotalProgresses</p>
+        <div class="card">
+            <div class="card-body">
+                <h3>Tổng số đăng ký</h3>
+                <p>@Model.TotalEnrollments</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h3>Tổng số tiến độ</h3>
+                <p>@Model.TotalProgresses</p>
+            </div>
         </div>
     </div>
 </div>
 
 <style>
+    .dashboard-actions {
+        margin-bottom: 20px;
+    }
+
     .dashboard-stats {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -73,4 +96,12 @@
         font-weight: bold;
         color: #007bff;
     }
+
+    .text-primary {
+        text-decoration: none;
+    }
+
+        .text-primary:hover {
+            text-decoration: underline;
+        }
 </style>

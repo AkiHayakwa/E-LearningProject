@@ -2,56 +2,72 @@
 using LearningManagementSystem.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using System;
 
-namespace LearningManagementSystem.Controllers
+public class EnrollmentController : Controller
 {
-    [Authorize] // Yêu cầu người dùng đăng nhập
-    public class EnrollmentController : Controller
+    private readonly IEnrollmentRepository _enrollmentRepository;
+    private readonly ICourseRepository _courseRepository;
+
+    public EnrollmentController(
+        IEnrollmentRepository enrollmentRepository,
+        ICourseRepository courseRepository)
     {
-        private readonly ICourseRepository _courseRepository;
-        private readonly IEnrollmentRepository _enrollmentRepository;
+        _enrollmentRepository = enrollmentRepository;
+        _courseRepository = courseRepository;
+    }
 
-        public EnrollmentController(
-            ICourseRepository courseRepository,
-            IEnrollmentRepository enrollmentRepository)
+    [Authorize]
+    [HttpPost]
+    public IActionResult Enroll(string id)
+    {
+        try
         {
-            _courseRepository = courseRepository;
-            _enrollmentRepository = enrollmentRepository;
-        }
-
-        [HttpGet]
-        public IActionResult Enroll(string courseId)
-        {
-            var course = _courseRepository.GetById(courseId);
-            if (course == null) return NotFound();
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
+            if (string.IsNullOrWhiteSpace(id))
             {
-                return Unauthorized("Bạn cần đăng nhập để đăng ký khóa học.");
+                TempData["Error"] = "ID khóa học không hợp lệ.";
+                return RedirectToAction("Index", "Home");
             }
 
-            var existingEnrollment = _enrollmentRepository.GetEnrollmentsByUserId(userId)
-                                                          .FirstOrDefault(e => e.CourseId == courseId);
+            var course = _courseRepository.GetById(id);
+            if (course == null)
+            {
+                TempData["Error"] = "Khóa học không tồn tại.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                TempData["Error"] = "Không thể xác định người dùng. Vui lòng đăng nhập lại.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            var existingEnrollment = _enrollmentRepository.GetEnrollment(userId, id);
             if (existingEnrollment != null)
             {
-                TempData["Error"] = "Bạn đã đăng ký khóa học này.";
-                return RedirectToAction("Details", "Home", new { courseId });
+                TempData["Error"] = "Bạn đã đăng ký khóa học này rồi.";
+                return RedirectToAction("Index", "Home");
             }
 
             var enrollment = new Enrollment
             {
                 EnrollmentId = Guid.NewGuid().ToString(),
                 UserId = userId,
-                CourseId = courseId,
+                CourseId = id,
                 EnrollmentDate = DateTime.Now
             };
 
             _enrollmentRepository.Add(enrollment);
+            _enrollmentRepository.Save();
 
-            TempData["Success"] = "Đăng ký thành công!";
-            return RedirectToAction("Details", "Home", new { courseId });
+            TempData["Success"] = "Đăng ký khóa học thành công!";
+            return RedirectToAction("Index", "Home");
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = $"Đã có lỗi xảy ra: {ex.Message}";
+            return RedirectToAction("Index", "Home");
         }
     }
 }

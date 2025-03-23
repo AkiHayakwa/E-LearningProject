@@ -17,6 +17,7 @@
 
     .course-card {
         transition: transform 0.3s;
+        cursor: pointer;
     }
 
         .course-card:hover {
@@ -30,14 +31,21 @@
         margin-bottom: 1.5rem;
     }
 
-    .comment-card, .notification-card {
+    .comment-card {
         background-color: #f8f9fa;
         border-left: 4px solid #1a73e8;
     }
 
-        .notification-card.unread {
-            background-color: #e3f2fd;
-        }
+    .comment-section {
+        max-height: 200px;
+        overflow-y: auto;
+        margin-bottom: 1rem;
+    }
+
+    .comment-item {
+        border-bottom: 1px solid #ddd;
+        padding: 0.5rem 0;
+    }
 </style>
 
 <!-- Hiển thị thông báo thành công hoặc lỗi -->
@@ -63,23 +71,25 @@
     <a href="/Account/Logout" class="btn btn-light">Đăng xuất</a>
 </div>
 
-<!-- Thông báo gần đây -->
+<!-- Đăng ký khóa học -->
 <div class="mb-5">
-    <h2 class="section-title">Thông báo gần đây</h2>
-    @if (Model.Notifications.Any())
+    <h2 class="section-title">Đăng ký khóa học</h2>
+    @{
+        // Lấy danh sách các khóa học có sẵn từ cơ sở dữ liệu
+        var availableCourses = ViewBag.AvailableCourses as IEnumerable<LearningManagementSystem.Models.Course>;
+    }
+    @if (availableCourses != null && availableCourses.Any())
     {
         <div class="row">
-            @foreach (var notification in Model.Notifications)
+            @foreach (var course in availableCourses)
             {
-                // Phân tích JSON từ Content
-                var jsonContent = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(notification.Content);
-                bool isRead = jsonContent.read;
-                string message = jsonContent.message;
-
-                <div class="col-md-6 mb-3">
-                    <div class="card notification-card p-3 @(isRead ? "" : "unread")">
-                        <p class="mb-1" style="color: #333;">@message</p>
-                        <small class="text-muted">Nhận vào: @notification.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
+                <div class="col-md-4 mb-4">
+                    <div class="card course-card shadow-sm" data-bs-toggle="modal" data-bs-target="#courseDetailModal"
+                         onclick="getCourseDetails('@course.CourseId')">
+                        <div class="card-body">
+                            <h5 class="card-title" style="color: #333;">@course.CourseName</h5>
+                            <p class="card-text" style="color: #666;">Ngày tạo: @(course.CreatedDate.ToString("dd/MM/yyyy") ?? "Không có")</p>
+                        </div>
                     </div>
                 </div>
             }
@@ -87,14 +97,8 @@
     }
     else
     {
-        <p class="text-muted">Bạn chưa có thông báo nào.</p>
+        <p class="text-muted">Không có khóa học nào để đăng ký.</p>
     }
-</div>
-
-<!-- Khóa học có sẵn -->
-<div class="mb-5">
-    <h2 class="section-title">Khóa học có sẵn</h2>
-    <p>Bạn chưa có khóa học nào. <a href="@Url.Action("Courses", "Home")" class="text-primary">Hãy khám phá các khóa học có sẵn!</a></p>
 </div>
 
 <!-- Khóa học đã đăng ký -->
@@ -179,3 +183,163 @@
         <p class="text-muted">Chưa có bình luận nào.</p>
     }
 </div>
+
+<!-- Modal chi tiết khóa học -->
+<div class="modal fade" id="courseDetailModal" tabindex="-1" aria-labelledby="courseDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="courseDetailModalLabel">Chi tiết khóa học</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5 id="courseTitle"></h5>
+                <p><strong>Mô tả:</strong> <span id="courseDescription"></span></p>
+                <p><strong>Giảng viên:</strong> <span id="courseInstructor"></span></p>
+                <p><strong>Ngày tạo:</strong> <span id="courseCreatedDate"></span></p>
+
+                <!-- Phần bình luận -->
+                <hr />
+                <h6>Bình luận</h6>
+                <div class="comment-section" id="commentSection">
+                    <!-- Bình luận sẽ được tải bằng AJAX -->
+                </div>
+
+                <!-- Form thêm bình luận -->
+                <form id="commentForm" onsubmit="addComment(event)">
+                    <div class="mb-3">
+                        <label for="commentContent" class="form-label">Thêm bình luận:</label>
+                        <textarea class="form-control" id="commentContent" name="content" rows="3" required></textarea>
+                    </div>
+                    <input type="hidden" id="commentCourseId" name="courseId" />
+                    <input type="hidden" id="commentLessonId" name="lessonId" value="default-lesson-id" /> <!-- Giả định lessonId mặc định -->
+                    <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" id="enrollButton" onclick="showConfirmModal()">Đăng ký khóa học</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xác nhận đăng ký -->
+<div class="modal fade" id="confirmEnrollModal" tabindex="-1" aria-labelledby="confirmEnrollModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmEnrollModalLabel">Xác nhận đăng ký</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn đăng ký khóa học này không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form id="enrollForm" asp-action="Enroll" asp-controller="Enrollment" method="post" style="display:inline;">
+                    <input type="hidden" name="id" id="enrollCourseId" />
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let selectedCourseId = '';
+
+        // Hàm lấy chi tiết khóa học và bình luận thông qua AJAX
+        function getCourseDetails(courseId) {
+            selectedCourseId = courseId;
+            document.getElementById('commentCourseId').value = courseId;
+
+            // Lấy chi tiết khóa học
+            fetch(`/Course/GetCourseDetails/${courseId}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    document.getElementById('courseTitle').innerText = data.title;
+                    document.getElementById('courseDescription').innerText = data.description || 'Không có mô tả';
+                    document.getElementById('courseInstructor').innerText = data.instructor || 'Không có thông tin';
+                    document.getElementById('courseCreatedDate').innerText = data.createdDate ? new Date(data.createdDate).toLocaleDateString('vi-VN') : 'Không có';
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy chi tiết khóa học:', error);
+                alert('Đã có lỗi xảy ra khi lấy thông tin khóa học.');
+            });
+
+            // Lấy danh sách bình luận
+            fetch(`/Comment/GetCommentsByCourse?courseId=${courseId}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(comments => {
+                const commentSection = document.getElementById('commentSection');
+                commentSection.innerHTML = '';
+                if (comments && comments.length > 0) {
+                    comments.forEach(comment => {
+                        const commentDiv = document.createElement('div');
+                        commentDiv.className = 'comment-item';
+                        commentDiv.innerHTML = `
+                            <p class="mb-1"><strong>${comment.userName}</strong> (${comment.lessonTitle}): ${comment.content}</p>
+                            <small class="text-muted">Đăng vào: ${comment.createdDate}</small>
+                        `;
+                        commentSection.appendChild(commentDiv);
+                    });
+                } else {
+                    commentSection.innerHTML = '<p class="text-muted">Chưa có bình luận nào.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy bình luận:', error);
+                document.getElementById('commentSection').innerHTML = '<p class="text-danger">Đã có lỗi xảy ra khi lấy bình luận.</p>';
+            });
+        }
+
+        // Hàm hiển thị modal xác nhận đăng ký
+        function showConfirmModal() {
+            document.getElementById('enrollCourseId').value = selectedCourseId;
+            var confirmModal = new bootstrap.Modal(document.getElementById('confirmEnrollModal'));
+            confirmModal.show();
+        }
+
+        // Hàm thêm bình luận
+        function addComment(event) {
+            event.preventDefault();
+            const form = document.getElementById('commentForm');
+            const formData = new FormData(form);
+
+            fetch('/Comment/AddComment', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    // Làm mới danh sách bình luận
+                    getCourseDetails(selectedCourseId);
+                    // Xóa nội dung textarea
+                    document.getElementById('commentContent').value = '';
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi thêm bình luận:', error);
+                alert('Đã có lỗi xảy ra khi thêm bình luận.');
+            });
+        }
+    </script>
+}

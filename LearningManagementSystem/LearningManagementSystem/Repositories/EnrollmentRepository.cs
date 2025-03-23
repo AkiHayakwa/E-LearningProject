@@ -13,30 +13,45 @@ namespace LearningManagementSystem.Repositories
             _context = context;
         }
 
+        public IEnumerable<Enrollment> GetAll()
+        {
+            return _context.Enrollments
+                .Include(e => e.User)
+                .Include(e => e.Course)
+                .ToList();
+        }
+
+        public Enrollment GetEnrollment(string userId, string courseId)
+        {
+            return _context.Enrollments
+                .FirstOrDefault(e => e.UserId == userId && e.CourseId == courseId);
+        }
+
         public IEnumerable<Enrollment> GetEnrollmentsByUser(string userId)
         {
             return _context.Enrollments
-                           .Include(e => e.Course)
-                           .Where(e => e.UserId == userId)
-                           .ToList();
-        }
-
-        public IEnumerable<Enrollment> GetEnrollmentsByUserId(string userId)
-        {
-            return _context.Enrollments
-                           .Where(e => e.UserId == userId)
-                           .ToList();
-        }
-
-        public bool IsEnrolled(string userId, string courseId)
-        {
-            return _context.Enrollments
-                           .Any(e => e.UserId == userId && e.CourseId == courseId);
+                .Include(e => e.User)
+                .Include(e => e.Course)
+                .Where(e => e.UserId == userId)
+                .ToList();
         }
 
         public void Add(Enrollment enrollment)
         {
             _context.Enrollments.Add(enrollment);
+        }
+
+        public void Delete(string enrollmentId)
+        {
+            var enrollment = _context.Enrollments.FirstOrDefault(e => e.EnrollmentId == enrollmentId);
+            if (enrollment != null)
+            {
+                _context.Enrollments.Remove(enrollment);
+            }
+        }
+
+        public void Save()
+        {
             _context.SaveChanges();
         }
     }

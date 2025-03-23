@@ -1,0 +1,55 @@
+﻿@model IEnumerable<LearningManagementSystem.Models.Comment>
+
+@{
+    ViewData["Title"] = "Quản lý bình luận";
+}
+
+<h2>Quản lý bình luận</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<p>
+    <a asp-action="CreateComment" class="btn btn-primary">Thêm bình luận mới</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Người dùng</th>
+            <th>Bài học</th>
+            <th>Khóa học</th>
+            <th>Nội dung</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var comment in Model)
+        {
+            <tr>
+                <td>@(comment.User?.FullName ?? "N/A")</td>
+                <td>@(comment.Lesson?.LessonTitle ?? "N/A")</td>
+                <td>@(comment.Lesson?.Course?.CourseName ?? "N/A")</td>
+                <td>@comment.Content</td>
+                <td>
+                    <a asp-action="EditComment" asp-route-id="@comment.CommentId" class="btn btn-warning btn-sm">Sửa</a>
+                    <form asp-action="DeleteComment" asp-route-id="@comment.CommentId" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này không?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -14,61 +14,75 @@ namespace LearningManagementSystem.Repositories
             _context = context;
         }
 
+        public IEnumerable<Comment> GetAll()
+        {
+            return _context.Comments
+                .Include(c => c.User)
+                .Include(c => c.Lesson)
+                .ThenInclude(l => l.Course)
+                .ToList();
+        }
+
+        public Comment GetById(string commentId)
+        {
+            return _context.Comments
+                .Include(c => c.User)
+                .Include(c => c.Lesson)
+                .ThenInclude(l => l.Course)
+                .FirstOrDefault(c => c.CommentId == commentId);
+        }
+
         public IEnumerable<Comment> GetCommentsByCourse(string courseId)
         {
             return _context.Comments
-                           .Include(c => c.User)
-                           .Where(c => c.CourseId == courseId && c.LessonId == null)
-                           .OrderByDescending(c => c.CreatedDate)
-                           .ToList();
+                .Include(c => c.User)
+                .Include(c => c.Lesson)
+                .ThenInclude(l => l.Course)
+                .Where(c => c.Lesson.CourseId == courseId)
+                .ToList();
         }
 
-        public IEnumerable<Comment> GetRecentComments(string userId, bool isNotification)
+        public IEnumerable<Comment> GetCommentsByUser(string userId)
         {
-            if (isNotification)
-            {
-                return _context.Comments
-                               .Where(c => c.LessonId == "notification" && c.UserId == userId)
-                               .OrderByDescending(c => c.CreatedDate)
-                               .Take(5)
-                               .ToList();
-            }
-            else
-            {
-                return _context.Comments
-                               .Include(c => c.User)
-                               .Include(c => c.Lesson)
-                               .ThenInclude(l => l.Course)
-                               .Where(c => c.LessonId != "notification")
-                               .OrderByDescending(c => c.CreatedDate)
-                               .Take(5)
-                               .ToList();
-            }
+            return _context.Comments
+                .Include(c => c.User)
+                .Include(c => c.Lesson)
+                .ThenInclude(l => l.Course)
+                .Where(c => c.UserId == userId)
+                .ToList();
         }
 
         public IEnumerable<Comment> GetCommentsByLessonId(string lessonId)
         {
             return _context.Comments
-                           .Include(c => c.User)
-                           .Where(c => c.LessonId == lessonId)
-                           .OrderByDescending(c => c.CreatedDate)
-                           .ToList();
-        }
-
-        public Comment GetById(string id)
-        {
-            return _context.Comments.FirstOrDefault(c => c.CommentId == id);
+                .Include(c => c.User)
+                .Include(c => c.Lesson)
+                .ThenInclude(l => l.Course)
+                .Where(c => c.LessonId == lessonId)
+                .ToList();
         }
 
         public void Add(Comment comment)
         {
             _context.Comments.Add(comment);
-            _context.SaveChanges();
         }
 
-        public void Delete(Comment comment)
+        public void Update(Comment comment)
         {
-            _context.Comments.Remove(comment);
+            _context.Comments.Update(comment);
+        }
+
+        public void Delete(string commentId)
+        {
+            var comment = _context.Comments.FirstOrDefault(c => c.CommentId == commentId);
+            if (comment != null)
+            {
+                _context.Comments.Remove(comment);
+            }
+        }
+
+        public void Save()
+        {
             _context.SaveChanges();
         }
     }

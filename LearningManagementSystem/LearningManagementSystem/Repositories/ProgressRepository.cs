@@ -51,6 +51,15 @@ namespace LearningManagementSystem.Repositories
             return query.ToList();
         }
 
+        public IEnumerable<Progress> GetAll()
+        {
+            return _context.Progresses
+                .Include(p => p.User)
+                .Include(p => p.Lesson)
+                .ThenInclude(l => l.Course)
+                .ToList();
+        }
+
         public Progress GetById(string progressId)
         {
             return _context.Progresses

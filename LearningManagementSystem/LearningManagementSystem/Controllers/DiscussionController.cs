@@ -61,7 +61,8 @@ namespace LearningManagementSystem.Controllers
             var comment = _commentRepository.GetById(id);
             if (comment == null) return NotFound("Không tìm thấy bình luận.");
 
-            _commentRepository.Delete(comment);
+            _commentRepository.Delete(id); // Sửa từ Delete(comment) thành Delete(id)
+            _commentRepository.Save(); // Đảm bảo lưu thay đổi
 
             return RedirectToAction("Index", new { lessonId });
         }

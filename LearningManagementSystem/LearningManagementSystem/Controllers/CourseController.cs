@@ -1,67 +1,59 @@
-﻿using LearningManagementSystem.Data;
-using LearningManagementSystem.Models;
+﻿using LearningManagementSystem.Models;
 using LearningManagementSystem.Repositories;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
-namespace LearningManagementSystem.Controllers
+public class CourseController : Controller
 {
-    public class CourseController : Controller
+    private readonly ICourseRepository _courseRepository;
+
+    public CourseController(ICourseRepository courseRepository)
     {
-        private readonly ICourseRepository _courseRepository;
-        private readonly IEnrollmentRepository _enrollmentRepository;
-        private readonly LMSContext _context;
+        _courseRepository = courseRepository;
+    }
 
-        public CourseController(ICourseRepository courseRepository, IEnrollmentRepository enrollmentRepository, LMSContext context)
+    public IActionResult Index()
+    {
+        var courses = _courseRepository.GetAll();
+        return View(courses);
+    }
+
+    [HttpGet]
+    public IActionResult Details(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
         {
-            _courseRepository = courseRepository;
-            _enrollmentRepository = enrollmentRepository;
-            _context = context;
+            return NotFound();
         }
 
-        public IActionResult Index()
+        var course = _courseRepository.GetById(id);
+        if (course == null)
         {
-            var courses = _courseRepository.GetAll();
-            return View(courses);
+            return NotFound();
         }
 
-        public IActionResult Details(string courseId)
+        return View(course);
+    }
+
+    [HttpGet]
+    public IActionResult GetCourseDetails(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
         {
-            var course = _courseRepository.GetById(courseId);
-            if (course == null) return NotFound();
-            return View(course);
+            return NotFound();
         }
 
-        [Authorize]
-        [HttpPost]
-        public IActionResult Enroll(string courseId)
+        var course = _courseRepository.GetById(id);
+        if (course == null)
         {
-            var course = _courseRepository.GetById(courseId);
-            if (course == null) return NotFound();
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var existingEnrollment = _enrollmentRepository.GetEnrollmentsByUserId(userId)
-                                                          .FirstOrDefault(e => e.CourseId == courseId);
-            if (existingEnrollment != null)
-            {
-                TempData["Error"] = "Bạn đã đăng ký khóa học này.";
-                return RedirectToAction("Details", new { courseId });
-            }
-
-            var enrollment = new Enrollment
-            {
-                EnrollmentId = Guid.NewGuid().ToString(),
-                UserId = userId,
-                CourseId = courseId,
-                EnrollmentDate = DateTime.Now
-            };
-
-            _enrollmentRepository.Add(enrollment);
-            _context.SaveChanges();
-
-            TempData["Success"] = "Đăng ký thành công!";
-            return RedirectToAction("Details", new { courseId });
+            return NotFound();
         }
+
+        return Json(new
+        {
+            title = course.CourseName,
+            description = course.Description,
+            instructor = course.Instructor?.FullName,
+            createdDate = course.CreatedDate
+        });
     }
 }

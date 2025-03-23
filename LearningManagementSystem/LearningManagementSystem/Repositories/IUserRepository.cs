@@ -4,11 +4,11 @@ namespace LearningManagementSystem.Repositories
 {
     public interface IUserRepository
     {
-        User GetUserWithRole(string userId);
         IEnumerable<User> GetAll();
-        User GetById(string id);
-        void Add(User user, string plainPassword);
-        void Delete(User user);
-        User GetByUserName(string userName);
+        User GetById(string userId);
+        void Add(User user);
+        void Update(User user);
+        void Delete(string userId);
+        void Save();
     }
 }

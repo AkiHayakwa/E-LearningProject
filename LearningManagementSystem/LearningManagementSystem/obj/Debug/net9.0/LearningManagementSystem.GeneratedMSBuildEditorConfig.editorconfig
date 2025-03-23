@@ -40,24 +40,44 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/CreateCourse.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlQ291cnNlLmNzaHRtbA==
+[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/AddComment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkQ29tbWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/CreateLesson.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlTGVzc29uLmNzaHRtbA==
+[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/AddCourse.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkQ291cnNlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/CreateUser.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlVXNlci5jc2h0bWw=
+[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/AddLesson.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkTGVzc29uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/AddUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkVXNlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
+[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/EditComment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdENvbW1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/EditCourse.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdENvdXJzZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/EditLesson.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdExlc3Nvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/EditUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdFVzZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/ManageComments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTWFuYWdlQ29tbWVudHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/doan/LearningManagementSystem/LearningManagementSystem/Views/Admin/ManageCourses.cshtml]

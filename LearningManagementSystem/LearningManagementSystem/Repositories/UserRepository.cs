@@ -16,46 +16,38 @@ namespace LearningManagementSystem.Repositories
             _passwordHasher = passwordHasher;
         }
 
-        public User GetUserWithRole(string userId)
-        {
-            return _context.Users
-                           .Include(u => u.Roles)
-                           .FirstOrDefault(u => u.UserId == userId);
-        }
-
         public IEnumerable<User> GetAll()
         {
-            return _context.Users
-                           .Include(u => u.Roles)
-                           .ToList();
+            return _context.Users.Include(u => u.Roles).ToList();
         }
 
         public User GetById(string id)
         {
-            return _context.Users
-                           .Include(u => u.Roles)
-                           .FirstOrDefault(u => u.UserId == id);
+            return _context.Users.Include(u => u.Roles).FirstOrDefault(u => u.UserId == id);
         }
 
-        public void Add(User user, string plainPassword)
+        public void Add(User user)
         {
-            // Băm mật khẩu trước khi lưu
-            user.HashPassword(_passwordHasher, plainPassword);
             _context.Users.Add(user);
-            _context.SaveChanges();
         }
 
-        public void Delete(User user)
+        public void Update(User user)
         {
-            _context.Users.Remove(user);
-            _context.SaveChanges();
+            _context.Users.Update(user);
         }
 
-        public User GetByUserName(string userName)
+        public void Delete(string id)
         {
-            return _context.Users
-                           .Include(u => u.Roles)
-                           .FirstOrDefault(u => u.UserName == userName);
+            var user = GetById(id);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+            }
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

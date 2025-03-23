@@ -14,39 +14,49 @@ namespace LearningManagementSystem.Repositories
             _context = context;
         }
 
-        public Course GetCourseWithInstructor(string courseId)
-        {
-            return _context.Courses
-                           .Include(c => c.Instructor)
-                           .FirstOrDefault(c => c.CourseId == courseId);
-        }
-
-        public IEnumerable<Course> GetAllWithInstructor()
-        {
-            return _context.Courses
-                           .Include(c => c.Instructor)
-                           .ToList();
-        }
-
         public IEnumerable<Course> GetAll()
         {
-            return _context.Courses.ToList();
+            return _context.Courses
+                .Include(c => c.Instructor)
+                .ToList();
         }
 
-        public Course GetById(string id)
+        public Course GetById(string courseId)
         {
-            return _context.Courses.FirstOrDefault(c => c.CourseId == id);
+            return _context.Courses
+                .Include(c => c.Instructor)
+                .FirstOrDefault(c => c.CourseId == courseId);
+        }
+
+        public IEnumerable<Course> GetCoursesByInstructor(string instructorId)
+        {
+            return _context.Courses
+                .Include(c => c.Instructor)
+                .Where(c => c.InstructorId == instructorId)
+                .ToList();
         }
 
         public void Add(Course course)
         {
             _context.Courses.Add(course);
-            _context.SaveChanges();
         }
 
-        public void Delete(Course course)
+        public void Update(Course course)
         {
-            _context.Courses.Remove(course);
+            _context.Courses.Update(course);
+        }
+
+        public void Delete(string courseId)
+        {
+            var course = _context.Courses.FirstOrDefault(c => c.CourseId == courseId);
+            if (course != null)
+            {
+                _context.Courses.Remove(course);
+            }
+        }
+
+        public void Save()
+        {
             _context.SaveChanges();
         }
     }
