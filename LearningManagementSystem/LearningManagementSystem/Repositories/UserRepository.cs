@@ -2,6 +2,7 @@
 using LearningManagementSystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace LearningManagementSystem.Repositories
 {
@@ -16,14 +17,24 @@ namespace LearningManagementSystem.Repositories
             _passwordHasher = passwordHasher;
         }
 
-        public IEnumerable<User> GetAll()
+        public IQueryable<User> GetAll()
         {
-            return _context.Users.Include(u => u.Roles).ToList();
+            return _context.Users
+                .Include(u => u.Role) // Sửa từ Roles thành Role
+                .Include(u => u.Comments)
+                .Include(u => u.Enrollments)
+                .Include(u => u.Progresses)
+                .AsQueryable();
         }
 
-        public User GetById(string id)
+        public User GetById(string userName)
         {
-            return _context.Users.Include(u => u.Roles).FirstOrDefault(u => u.UserId == id);
+            return _context.Users
+                .Include(u => u.Role) // Sửa từ Roles thành Role
+                .Include(u => u.Comments)
+                .Include(u => u.Enrollments)
+                .Include(u => u.Progresses)
+                .FirstOrDefault(u => u.UserName == userName); // Sửa từ UserId thành UserName
         }
 
         public void Add(User user)
@@ -36,9 +47,9 @@ namespace LearningManagementSystem.Repositories
             _context.Users.Update(user);
         }
 
-        public void Delete(string id)
+        public void Delete(string userName)
         {
-            var user = GetById(id);
+            var user = GetById(userName);
             if (user != null)
             {
                 _context.Users.Remove(user);

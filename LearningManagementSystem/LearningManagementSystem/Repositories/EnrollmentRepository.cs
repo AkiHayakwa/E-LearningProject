@@ -1,6 +1,7 @@
 ﻿using LearningManagementSystem.Data;
 using LearningManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace LearningManagementSystem.Repositories
 {
@@ -13,27 +14,35 @@ namespace LearningManagementSystem.Repositories
             _context = context;
         }
 
-        public IEnumerable<Enrollment> GetAll()
+        public IQueryable<Enrollment> GetAll()
         {
             return _context.Enrollments
                 .Include(e => e.User)
                 .Include(e => e.Course)
-                .ToList();
+                .AsQueryable();
         }
 
-        public Enrollment GetEnrollment(string userId, string courseId)
-        {
-            return _context.Enrollments
-                .FirstOrDefault(e => e.UserId == userId && e.CourseId == courseId);
-        }
-
-        public IEnumerable<Enrollment> GetEnrollmentsByUser(string userId)
+        public Enrollment GetById(string id)
         {
             return _context.Enrollments
                 .Include(e => e.User)
                 .Include(e => e.Course)
-                .Where(e => e.UserId == userId)
-                .ToList();
+                .FirstOrDefault(e => e.EnrollmentId == id);
+        }
+
+        public Enrollment GetEnrollment(string userName, string courseId)
+        {
+            return _context.Enrollments
+                .FirstOrDefault(e => e.UserName == userName && e.CourseId == courseId);
+        }
+
+        public IQueryable<Enrollment> GetEnrollmentsByUser(string userName)
+        {
+            return _context.Enrollments
+                .Include(e => e.User)
+                .Include(e => e.Course)
+                .Where(e => e.UserName == userName)
+                .AsQueryable();
         }
 
         public void Add(Enrollment enrollment)
@@ -41,9 +50,14 @@ namespace LearningManagementSystem.Repositories
             _context.Enrollments.Add(enrollment);
         }
 
+        public void Update(Enrollment enrollment)
+        {
+            _context.Enrollments.Update(enrollment);
+        }
+
         public void Delete(string enrollmentId)
         {
-            var enrollment = _context.Enrollments.FirstOrDefault(e => e.EnrollmentId == enrollmentId);
+            var enrollment = GetById(enrollmentId);
             if (enrollment != null)
             {
                 _context.Enrollments.Remove(enrollment);

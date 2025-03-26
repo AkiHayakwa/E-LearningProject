@@ -4,14 +4,11 @@ namespace LearningManagementSystem.Repositories
 {
     public interface ICommentRepository
     {
-        IEnumerable<Comment> GetAll();
-        Comment GetById(string commentId);
-        IEnumerable<Comment> GetCommentsByCourse(string courseId);
-        IEnumerable<Comment> GetCommentsByUser(string userId);
-        IEnumerable<Comment> GetCommentsByLessonId(string lessonId); // Thêm phương thức mới
+        IQueryable<Comment> GetAll();
+        Comment GetById(string id);
         void Add(Comment comment);
         void Update(Comment comment);
-        void Delete(string commentId);
+        void Delete(string id);
         void Save();
     }
 }

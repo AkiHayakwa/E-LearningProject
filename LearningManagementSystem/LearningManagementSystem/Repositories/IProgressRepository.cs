@@ -4,13 +4,11 @@ namespace LearningManagementSystem.Repositories
 {
     public interface IProgressRepository
     {
-        IEnumerable<Progress> GetProgressByUser(string userId);
-        IEnumerable<Progress> GetProgressByUserAndCourse(string userId, string courseId);
-        Progress GetById(string progressId);
-
-        IEnumerable<Progress> GetAll();
+        IQueryable<Progress> GetAll();
+        Progress GetById(string id);
         void Add(Progress progress);
         void Update(Progress progress);
-        void Delete(Progress progress);
+        void Delete(string id);
+        void Save();
     }
 }

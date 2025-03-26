@@ -14,13 +14,11 @@ namespace LearningManagementSystem.Models
         [Required, StringLength(500)]
         public string Description { get; set; }
 
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime CreatedDate { get; set; }
 
-        [StringLength(50)]
-        public string InstructorId { get; set; }
-
-        public User Instructor { get; set; }
+        // Navigation properties
         public List<Lesson> Lessons { get; set; }
         public List<Enrollment> Enrollments { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

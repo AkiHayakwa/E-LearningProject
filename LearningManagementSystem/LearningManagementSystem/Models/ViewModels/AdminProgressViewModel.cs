@@ -2,7 +2,7 @@
 {
     public class AdminProgressViewModel
     {
-        public string UserId { get; set; }
+        public string UserName { get; set; }
         public Lesson Lesson { get; set; }
         public Progress Progress { get; set; }
     }

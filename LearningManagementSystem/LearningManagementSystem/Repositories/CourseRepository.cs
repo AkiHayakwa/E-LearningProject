@@ -1,6 +1,8 @@
 ﻿using LearningManagementSystem.Data;
 using LearningManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LearningManagementSystem.Repositories
 {
@@ -14,26 +16,15 @@ namespace LearningManagementSystem.Repositories
             _context = context;
         }
 
-        public IEnumerable<Course> GetAll()
+        public IQueryable<Course> GetAll()
         {
-            return _context.Courses
-                .Include(c => c.Instructor)
-                .ToList();
+            return _context.Courses.AsQueryable();
         }
 
         public Course GetById(string courseId)
         {
             return _context.Courses
-                .Include(c => c.Instructor)
                 .FirstOrDefault(c => c.CourseId == courseId);
-        }
-
-        public IEnumerable<Course> GetCoursesByInstructor(string instructorId)
-        {
-            return _context.Courses
-                .Include(c => c.Instructor)
-                .Where(c => c.InstructorId == instructorId)
-                .ToList();
         }
 
         public void Add(Course course)

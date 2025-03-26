@@ -15,14 +15,24 @@
         margin-bottom: 2rem;
     }
 
+<<<<<<< Updated upstream
     .course-card {
         transition: transform 0.3s;
         cursor: pointer;
     }
+=======
+    <!-- Phần chào mừng -->
+    <div class="welcome-section text-center mb-5" style="background: linear-gradient(135deg, #00b4d8, #48cae4); color: #fff; padding: 3rem; border-radius: 15px; animation: fadeIn 1s ease-in;">
+        <h1 class="display-4 fw-bold">Chào mừng, @Model.User.FullName!</h1>
+        <p class="lead">Bạn đang đăng nhập với vai trò: <strong>@Model.User.Role.RoleName</strong></p>
+        <a href="/Account/Logout" class="btn btn-light btn-lg" style="border-radius: 8px; transition: all 0.3s ease;">Đăng xuất</a>
+    </div>
+>>>>>>> Stashed changes
 
         .course-card:hover {
             transform: translateY(-5px);
         }
+<<<<<<< Updated upstream
 
     .section-title {
         color: #1a73e8;
@@ -88,6 +98,19 @@
                         <div class="card-body">
                             <h5 class="card-title" style="color: #333;">@course.CourseName</h5>
                             <p class="card-text" style="color: #666;">Ngày tạo: @(course.CreatedDate.ToString("dd/MM/yyyy") ?? "Không có")</p>
+=======
+        @if (availableCourses != null && availableCourses.Any())
+        {
+            <div class="row">
+                @foreach (var course in availableCourses)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card course-card shadow-sm" data-bs-toggle="modal" data-bs-target="#courseDetailModal" onclick="getCourseDetails('@course.CourseId')" style="border-radius: 10px; transition: transform 0.3s ease;">
+                            <div class="card-body">
+                                <h5 class="card-title" style="color: #333;">@course.CourseName</h5>
+                                <p class="card-text" style="color: #666;">Ngày tạo: @(course.CreatedDate.ToString("dd/MM/yyyy HH:mm") ?? "Không có")</p>
+                            </div>
+>>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
@@ -100,6 +123,7 @@
     }
 </div>
 
+<<<<<<< Updated upstream
 <!-- Khóa học đã đăng ký -->
 <div class="mb-5">
     <h2 class="section-title">Khóa học đã đăng ký</h2>
@@ -114,6 +138,23 @@
                             <h5 class="card-title" style="color: #333;">@enrollment.Course.CourseName</h5>
                             <p class="card-text" style="color: #666;">Ngày đăng ký: @enrollment.EnrollmentDate.ToString("dd/MM/yyyy")</p>
                             <a href="@Url.Action("Index", "Progress", new { courseId = enrollment.CourseId })" class="btn btn-primary" style="background-color: #1a73e8; border: none;">Xem tiến độ</a>
+=======
+    <!-- Khóa học đã đăng ký -->
+    <div class="mb-5">
+        <h2 class="section-title" style="color: #00b4d8; border-bottom: 2px solid #00b4d8; padding-bottom: 0.5rem; margin-bottom: 1.5rem; animation: slideInLeft 1s ease-out;">Khóa học đã đăng ký</h2>
+        @if (Model.Enrollments.Any())
+        {
+            <div class="row">
+                @foreach (var enrollment in Model.Enrollments)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card course-card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease;">
+                            <div class="card-body">
+                                <h5 class="card-title" style="color: #333;">@enrollment.Course.CourseName</h5>
+                                <p class="card-text" style="color: #666;">Ngày đăng ký: @enrollment.EnrollmentDate.ToString("dd/MM/yyyy HH:mm")</p>
+                                <a href="@Url.Action("Index", "Progress", new { courseId = enrollment.CourseId })" class="btn btn-primary" style="background-color: #00b4d8; border: none; border-radius: 8px; transition: all 0.3s ease;" data-bs-toggle="tooltip" title="Xem tiến độ học tập">Xem tiến độ</a>
+                            </div>
+>>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
@@ -126,6 +167,7 @@
     }
 </div>
 
+<<<<<<< Updated upstream
 <!-- Tiến độ học tập gần đây -->
 <div class="mb-5">
     <h2 class="section-title">Tiến độ học tập gần đây</h2>
@@ -149,6 +191,58 @@
                         <td style="color: #666;">@(progress.CompletionStatus ? "Hoàn thành" : "Chưa hoàn thành")</td>
                         <td style="color: #666;">@(progress.CompletionDate?.ToString("dd/MM/yyyy") ?? "Chưa có")</td>
                     </tr>
+=======
+    <!-- Tiến độ học tập gần đây -->
+    <div class="mb-5">
+        <h2 class="section-title" style="color: #00b4d8; border-bottom: 2px solid #00b4d8; padding-bottom: 0.5rem; margin-bottom: 1.5rem; animation: slideInLeft 1s ease-out;">Tiến độ học tập gần đây</h2>
+        @if (Model.Progresses.Any())
+        {
+            <table class="table table-striped table-bordered align-middle" style="border-radius: 10px; overflow: hidden;">
+                <thead style="background-color: #00b4d8; color: #fff;">
+                    <tr>
+                        <th>Khóa học</th>
+                        <th>Bài học</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày hoàn thành</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var progress in Model.Progresses)
+                    {
+                        <tr class="@(progress.CompletionStatus ? "table-success" : "")">
+                            <td style="color: #333;">@progress.Lesson.Course.CourseName</td>
+                            <td style="color: #333;">@progress.Lesson.LessonTitle</td>
+                            <td style="color: #666;">@(progress.CompletionStatus ? "Hoàn thành" : "Chưa hoàn thành")</td>
+                            <td style="color: #666;">@(progress.CompletionDate?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa có")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-muted">Bạn chưa có tiến độ học tập nào.</p>
+        }
+    </div>
+
+    <!-- Bình luận gần đây -->
+    <div class="mb-5">
+        <h2 class="section-title" style="color: #00b4d8; border-bottom: 2px solid #00b4d8; padding-bottom: 0.5rem; margin-bottom: 1.5rem; animation: slideInLeft 1s ease-out;">Bình luận gần đây</h2>
+        @if (Model.Comments.Any())
+        {
+            <div class="row">
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="col-md-6 mb-3">
+                        <div class="card comment-card p-3" style="background-color: #f8f9fa; border-left: 4px solid #00b4d8; border-radius: 8px;">
+                            <p class="mb-1" style="color: #333;">
+                                <strong>@comment.User.FullName</strong> đã bình luận trong khóa học <strong>@comment.Course.CourseName</strong>
+                            </p>
+                            <p class="mb-1" style="color: #666;">@comment.Content</p>
+                            <small class="text-muted">Đăng vào: @comment.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
+                        </div>
+                    </div>
+>>>>>>> Stashed changes
                 }
             </tbody>
         </table>
@@ -196,12 +290,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+<<<<<<< Updated upstream
                 <h5 id="courseTitle"></h5>
                 <p><strong>Mô tả:</strong> <span id="courseDescription"></span></p>
                 <p><strong>Giảng viên:</strong> <span id="courseInstructor"></span></p>
                 <p><strong>Ngày tạo:</strong> <span id="courseCreatedDate"></span></p>
 
                 <!-- Phần bình luận -->
+=======
+                <h5 id="courseTitle" style="color: #333;"></h5>
+                <p><strong>Mô tả:</strong> <span id="courseDescription" style="color: #666;"></span></p>
+                <p><strong>Ngày tạo:</strong> <span id="courseCreatedDate" style="color: #666;"></span></p>
+>>>>>>> Stashed changes
                 <hr />
                 <h6>Bình luận</h6>
                 <div class="comment-section" id="commentSection">
@@ -215,7 +315,11 @@
                         <textarea class="form-control" id="commentContent" name="content" rows="3" required></textarea>
                     </div>
                     <input type="hidden" id="commentCourseId" name="courseId" />
+<<<<<<< Updated upstream
                     <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+=======
+                    <button type="submit" class="btn btn-primary" style="background-color: #00b4d8; border: none; border-radius: 8px;">Gửi bình luận</button>
+>>>>>>> Stashed changes
                 </form>
             </div>
             <div class="modal-footer">
@@ -248,6 +352,42 @@
     </div>
 </div>
 
+<<<<<<< Updated upstream
+=======
+@section Styles {
+    <style>
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 180, 216, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: #0096c7;
+            box-shadow: 0 4px 12px rgba(0, 180, 216, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 6px rgba(0, 180, 216, 0.3);
+        }
+
+        .btn-light:hover {
+            background-color: #e0f7fa;
+            color: #00b4d8;
+        }
+
+        .comment-card {
+            transition: transform 0.3s ease;
+        }
+
+            .comment-card:hover {
+                transform: translateY(-3px);
+            }
+    </style>
+}
+
+>>>>>>> Stashed changes
 @section Scripts {
     <script>
         let selectedCourseId = '';
@@ -269,7 +409,6 @@
                 if (data) {
                     document.getElementById('courseTitle').innerText = data.title;
                     document.getElementById('courseDescription').innerText = data.description || 'Không có mô tả';
-                    document.getElementById('courseInstructor').innerText = data.instructor || 'Không có thông tin';
                     document.getElementById('courseCreatedDate').innerText = data.createdDate ? new Date(data.createdDate).toLocaleDateString('vi-VN') : 'Không có';
                 }
             })
@@ -294,8 +433,13 @@
                         const commentDiv = document.createElement('div');
                         commentDiv.className = 'comment-item';
                         commentDiv.innerHTML = `
+<<<<<<< Updated upstream
                             <p class="mb-1"><strong>${comment.userName}</strong> ${comment.lessonTitle ? '(' + comment.lessonTitle + ')' : ''}: ${comment.content}</p>
                             <small class="text-muted">Đăng vào: ${comment.createdDate}</small>
+=======
+                            <p class="mb-1" style="color: #333;"><strong>${comment.userName}</strong>: ${comment.content}</p>
+                            <small class="text-muted">Đăng vào: ${new Date(comment.createdDate).toLocaleString('vi-VN')}</small>
+>>>>>>> Stashed changes
                         `;
                         commentSection.appendChild(commentDiv);
                     });
@@ -316,7 +460,10 @@
             confirmModal.show();
         }
 
+<<<<<<< Updated upstream
         // Hàm thêm bình luận
+=======
+>>>>>>> Stashed changes
         function addComment(event) {
             event.preventDefault();
             const form = document.getElementById('commentForm');
@@ -343,5 +490,13 @@
                 alert('Đã có lỗi xảy ra khi thêm bình luận.');
             });
         }
+
+        // Kích hoạt tooltip Bootstrap
+        document.addEventListener("DOMContentLoaded", function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
     </script>
 }

@@ -9,20 +9,17 @@ namespace LearningManagementSystem.Models
         public string CommentId { get; set; }
 
         [Required, StringLength(50)]
-        public string LessonId { get; set; }
-
-        public string CourseId { get; set; } 
+        public string CourseId { get; set; }
 
         [Required, StringLength(50)]
-        public string UserId { get; set; }
+        public string UserName { get; set; }
 
         [Required, StringLength(1000)]
         public string Content { get; set; }
 
+        public DateTime CreatedDate { get; set; }
 
-
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public Lesson? Lesson { get; set; } 
-        public User? User { get; set; }
+        public Course Course { get; set; }
+        public User User { get; set; }
     }
 }

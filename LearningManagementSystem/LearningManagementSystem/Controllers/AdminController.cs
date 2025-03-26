@@ -69,7 +69,7 @@ public class AdminController : Controller
     {
         try
         {
-            var roles = _roleRepository.GetAll().ToList();
+            var roles = _roleRepository.GetAll().Where(r => r.RoleName != "Instructor").ToList();
             if (!roles.Any())
             {
                 TempData["Error"] = "Không có vai trò nào trong hệ thống. Vui lòng thêm vai trò trước.";
@@ -88,15 +88,17 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult AddUser(User user, string password)
     {
-        // Gán UserId trước khi kiểm tra validation
-        user.UserId = Guid.NewGuid().ToString();
-
         // Kiểm tra các trường cần thiết
         bool isValid = true;
 
         if (string.IsNullOrEmpty(user.UserName))
         {
             ModelState.AddModelError("UserName", "Tên đăng nhập không được để trống.");
+            isValid = false;
+        }
+        else if (user.UserName.Length > 50)
+        {
+            ModelState.AddModelError("UserName", "Tên đăng nhập không được dài quá 50 ký tự.");
             isValid = false;
         }
 
@@ -137,16 +139,16 @@ public class AdminController : Controller
                 if (_userRepository.GetAll().Any(u => u.UserName == user.UserName))
                 {
                     ModelState.AddModelError("UserName", "Tên đăng nhập đã tồn tại.");
-                    ViewBag.Roles = _roleRepository.GetAll();
+                    ViewBag.Roles = _roleRepository.GetAll().Where(r => r.RoleName != "Instructor");
                     return View(user);
                 }
 
-                // Kiểm tra RoleId có tồn tại không
+                // Kiểm tra RoleId có tồn tại không và không phải là Instructor
                 var role = _roleRepository.GetById(user.RoleId);
-                if (role == null)
+                if (role == null || role.RoleName == "Instructor")
                 {
                     ModelState.AddModelError("RoleId", "Vai trò không hợp lệ.");
-                    ViewBag.Roles = _roleRepository.GetAll();
+                    ViewBag.Roles = _roleRepository.GetAll().Where(r => r.RoleName != "Instructor");
                     return View(user);
                 }
 
@@ -170,7 +172,7 @@ public class AdminController : Controller
 
         try
         {
-            ViewBag.Roles = _roleRepository.GetAll();
+            ViewBag.Roles = _roleRepository.GetAll().Where(r => r.RoleName != "Instructor");
         }
         catch (Exception ex)
         {
@@ -179,27 +181,11 @@ public class AdminController : Controller
 
         return View(user);
     }
+
     [HttpGet]
     public IActionResult AddCourse()
     {
-        try
-        {
-            var instructors = _userRepository.GetAll()
-                .Where(u => u.Roles != null && u.Roles.RoleName == "Instructor")
-                .ToList();
-            if (!instructors.Any())
-            {
-                TempData["Error"] = "Không có giảng viên nào trong hệ thống. Vui lòng thêm giảng viên trước.";
-                return RedirectToAction("ManageCourses");
-            }
-            ViewBag.Instructors = instructors;
-            return View(new Course());
-        }
-        catch (Exception ex)
-        {
-            TempData["Error"] = $"Đã có lỗi xảy ra: {ex.Message}";
-            return RedirectToAction("ManageCourses");
-        }
+        return View(new Course());
     }
 
     [HttpPost]
@@ -229,32 +215,10 @@ public class AdminController : Controller
             isValid = false;
         }
 
-        if (string.IsNullOrEmpty(course.InstructorId))
-        {
-            ModelState.AddModelError("InstructorId", "Giảng viên không được để trống.");
-            isValid = false;
-        }
-        else if (course.InstructorId.Length > 50)
-        {
-            ModelState.AddModelError("InstructorId", "Giảng viên không hợp lệ (quá dài).");
-            isValid = false;
-        }
-
         if (isValid)
         {
             try
             {
-                // Kiểm tra InstructorId có tồn tại không
-                var instructor = _userRepository.GetById(course.InstructorId);
-                if (instructor == null || instructor.Roles == null || instructor.Roles.RoleName != "Instructor")
-                {
-                    ModelState.AddModelError("InstructorId", "Giảng viên không hợp lệ.");
-                    ViewBag.Instructors = _userRepository.GetAll()
-                        .Where(u => u.Roles != null && u.Roles.RoleName == "Instructor")
-                        .ToList();
-                    return View(course);
-                }
-
                 _courseRepository.Add(course);
                 _courseRepository.Save();
                 TempData["Success"] = "Thêm khóa học thành công!";
@@ -270,18 +234,6 @@ public class AdminController : Controller
             // Hiển thị lỗi validation chi tiết
             var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
             TempData["Error"] = "Dữ liệu không hợp lệ: " + string.Join(", ", errors);
-        }
-
-        try
-        {
-            var instructors = _userRepository.GetAll()
-                .Where(u => u.Roles != null && u.Roles.RoleName == "Instructor")
-                .ToList();
-            ViewBag.Instructors = instructors;
-        }
-        catch (Exception ex)
-        {
-            TempData["Error"] = $"Đã có lỗi xảy ra khi tải danh sách giảng viên: {ex.Message}";
         }
 
         return View(course);
@@ -413,11 +365,6 @@ public class AdminController : Controller
                 TempData["Error"] = "Không tìm thấy khóa học.";
                 return RedirectToAction("ManageCourses");
             }
-
-            var instructors = _userRepository.GetAll()
-                .Where(u => u.Roles != null && u.Roles.RoleName == "Instructor")
-                .ToList();
-            ViewBag.Instructors = instructors;
             return View(course);
         }
         catch (Exception ex)
@@ -456,17 +403,6 @@ public class AdminController : Controller
             isValid = false;
         }
 
-        if (string.IsNullOrEmpty(course.InstructorId))
-        {
-            ModelState.AddModelError("InstructorId", "Giảng viên không được để trống.");
-            isValid = false;
-        }
-        else if (course.InstructorId.Length > 50)
-        {
-            ModelState.AddModelError("InstructorId", "Giảng viên không hợp lệ (quá dài).");
-            isValid = false;
-        }
-
         if (isValid)
         {
             try
@@ -478,20 +414,8 @@ public class AdminController : Controller
                     return RedirectToAction("ManageCourses");
                 }
 
-                // Kiểm tra InstructorId có tồn tại không
-                var instructor = _userRepository.GetById(course.InstructorId);
-                if (instructor == null || instructor.Roles == null || instructor.Roles.RoleName != "Instructor")
-                {
-                    ModelState.AddModelError("InstructorId", "Giảng viên không hợp lệ.");
-                    ViewBag.Instructors = _userRepository.GetAll()
-                        .Where(u => u.Roles != null && u.Roles.RoleName == "Instructor")
-                        .ToList();
-                    return View(course);
-                }
-
                 existingCourse.CourseName = course.CourseName;
                 existingCourse.Description = course.Description;
-                existingCourse.InstructorId = course.InstructorId;
                 _courseRepository.Update(existingCourse);
                 _courseRepository.Save();
                 TempData["Success"] = "Cập nhật khóa học thành công!";
@@ -507,18 +431,6 @@ public class AdminController : Controller
             // Hiển thị lỗi validation chi tiết
             var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
             TempData["Error"] = "Dữ liệu không hợp lệ: " + string.Join(", ", errors);
-        }
-
-        try
-        {
-            var instructors = _userRepository.GetAll()
-                .Where(u => u.Roles != null && u.Roles.RoleName == "Instructor")
-                .ToList();
-            ViewBag.Instructors = instructors;
-        }
-        catch (Exception ex)
-        {
-            TempData["Error"] = $"Đã có lỗi xảy ra khi tải danh sách giảng viên: {ex.Message}";
         }
 
         return View(course);
@@ -563,18 +475,18 @@ public class AdminController : Controller
     }
 
     [HttpGet]
-    public IActionResult EditUser(string id)
+    public IActionResult EditUser(string username)
     {
         try
         {
-            var user = _userRepository.GetById(id);
+            var user = _userRepository.GetAll().FirstOrDefault(u => u.UserName == username);
             if (user == null)
             {
                 TempData["Error"] = "Không tìm thấy người dùng.";
                 return RedirectToAction("ManageUsers");
             }
 
-            ViewBag.Roles = _roleRepository.GetAll();
+            ViewBag.Roles = _roleRepository.GetAll().Where(r => r.RoleName != "Instructor");
             return View(user);
         }
         catch (Exception ex)
@@ -589,12 +501,6 @@ public class AdminController : Controller
     {
         // Kiểm tra các trường cần thiết
         bool isValid = true;
-
-        if (string.IsNullOrEmpty(user.UserId))
-        {
-            ModelState.AddModelError("UserId", "ID người dùng không được để trống.");
-            isValid = false;
-        }
 
         if (string.IsNullOrEmpty(user.UserName))
         {
@@ -650,31 +556,22 @@ public class AdminController : Controller
         {
             try
             {
-                var existingUser = _userRepository.GetById(user.UserId);
+                var existingUser = _userRepository.GetAll().FirstOrDefault(u => u.UserName == user.UserName);
                 if (existingUser == null)
                 {
                     TempData["Error"] = "Không tìm thấy người dùng.";
                     return RedirectToAction("ManageUsers");
                 }
 
-                // Kiểm tra xem UserName đã tồn tại chưa (trừ chính user đang chỉnh sửa)
-                if (_userRepository.GetAll().Any(u => u.UserName == user.UserName && u.UserId != user.UserId))
-                {
-                    ModelState.AddModelError("UserName", "Tên đăng nhập đã tồn tại.");
-                    ViewBag.Roles = _roleRepository.GetAll();
-                    return View(user);
-                }
-
-                // Kiểm tra RoleId có tồn tại không
+                // Kiểm tra RoleId có tồn tại không và không phải là Instructor
                 var role = _roleRepository.GetById(user.RoleId);
-                if (role == null)
+                if (role == null || role.RoleName == "Instructor")
                 {
                     ModelState.AddModelError("RoleId", "Vai trò không hợp lệ.");
-                    ViewBag.Roles = _roleRepository.GetAll();
+                    ViewBag.Roles = _roleRepository.GetAll().Where(r => r.RoleName != "Instructor");
                     return View(user);
                 }
 
-                existingUser.UserName = user.UserName;
                 existingUser.FullName = user.FullName;
                 existingUser.Email = user.Email;
                 existingUser.RoleId = user.RoleId;
@@ -704,7 +601,7 @@ public class AdminController : Controller
 
         try
         {
-            ViewBag.Roles = _roleRepository.GetAll();
+            ViewBag.Roles = _roleRepository.GetAll().Where(r => r.RoleName != "Instructor");
         }
         catch (Exception ex)
         {
@@ -715,18 +612,18 @@ public class AdminController : Controller
     }
 
     [HttpPost]
-    public IActionResult DeleteUser(string id)
+    public IActionResult DeleteUser(string username)
     {
         try
         {
-            var user = _userRepository.GetById(id);
+            var user = _userRepository.GetAll().FirstOrDefault(u => u.UserName == username);
             if (user == null)
             {
                 TempData["Error"] = "Không tìm thấy người dùng.";
                 return RedirectToAction("ManageUsers");
             }
 
-            _userRepository.Delete(id);
+            _userRepository.Delete(user.UserName);
             _userRepository.Save();
             TempData["Success"] = "Xóa người dùng thành công!";
         }
@@ -866,6 +763,7 @@ public class AdminController : Controller
 
         return View(lesson);
     }
+
     [HttpPost]
     public IActionResult DeleteLesson(string id)
     {
@@ -910,8 +808,8 @@ public class AdminController : Controller
         try
         {
             ViewBag.Users = _userRepository.GetAll();
-            ViewBag.Lessons = _lessonRepository.GetAll();
-            return View();
+            ViewBag.Courses = _courseRepository.GetAll();
+            return View(new Comment());
         }
         catch (Exception ex)
         {
@@ -923,11 +821,60 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult AddComment(Comment comment)
     {
-        if (ModelState.IsValid)
+        // Gán CommentId và CreatedDate trước khi kiểm tra validation
+        comment.CommentId = Guid.NewGuid().ToString();
+        comment.CreatedDate = DateTime.Now;
+
+        // Kiểm tra các trường cần thiết
+        bool isValid = true;
+
+        if (string.IsNullOrEmpty(comment.UserName))
+        {
+            ModelState.AddModelError("UserName", "Người dùng không được để trống.");
+            isValid = false;
+        }
+
+        if (string.IsNullOrEmpty(comment.CourseId))
+        {
+            ModelState.AddModelError("CourseId", "Khóa học không được để trống.");
+            isValid = false;
+        }
+
+        if (string.IsNullOrEmpty(comment.Content))
+        {
+            ModelState.AddModelError("Content", "Nội dung bình luận không được để trống.");
+            isValid = false;
+        }
+        else if (comment.Content.Length > 1000)
+        {
+            ModelState.AddModelError("Content", "Nội dung bình luận không được dài quá 1000 ký tự.");
+            isValid = false;
+        }
+
+        if (isValid)
         {
             try
             {
-                comment.CommentId = Guid.NewGuid().ToString();
+                // Kiểm tra UserName có tồn tại không
+                var user = _userRepository.GetAll().FirstOrDefault(u => u.UserName == comment.UserName);
+                if (user == null)
+                {
+                    ModelState.AddModelError("UserName", "Người dùng không hợp lệ.");
+                    ViewBag.Users = _userRepository.GetAll();
+                    ViewBag.Courses = _courseRepository.GetAll();
+                    return View(comment);
+                }
+
+                // Kiểm tra CourseId có tồn tại không
+                var course = _courseRepository.GetById(comment.CourseId);
+                if (course == null)
+                {
+                    ModelState.AddModelError("CourseId", "Khóa học không hợp lệ.");
+                    ViewBag.Users = _userRepository.GetAll();
+                    ViewBag.Courses = _courseRepository.GetAll();
+                    return View(comment);
+                }
+
                 _commentRepository.Add(comment);
                 _commentRepository.Save();
                 TempData["Success"] = "Thêm bình luận thành công!";
@@ -938,11 +885,17 @@ public class AdminController : Controller
                 TempData["Error"] = $"Đã có lỗi xảy ra: {ex.Message}";
             }
         }
+        else
+        {
+            // Hiển thị lỗi validation chi tiết
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            TempData["Error"] = "Dữ liệu không hợp lệ: " + string.Join(", ", errors);
+        }
 
         try
         {
             ViewBag.Users = _userRepository.GetAll();
-            ViewBag.Lessons = _lessonRepository.GetAll();
+            ViewBag.Courses = _courseRepository.GetAll();
         }
         catch (Exception ex)
         {
@@ -965,7 +918,7 @@ public class AdminController : Controller
             }
 
             ViewBag.Users = _userRepository.GetAll();
-            ViewBag.Lessons = _lessonRepository.GetAll();
+            ViewBag.Courses = _courseRepository.GetAll();
             return View(comment);
         }
         catch (Exception ex)
@@ -978,7 +931,39 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult EditComment(Comment comment)
     {
-        if (ModelState.IsValid)
+        // Kiểm tra các trường cần thiết
+        bool isValid = true;
+
+        if (string.IsNullOrEmpty(comment.CommentId))
+        {
+            ModelState.AddModelError("CommentId", "ID bình luận không được để trống.");
+            isValid = false;
+        }
+
+        if (string.IsNullOrEmpty(comment.UserName))
+        {
+            ModelState.AddModelError("UserName", "Người dùng không được để trống.");
+            isValid = false;
+        }
+
+        if (string.IsNullOrEmpty(comment.CourseId))
+        {
+            ModelState.AddModelError("CourseId", "Khóa học không được để trống.");
+            isValid = false;
+        }
+
+        if (string.IsNullOrEmpty(comment.Content))
+        {
+            ModelState.AddModelError("Content", "Nội dung bình luận không được để trống.");
+            isValid = false;
+        }
+        else if (comment.Content.Length > 1000)
+        {
+            ModelState.AddModelError("Content", "Nội dung bình luận không được dài quá 1000 ký tự.");
+            isValid = false;
+        }
+
+        if (isValid)
         {
             try
             {
@@ -989,9 +974,30 @@ public class AdminController : Controller
                     return RedirectToAction("ManageComments");
                 }
 
-                existingComment.UserId = comment.UserId;
-                existingComment.LessonId = comment.LessonId;
+                // Kiểm tra UserName có tồn tại không
+                var user = _userRepository.GetAll().FirstOrDefault(u => u.UserName == comment.UserName);
+                if (user == null)
+                {
+                    ModelState.AddModelError("UserName", "Người dùng không hợp lệ.");
+                    ViewBag.Users = _userRepository.GetAll();
+                    ViewBag.Courses = _courseRepository.GetAll();
+                    return View(comment);
+                }
+
+                // Kiểm tra CourseId có tồn tại không
+                var course = _courseRepository.GetById(comment.CourseId);
+                if (course == null)
+                {
+                    ModelState.AddModelError("CourseId", "Khóa học không hợp lệ.");
+                    ViewBag.Users = _userRepository.GetAll();
+                    ViewBag.Courses = _courseRepository.GetAll();
+                    return View(comment);
+                }
+
+                existingComment.UserName = comment.UserName;
+                existingComment.CourseId = comment.CourseId;
                 existingComment.Content = comment.Content;
+                existingComment.CreatedDate = comment.CreatedDate;
                 _commentRepository.Update(existingComment);
                 _commentRepository.Save();
                 TempData["Success"] = "Cập nhật bình luận thành công!";
@@ -1002,11 +1008,17 @@ public class AdminController : Controller
                 TempData["Error"] = $"Đã có lỗi xảy ra: {ex.Message}";
             }
         }
+        else
+        {
+            // Hiển thị lỗi validation chi tiết
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            TempData["Error"] = "Dữ liệu không hợp lệ: " + string.Join(", ", errors);
+        }
 
         try
         {
             ViewBag.Users = _userRepository.GetAll();
-            ViewBag.Lessons = _lessonRepository.GetAll();
+            ViewBag.Courses = _courseRepository.GetAll();
         }
         catch (Exception ex)
         {

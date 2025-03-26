@@ -4,11 +4,13 @@ namespace LearningManagementSystem.Repositories
 {
     public interface IEnrollmentRepository
     {
-        IEnumerable<Enrollment> GetAll();
-        Enrollment GetEnrollment(string userId, string courseId);
-        IEnumerable<Enrollment> GetEnrollmentsByUser(string userId);
+        IQueryable<Enrollment> GetAll();
+        Enrollment GetById(string id);
+        Enrollment GetEnrollment(string userName, string courseId);
+        IQueryable<Enrollment> GetEnrollmentsByUser(string userName);
         void Add(Enrollment enrollment);
-        void Delete(string enrollmentId);
+        void Update(Enrollment enrollment);
+        void Delete(string id);
         void Save();
     }
 }

@@ -2,30 +2,28 @@
 
 namespace LearningManagementSystem.Models
 {
-        public class Lesson
-        {
-            [Key]
-            [Required, StringLength(50)]
-            public string LessonId { get; set; }
+    public class Lesson
+    {
+        [Key]
+        [Required, StringLength(50)]
+        public string LessonId { get; set; }
 
-            [Required, StringLength(50)]
-            public string CourseId { get; set; }
+        [Required, StringLength(50)]
+        public string CourseId { get; set; }
 
-            [Required, StringLength(100)]
-            public string LessonTitle { get; set; }
+        [Required, StringLength(100)]
+        public string LessonTitle { get; set; }
 
-            public string Content { get; set; }
+        public string Content { get; set; }
 
-           [Url]
-           [StringLength(200)]
-           public string LinkYoutube { get; set; }
+        [Url]
+        [StringLength(200)]
+        public string LinkYoutube { get; set; }
 
-           public int OrderNumber { get; set; }
+        public int OrderNumber { get; set; }
 
-            // Navigation properties
-            public Course Course { get; set; }
-
-            public List<Comment> Comments { get; set; } = new List<Comment>();
-            public List<Progress> Progresses { get; set; }
-        }
+        // Navigation properties
+        public Course Course { get; set; }
+        public List<Progress> Progresses { get; set; }
+    }
 }

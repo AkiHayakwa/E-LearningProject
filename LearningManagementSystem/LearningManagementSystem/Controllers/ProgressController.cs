@@ -1,59 +1,67 @@
-﻿using LearningManagementSystem.Data;
-using LearningManagementSystem.Models;
+﻿using LearningManagementSystem.Models;
 using LearningManagementSystem.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
+using System.Linq;
 
 namespace LearningManagementSystem.Controllers
 {
-    [Authorize] // Yêu cầu người dùng đăng nhập
+    [Authorize(Roles = "Student")] // Chỉ cho phép Student truy cập
     public class ProgressController : Controller
     {
-        private readonly ICourseRepository _courseRepository; // Repository để truy cập dữ liệu Course
-        private readonly IProgressRepository _progressRepository; // Repository để truy cập dữ liệu Progress
-        private readonly ILessonRepository _lessonRepository; // Repository để truy cập dữ liệu Lesson
-        private readonly LMSContext _context; // DbContext để lưu thay đổi vào database
+        private readonly ICourseRepository _courseRepository;
+        private readonly IProgressRepository _progressRepository;
+        private readonly ILessonRepository _lessonRepository;
+        private readonly ILogger<ProgressController> _logger;
 
-        // Constructor nhận các dependency qua Dependency Injection
         public ProgressController(
             ICourseRepository courseRepository,
             IProgressRepository progressRepository,
             ILessonRepository lessonRepository,
-            LMSContext context)
+            ILogger<ProgressController> logger)
         {
             _courseRepository = courseRepository;
             _progressRepository = progressRepository;
             _lessonRepository = lessonRepository;
-            _context = context;
+            _logger = logger;
         }
 
         // Hiển thị tiến độ học tập của người dùng trong một khóa học
         // GET: /Progress/Index?courseId={courseId}
         public IActionResult Index(string courseId)
         {
+            _logger.LogInformation($"Index called with CourseId: {courseId}");
+
             // Kiểm tra courseId có hợp lệ không
             if (string.IsNullOrEmpty(courseId))
             {
+                _logger.LogWarning("CourseId is empty.");
                 return BadRequest("CourseId không được để trống.");
             }
 
-            // Lấy thông tin khóa học, bao gồm danh sách bài học
+            // Lấy thông tin khóa học
             var course = _courseRepository.GetById(courseId);
             if (course == null)
             {
+                _logger.LogWarning($"Course with CourseId: {courseId} not found.");
                 return NotFound("Không tìm thấy khóa học.");
             }
 
-            // Lấy UserId từ thông tin người dùng đã đăng nhập
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
+            // Lấy UserName từ thông tin người dùng đã đăng nhập
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userName))
             {
+                _logger.LogError("UserName could not be determined from claims.");
                 return Unauthorized("Bạn cần đăng nhập để xem tiến độ.");
             }
 
             // Lấy danh sách tiến độ của người dùng trong khóa học
-            var progressList = _progressRepository.GetProgressByUserAndCourse(userId, courseId);
+            var progressList = _progressRepository.GetAll()
+                .Where(p => p.UserName == userName && p.Lesson != null && p.Lesson.CourseId == courseId)
+                .ToList();
             ViewBag.Progress = progressList;
 
             return View(course); // Trả về view với model là Course
@@ -64,49 +72,62 @@ namespace LearningManagementSystem.Controllers
         [HttpPost]
         public IActionResult MarkComplete(string lessonId)
         {
+            _logger.LogInformation($"MarkComplete called with LessonId: {lessonId}");
+
             // Lấy thông tin bài học
             var lesson = _lessonRepository.GetById(lessonId);
             if (lesson == null)
             {
+                _logger.LogWarning($"Lesson with LessonId: {lessonId} not found.");
                 return NotFound("Không tìm thấy bài học.");
             }
 
-            // Lấy UserId từ thông tin người dùng đã đăng nhập
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId))
+            // Lấy UserName từ thông tin người dùng đã đăng nhập
+            var userName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userName))
             {
+                _logger.LogError("UserName could not be determined from claims.");
                 return Unauthorized("Bạn cần đăng nhập để thực hiện hành động này.");
             }
 
-            // Kiểm tra xem tiến độ đã tồn tại chưa
-            var progress = _progressRepository.GetProgressByUserAndCourse(userId, lesson.CourseId)
-                                              .FirstOrDefault(p => p.LessonId == lessonId);
-
-            if (progress == null)
+            try
             {
-                // Nếu chưa có tiến độ, tạo mới
-                progress = new Progress // Sử dụng lớp Progress (non-generic)
+                // Kiểm tra xem tiến độ đã tồn tại chưa
+                var progress = _progressRepository.GetAll()
+                    .FirstOrDefault(p => p.UserName == userName && p.LessonId == lessonId);
+
+                if (progress == null)
                 {
-                    ProgressId = Guid.NewGuid().ToString(), // Tạo ID duy nhất
-                    UserId = userId,                        // Gán ID người dùng
-                    LessonId = lessonId,                    // Gán ID bài học
-                    CompletionStatus = true,                // Đánh dấu hoàn thành
-                    CompletionDate = DateTime.Now           // Ghi nhận thời điểm hoàn thành
-                };
-                _progressRepository.Add(progress);          // Thêm vào repository
+                    // Nếu chưa có tiến độ, tạo mới
+                    progress = new Progress
+                    {
+                        ProgressId = Guid.NewGuid().ToString(),
+                        UserName = userName,
+                        LessonId = lessonId,
+                        CompletionStatus = true,
+                        CompletionDate = DateTime.Now
+                    };
+                    _progressRepository.Add(progress);
+                }
+                else
+                {
+                    // Nếu đã có tiến độ, cập nhật trạng thái
+                    progress.CompletionStatus = true;
+                    progress.CompletionDate = DateTime.Now;
+                    _progressRepository.Update(progress);
+                }
+
+                _progressRepository.Save(); 
+
+                _logger.LogInformation($"User {userName} marked LessonId: {lessonId} as complete.");
+                return RedirectToAction("Index", new { courseId = lesson.CourseId });
             }
-            else
+            catch (Exception ex)
             {
-                // Nếu đã có tiến độ, cập nhật trạng thái
-                progress.CompletionStatus = true;
-                progress.CompletionDate = DateTime.Now;
-                _progressRepository.Update(progress);       // Cập nhật repository
+                _logger.LogError($"Error occurred while marking lesson as complete: {ex.Message}");
+                TempData["Error"] = $"Đã có lỗi xảy ra: {ex.Message}";
+                return RedirectToAction("Index", new { courseId = lesson.CourseId });
             }
-
-            _context.SaveChanges();                         // Lưu thay đổi vào database
-
-            // Chuyển hướng về trang tiến độ của khóa học
-            return RedirectToAction("Index", new { courseId = lesson.CourseId });
         }
     }
 }

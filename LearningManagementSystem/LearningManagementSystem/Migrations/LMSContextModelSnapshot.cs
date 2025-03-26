@@ -35,28 +35,34 @@ namespace LearningManagementSystem.Migrations
 
                     b.Property<string>("CourseId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("LessonId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("LessonId");
+                    b.HasIndex("CourseId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserName", "CourseId");
 
                     b.ToTable("Comments");
+
+                    b.HasData(
+                        new
+                        {
+                            CommentId = "comment1",
+                            Content = "Khóa học rất hữu ích!",
+                            CourseId = "course1",
+                            CreatedDate = new DateTime(2025, 3, 26, 23, 22, 38, 98, DateTimeKind.Local).AddTicks(1589),
+                            UserName = "student1"
+                        });
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Course", b =>
@@ -75,19 +81,28 @@ namespace LearningManagementSystem.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("InstructorId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.HasKey("CourseId");
 
-                    b.HasIndex("InstructorId");
-
                     b.ToTable("Courses");
+
+                    b.HasData(
+                        new
+                        {
+                            CourseId = "course1",
+                            CourseName = "Khóa học lập trình C# cơ bản",
+                            CreatedDate = new DateTime(2025, 3, 26, 23, 22, 38, 96, DateTimeKind.Local).AddTicks(8938),
+                            Description = "Khóa học này giới thiệu các khái niệm cơ bản về lập trình C#."
+                        },
+                        new
+                        {
+                            CourseId = "course2",
+                            CourseName = "Khóa học ASP.NET Core",
+                            CreatedDate = new DateTime(2025, 3, 26, 23, 22, 38, 97, DateTimeKind.Local).AddTicks(8172),
+                            Description = "Khóa học này hướng dẫn xây dựng ứng dụng web với ASP.NET Core."
+                        });
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Enrollment", b =>
@@ -104,7 +119,7 @@ namespace LearningManagementSystem.Migrations
                     b.Property<DateTime>("EnrollmentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -113,9 +128,19 @@ namespace LearningManagementSystem.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserName", "CourseId")
+                        .IsUnique();
 
                     b.ToTable("Enrollments");
+
+                    b.HasData(
+                        new
+                        {
+                            EnrollmentId = "enrollment1",
+                            CourseId = "course1",
+                            EnrollmentDate = new DateTime(2025, 3, 26, 23, 22, 38, 98, DateTimeKind.Local).AddTicks(723),
+                            UserName = "student1"
+                        });
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Lesson", b =>
@@ -126,7 +151,8 @@ namespace LearningManagementSystem.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<string>("CourseId")
                         .IsRequired()
@@ -151,6 +177,26 @@ namespace LearningManagementSystem.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Lessons");
+
+                    b.HasData(
+                        new
+                        {
+                            LessonId = "lesson1",
+                            Content = "Bài học này giới thiệu về ngôn ngữ lập trình C#.",
+                            CourseId = "course1",
+                            LessonTitle = "Giới thiệu về C#",
+                            LinkYoutube = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                            OrderNumber = 1
+                        },
+                        new
+                        {
+                            LessonId = "lesson2",
+                            Content = "Bài học này giải thích về biến và kiểu dữ liệu trong C#.",
+                            CourseId = "course1",
+                            LessonTitle = "Biến và kiểu dữ liệu",
+                            LinkYoutube = "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                            OrderNumber = 2
+                        });
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Progress", b =>
@@ -170,7 +216,7 @@ namespace LearningManagementSystem.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -179,9 +225,20 @@ namespace LearningManagementSystem.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserName", "LessonId")
+                        .IsUnique();
 
                     b.ToTable("Progresses");
+
+                    b.HasData(
+                        new
+                        {
+                            ProgressId = "progress1",
+                            CompletionDate = new DateTime(2025, 3, 26, 23, 22, 38, 98, DateTimeKind.Local).AddTicks(2500),
+                            CompletionStatus = true,
+                            LessonId = "lesson1",
+                            UserName = "student1"
+                        });
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Role", b =>
@@ -198,11 +255,23 @@ namespace LearningManagementSystem.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = "role1",
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            RoleId = "role2",
+                            RoleName = "Student"
+                        });
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.User", b =>
                 {
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -218,53 +287,59 @@ namespace LearningManagementSystem.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.HasKey("UserName");
 
-                    b.HasKey("UserId");
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserName = "admin1",
+                            Email = "admin1@example.com",
+                            FullName = "Admin One",
+                            Password = "AQAAAAIAAYagAAAAELOj0BL4JpXWImXEToM1Z6cphg76qxPajJj75MalKGawFwfmu7CXOiemH7mP1u7Y+w==",
+                            RoleId = "role1"
+                        },
+                        new
+                        {
+                            UserName = "student1",
+                            Email = "student1@example.com",
+                            FullName = "Student One",
+                            Password = "AQAAAAIAAYagAAAAEOEhjYNYbwrYMSqZXw8KNqfP/zWRd1zx7aCISzh5ChfWFat2WGwGaM/8T7aw6QFJzQ==",
+                            RoleId = "role2"
+                        });
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Comment", b =>
                 {
-                    b.HasOne("LearningManagementSystem.Models.Lesson", "Lesson")
+                    b.HasOne("LearningManagementSystem.Models.Course", "Course")
                         .WithMany("Comments")
-                        .HasForeignKey("LessonId")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LearningManagementSystem.Models.User", "User")
                         .WithMany("Comments")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserName")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Lesson");
+                    b.Navigation("Course");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("LearningManagementSystem.Models.Course", b =>
-                {
-                    b.HasOne("LearningManagementSystem.Models.User", "Instructor")
-                        .WithMany("Courses")
-                        .HasForeignKey("InstructorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Instructor");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Enrollment", b =>
@@ -277,7 +352,7 @@ namespace LearningManagementSystem.Migrations
 
                     b.HasOne("LearningManagementSystem.Models.User", "User")
                         .WithMany("Enrollments")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserName")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -307,7 +382,7 @@ namespace LearningManagementSystem.Migrations
 
                     b.HasOne("LearningManagementSystem.Models.User", "User")
                         .WithMany("Progresses")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserName")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -318,17 +393,19 @@ namespace LearningManagementSystem.Migrations
 
             modelBuilder.Entity("LearningManagementSystem.Models.User", b =>
                 {
-                    b.HasOne("LearningManagementSystem.Models.Role", "Roles")
+                    b.HasOne("LearningManagementSystem.Models.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Roles");
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Course", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Enrollments");
 
                     b.Navigation("Lessons");
@@ -336,8 +413,6 @@ namespace LearningManagementSystem.Migrations
 
             modelBuilder.Entity("LearningManagementSystem.Models.Lesson", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Progresses");
                 });
 
@@ -349,8 +424,6 @@ namespace LearningManagementSystem.Migrations
             modelBuilder.Entity("LearningManagementSystem.Models.User", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Courses");
 
                     b.Navigation("Enrollments");
 

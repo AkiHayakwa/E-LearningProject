@@ -1,6 +1,7 @@
 ﻿using LearningManagementSystem.Data;
 using LearningManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace LearningManagementSystem.Repositories
 {
@@ -8,58 +9,25 @@ namespace LearningManagementSystem.Repositories
     {
         private readonly LMSContext _context;
 
-        // Constructor nhận DbContext qua DI
         public CommentRepository(LMSContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Comment> GetAll()
+        public IQueryable<Comment> GetAll()
         {
             return _context.Comments
                 .Include(c => c.User)
-                .Include(c => c.Lesson)
-                .ThenInclude(l => l.Course)
-                .ToList();
+                .Include(c => c.Course)
+                .AsQueryable();
         }
 
-        public Comment GetById(string commentId)
+        public Comment GetById(string id)
         {
             return _context.Comments
                 .Include(c => c.User)
-                .Include(c => c.Lesson)
-                .ThenInclude(l => l.Course)
-                .FirstOrDefault(c => c.CommentId == commentId);
-        }
-
-        public IEnumerable<Comment> GetCommentsByCourse(string courseId)
-        {
-            return _context.Comments
-                .Include(c => c.User)
-                .Include(c => c.Lesson)
-                .ThenInclude(l => l.Course)
-                .Where(c => c.Lesson.CourseId == courseId)
-                .ToList();
-        }
-
-        public IEnumerable<Comment> GetCommentsByUser(string userId)
-        {
-            return _context.Comments
-                .Include(c => c.User)
-                .Include(c => c.Lesson)
-                .ThenInclude(l => l.Course)
-                .Where(c => c.UserId == userId)
-                .ToList();
-        }
-
-        public IEnumerable<Comment> GetCommentsByLessonId(string lessonId)
-        {
-            return _context.Comments
-                .Include(c => c.User)
-                .Include(c => c.Lesson)
-                .ThenInclude(l => l.Course)
-                .Where(c => c.LessonId == lessonId)
-                .ToList();
+                .Include(c => c.Course)
+                .FirstOrDefault(c => c.CommentId == id);
         }
 
         public void Add(Comment comment)
@@ -72,9 +40,9 @@ namespace LearningManagementSystem.Repositories
             _context.Comments.Update(comment);
         }
 
-        public void Delete(string commentId)
+        public void Delete(string id)
         {
-            var comment = _context.Comments.FirstOrDefault(c => c.CommentId == commentId);
+            var comment = GetById(id);
             if (comment != null)
             {
                 _context.Comments.Remove(comment);

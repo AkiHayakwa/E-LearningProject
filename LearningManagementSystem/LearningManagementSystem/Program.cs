@@ -68,10 +68,16 @@ using (var scope = app.Services.CreateScope())
         {
             var admin = new User
             {
+<<<<<<< Updated upstream
                 UserId = Guid.NewGuid().ToString(),
                 UserName = "admin",
                 FullName = "Administrator",
                 Email = "admin@example.com",
+=======
+                UserName = "admin@hnam",
+                FullName = "NguyenHoangNam",
+                Email = "hnam@gmail.com",
+>>>>>>> Stashed changes
                 RoleId = adminRole.RoleId
             };
 

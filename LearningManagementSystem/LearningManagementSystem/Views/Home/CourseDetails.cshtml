@@ -30,6 +30,29 @@
     .comment-form {
         margin-top: 1rem;
     }
+
+    .loading::after {
+        content: "Đang gửi...";
+        animation: dots 1s infinite;
+    }
+
+    @@keyframes dots {
+        0% {
+            content: "Đang gửi...";
+        }
+
+        33% {
+            content: "Đang gửi.";
+        }
+
+        66% {
+            content: "Đang gửi..";
+        }
+
+        100% {
+            content: "Đang gửi...";
+        }
+    }
 </style>
 
 <!-- Hiển thị thông báo thành công hoặc lỗi -->
@@ -52,7 +75,6 @@
 <div class="course-details">
     <h1>@Model.Course.CourseName</h1>
     <p class="lead">@Model.Course.Description</p>
-    <p><strong>Giảng viên:</strong> @Model.Course.Instructor.FullName</p>
     <p><strong>Ngày tạo:</strong> @Model.Course.CreatedDate.ToString("dd/MM/yyyy")</p>
 
     @if (Model.IsEnrolled)
@@ -73,7 +95,7 @@
         foreach (var comment in Model.Comments)
         {
             <div class="comment-card">
-                <p class="mb-1" style="color: #333;"><strong>@comment.User.FullName</strong></p>
+                <p class="mb-1" style="color: #333;"><strong>@comment.User.FullName</strong> (Khóa học: @comment.Course.CourseName)</p>
                 <p class="mb-1" style="color: #666;">@comment.Content</p>
                 <small class="text-muted">Đăng vào: @comment.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
             </div>
@@ -85,11 +107,28 @@
     }
 
     <!-- Form bình luận -->
-    <form asp-action="AddComment" asp-controller="Comment" method="post" class="comment-form">
-        <input type="hidden" name="courseId" value="@Model.Course.CourseId" />
-        <div class="mb-3">
-            <textarea name="content" class="form-control" rows="3" placeholder="Viết bình luận hoặc đánh giá của bạn..." required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" style="background-color: #1a73e8; border: none;">Gửi bình luận</button>
-    </form>
+    @if (User.IsInRole("Student") && Model.IsEnrolled)
+    {
+        <form asp-action="AddComment" asp-controller="Comment" method="post" class="comment-form" id="commentForm">
+            <input type="hidden" name="courseId" value="@Model.Course.CourseId" />
+            <div class="mb-3">
+                <textarea name="content" class="form-control" rows="3" placeholder="Viết bình luận hoặc đánh giá của bạn..." required maxlength="1000"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="commentSubmitButton" style="background-color: #1a73e8; border: none;">Gửi bình luận</button>
+        </form>
+    }
+    else
+    {
+        <p class="text-muted">Bạn cần đăng ký khóa học này để có thể bình luận.</p>
+    }
 </div>
+
+@section Scripts {
+    <script>
+        document.getElementById('commentForm')?.addEventListener('submit', function (event) {
+            const submitButton = document.getElementById('commentSubmitButton');
+            submitButton.disabled = true;
+            submitButton.classList.add('loading');
+        });
+    </script>
+}
