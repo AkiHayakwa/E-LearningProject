@@ -61,6 +61,7 @@ namespace LearningManagementSystem.Data
                 entity.Property(c => c.CourseName).HasMaxLength(100).IsRequired();
                 entity.Property(c => c.Description).HasMaxLength(1000).IsRequired();
                 entity.Property(c => c.CreatedDate).IsRequired();
+                entity.Property(c => c.ImageUrl).HasMaxLength(200); // Thêm cấu hình cho ImageUrl
             });
 
             // Enrollment
@@ -196,14 +197,16 @@ namespace LearningManagementSystem.Data
                     CourseId = "course1",
                     CourseName = "Khóa học lập trình C# cơ bản",
                     Description = "Khóa học này giới thiệu các khái niệm cơ bản về lập trình C#.",
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    ImageUrl = "/images/course1.jpg" // Thêm ImageUrl
                 },
                 new Course
                 {
                     CourseId = "course2",
                     CourseName = "Khóa học ASP.NET Core",
                     Description = "Khóa học này hướng dẫn xây dựng ứng dụng web với ASP.NET Core.",
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    ImageUrl = "/images/course2.jpg" // Thêm ImageUrl
                 }
             );
 

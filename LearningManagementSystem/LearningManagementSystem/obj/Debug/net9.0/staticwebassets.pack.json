@@ -13,6 +13,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\graphic-design_7.jpg",
+      "PackagePath": "staticwebassets\\images\\graphic-design_7.jpg"
+    },
+    {
+      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\student.jpg",
+      "PackagePath": "staticwebassets\\images\\student.jpg"
+    },
+    {
       "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

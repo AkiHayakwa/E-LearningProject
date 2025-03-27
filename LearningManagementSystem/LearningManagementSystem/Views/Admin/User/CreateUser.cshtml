@@ -1,0 +1,47 @@
+﻿@model LearningManagementSystem.Models.User
+
+@{
+    ViewData["Title"] = "Thêm người dùng mới";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <h2>Thêm người dùng mới</h2>
+
+    <form asp-action="CreateUser" asp-controller="Admin" asp-area="" method="post">
+        <div class="mb-3">
+            <label asp-for="UserName" class="form-label">Tên đăng nhập</label>
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="FullName" class="form-label">Họ tên</label>
+            <input asp-for="FullName" class="form-control" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Mật khẩu</label>
+            <input type="password" name="password" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label asp-for="RoleId" class="form-label">Vai trò</label>
+            <select asp-for="RoleId" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "RoleId", "RoleName"))">
+                <option value="">Chọn vai trò</option>
+            </select>
+            <span asp-validation-for="RoleId" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-purple">Thêm người dùng</button>
+        <a asp-action="ManageUsers" asp-controller="Admin" asp-area="" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}

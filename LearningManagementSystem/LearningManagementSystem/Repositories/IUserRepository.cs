@@ -5,7 +5,7 @@ namespace LearningManagementSystem.Repositories
     public interface IUserRepository
     {
         IQueryable<User> GetAll();
-        User GetById(string userName);
+        User GetByUserName(string userName);
         void Add(User user);
         void Update(User user);
         void Delete(string userName);

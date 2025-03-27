@@ -16,7 +16,10 @@ namespace LearningManagementSystem.Models
 
         public DateTime CreatedDate { get; set; }
 
-        // Navigation properties
+        [StringLength(200)] 
+        public string ImageUrl { get; set; } 
+
+       
         public List<Lesson> Lessons { get; set; }
         public List<Enrollment> Enrollments { get; set; }
         public List<Comment> Comments { get; set; }

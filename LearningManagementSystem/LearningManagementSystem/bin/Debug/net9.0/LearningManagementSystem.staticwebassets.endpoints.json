@@ -897,6 +897,170 @@
       ]
     },
     {
+      "Route": "images/graphic-design_7.1yrwm9xpkh.jpg",
+      "AssetFile": "images/graphic-design_7.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "33183"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"h8DnYSsfscOoNLAuZe0YhfV7ajkUT5mTLFyKA3r9epQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 27 Mar 2025 06:01:11 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "1yrwm9xpkh"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-h8DnYSsfscOoNLAuZe0YhfV7ajkUT5mTLFyKA3r9epQ="
+        },
+        {
+          "Name": "label",
+          "Value": "images/graphic-design_7.jpg"
+        }
+      ]
+    },
+    {
+      "Route": "images/graphic-design_7.jpg",
+      "AssetFile": "images/graphic-design_7.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "33183"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"h8DnYSsfscOoNLAuZe0YhfV7ajkUT5mTLFyKA3r9epQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 27 Mar 2025 06:01:11 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-h8DnYSsfscOoNLAuZe0YhfV7ajkUT5mTLFyKA3r9epQ="
+        }
+      ]
+    },
+    {
+      "Route": "images/student.jpg",
+      "AssetFile": "images/student.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5904"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"qW8uf84Nqg//G8R05VgXhSYEEreA86EryW20kfRnYhU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 27 Mar 2025 06:15:12 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-qW8uf84Nqg//G8R05VgXhSYEEreA86EryW20kfRnYhU="
+        }
+      ]
+    },
+    {
+      "Route": "images/student.ncxqxd1p3o.jpg",
+      "AssetFile": "images/student.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5904"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"qW8uf84Nqg//G8R05VgXhSYEEreA86EryW20kfRnYhU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 27 Mar 2025 06:15:12 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ncxqxd1p3o"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-qW8uf84Nqg//G8R05VgXhSYEEreA86EryW20kfRnYhU="
+        },
+        {
+          "Name": "label",
+          "Value": "images/student.jpg"
+        }
+      ]
+    },
+    {
       "Route": "js/site.js",
       "AssetFile": "js/site.js.gz",
       "Selectors": [

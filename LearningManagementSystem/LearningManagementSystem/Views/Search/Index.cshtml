@@ -1,0 +1,31 @@
+﻿@model IEnumerable<LearningManagementSystem.Models.Course>
+@{
+    ViewData["Title"] = "Kết quả tìm kiếm";
+    Layout = "_Layout";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4">Kết quả tìm kiếm cho "@ViewBag.Query"</h2>
+    @if (Model.Any())
+    {
+        <div class="row">
+            @foreach (var course in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card shadow-sm">
+                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="@course.CourseName" />
+                        <div class="card-body">
+                            <h5 class="card-title">@course.CourseName</h5>
+                            <p class="card-text text-muted">Ngày tạo: @course.CreatedDate.ToString("dd/MM/yyyy")</p>
+                            <p class="card-text">299.000 đ</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">Không tìm thấy khóa học nào phù hợp với từ khóa "@ViewBag.Query".</p>
+    }
+</div>

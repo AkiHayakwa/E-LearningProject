@@ -27,14 +27,11 @@ namespace LearningManagementSystem.Repositories
                 .AsQueryable();
         }
 
-        public User GetById(string userName)
+        public User GetByUserName(string userName)
         {
             return _context.Users
-                .Include(u => u.Role) // Sửa từ Roles thành Role
-                .Include(u => u.Comments)
-                .Include(u => u.Enrollments)
-                .Include(u => u.Progresses)
-                .FirstOrDefault(u => u.UserName == userName); // Sửa từ UserId thành UserName
+                .Include(u => u.Role)
+                .FirstOrDefault(u => u.UserName == userName);
         }
 
         public void Add(User user)
@@ -49,7 +46,7 @@ namespace LearningManagementSystem.Repositories
 
         public void Delete(string userName)
         {
-            var user = GetById(userName);
+            var user = GetByUserName(userName);
             if (user != null)
             {
                 _context.Users.Remove(user);

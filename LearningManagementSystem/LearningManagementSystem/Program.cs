@@ -4,6 +4,7 @@ using LearningManagementSystem.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,12 +36,22 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 
+// Thêm hỗ trợ session (nếu cần cho giỏ hàng hoặc các tính năng khác)
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
-// Tạo tài khoản Admin mặc định
+// Tạo tài khoản Admin và vai trò mặc định
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
     try
     {
         var context = services.GetRequiredService<LMSContext>();
@@ -49,7 +60,7 @@ using (var scope = app.Services.CreateScope())
         // Đảm bảo cơ sở dữ liệu đã được tạo
         context.Database.EnsureCreated();
 
-        // Kiểm tra xem có vai trò "Admin" chưa
+        // Kiểm tra và tạo vai trò "Admin"
         var adminRole = context.Roles.FirstOrDefault(r => r.RoleName == "Admin");
         if (adminRole == null)
         {
@@ -59,25 +70,34 @@ using (var scope = app.Services.CreateScope())
                 RoleName = "Admin"
             };
             context.Roles.Add(adminRole);
-            context.SaveChanges();
+            logger.LogInformation("Vai trò Admin đã được tạo.");
         }
 
-        // Kiểm tra xem có tài khoản Admin nào chưa
+        // Kiểm tra và tạo vai trò "Student"
+        var studentRole = context.Roles.FirstOrDefault(r => r.RoleName == "Student");
+        if (studentRole == null)
+        {
+            studentRole = new Role
+            {
+                RoleId = "role-student",
+                RoleName = "Student"
+            };
+            context.Roles.Add(studentRole);
+            logger.LogInformation("Vai trò Student đã được tạo.");
+        }
+
+        // Lưu các vai trò vào cơ sở dữ liệu
+        context.SaveChanges();
+
+        // Kiểm tra và tạo tài khoản Admin
         var adminUser = context.Users.FirstOrDefault(u => u.RoleId == adminRole.RoleId);
         if (adminUser == null)
         {
             var admin = new User
-            {
-<<<<<<< Updated upstream
-                UserId = Guid.NewGuid().ToString(),
+            { 
                 UserName = "admin",
                 FullName = "Administrator",
                 Email = "admin@example.com",
-=======
-                UserName = "admin@hnam",
-                FullName = "NguyenHoangNam",
-                Email = "hnam@gmail.com",
->>>>>>> Stashed changes
                 RoleId = adminRole.RoleId
             };
 
@@ -87,12 +107,13 @@ using (var scope = app.Services.CreateScope())
             context.Users.Add(admin);
             context.SaveChanges();
 
-            Console.WriteLine("Tài khoản Admin đã được tạo: Username = admin, Password = Admin@123");
+            logger.LogInformation("Tài khoản Admin đã được tạo: Username = admin, Password = Admin@123");
         }
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Lỗi khi tạo tài khoản Admin: {ex.Message}");
+        logger.LogError(ex, "Lỗi khi tạo tài khoản Admin hoặc vai trò mặc định.");
+        throw; // Ném lại lỗi để dễ debug trong môi trường development
     }
 }
 
@@ -111,8 +132,10 @@ app.UseRouting();
 app.UseAuthentication(); // Thêm middleware Authentication
 app.UseAuthorization();
 
+app.UseSession(); // Thêm middleware Session
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

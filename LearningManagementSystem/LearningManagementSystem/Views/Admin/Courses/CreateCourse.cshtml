@@ -1,0 +1,35 @@
+﻿@model LearningManagementSystem.Models.Course
+
+@{
+    ViewData["Title"] = "Thêm khóa học mới";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <h2>Thêm khóa học mới</h2>
+
+    <form asp-action="CreateCourse" asp-controller="Admin" asp-area="" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label asp-for="CourseName" class="form-label">Tên khóa học</label>
+            <input asp-for="CourseName" class="form-control" />
+            <span asp-validation-for="CourseName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label for="imageFile" class="form-label">Hình ảnh khóa học</label>
+            <input type="file" name="imageFile" class="form-control" accept="image/*" />
+        </div>
+        <button type="submit" class="btn btn-purple">Thêm khóa học</button>
+        <a asp-action="ManageCourses" asp-controller="Admin" asp-area="" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}

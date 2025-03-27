@@ -1,0 +1,49 @@
+﻿@model LearningManagementSystem.Models.Course
+
+@{
+    ViewData["Title"] = "Chỉnh sửa khóa học";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <h2>Chỉnh sửa khóa học</h2>
+
+    <form asp-action="EditCourse" asp-controller="Admin" asp-area="" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="CourseId" />
+        <div class="mb-3">
+            <label asp-for="CourseName" class="form-label">Tên khóa học</label>
+            <input asp-for="CourseName" class="form-control" />
+            <span asp-validation-for="CourseName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Hình ảnh hiện tại</label>
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div>
+                    <img src="@Model.ImageUrl" alt="@Model.CourseName" style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px;" />
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">Không có hình ảnh</p>
+            }
+        </div>
+        <div class="mb-3">
+            <label for="imageFile" class="form-label">Thay đổi hình ảnh</label>
+            <input type="file" name="imageFile" class="form-control" accept="image/*" />
+        </div>
+        <button type="submit" class="btn btn-purple">Lưu thay đổi</button>
+        <a asp-action="ManageCourses" asp-controller="Admin" asp-area="" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}
