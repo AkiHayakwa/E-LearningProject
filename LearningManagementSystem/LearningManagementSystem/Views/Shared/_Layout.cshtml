@@ -1,88 +1,118 @@
 ﻿<!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
         }
 
         .navbar {
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .navbar-brand img {
-            height: 30px;
+            height: 35px;
         }
 
         .search-bar {
-            max-width: 500px;
+            max-width: 450px;
             width: 100%;
         }
 
         .btn-purple {
-            background-color: #a435f0;
-            border-color: #a435f0;
+            background-color: #8e44ad;
+            border: none;
             color: #fff;
+            transition: 0.3s;
         }
 
             .btn-purple:hover {
-                background-color: #8a2be2;
-                border-color: #8a2be2;
+                background-color: #732d91;
+                color: #fff;
             }
 
         .btn-outline-purple {
-            border-color: #a435f0;
-            color: #a435f0;
+            border: 1px solid #8e44ad;
+            color: #8e44ad;
+            transition: 0.3s;
         }
 
             .btn-outline-purple:hover {
-                background-color: #a435f0;
+                background-color: #8e44ad;
                 color: #fff;
             }
+
+        .nav-link {
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+            .nav-link:hover {
+                color: #8e44ad;
+            }
+
+        .navbar-nav .nav-item {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        footer {
+            background: #ffffff;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+        }
     </style>
     @RenderSection("Styles", required: false)
 </head>
+
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg py-2">
         <div class="container">
             <a class="navbar-brand" href="/">
                 <img src="/images/logo.png" alt="E-Learning System" />
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto align-items-center">
                     <li class="nav-item">
                         <a class="nav-link" href="#">Khám Phá</a>
                     </li>
                 </ul>
-                <form class="d-flex search-bar mx-auto" asp-controller="Search" asp-action="Index" method="get">
-                    <input class="form-control me-2" type="search" name="query" placeholder="Tìm kiếm nội dung bất kỳ" aria-label="Search">
+
+                <form class="d-flex search-bar mx-3" asp-controller="Search" asp-action="Index" method="get">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Tìm kiếm khoá học..."
+                           aria-label="Search">
                     <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
                 </form>
-                <ul class="navbar-nav ms-auto">
+
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
                         <a class="nav-link" href="#">E-Learning Business</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Giảng dạy trên E-Learning</a>
+                        <a class="nav-link" href="#">Giảng dạy</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-cart"></i></a>
+                        <a class="nav-link" href="#"><i class="bi bi-cart fs-5"></i></a>
                     </li>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                @User.Identity.Name
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle"></i> @User.Identity.Name
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
@@ -100,7 +130,7 @@
                         </li>
                     }
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-globe"></i></a>
+                        <a class="nav-link" href="#"><i class="bi bi-globe fs-5"></i></a>
                     </li>
                 </ul>
             </div>
@@ -108,18 +138,19 @@
     </nav>
 
     <!-- Main Content -->
-    <main role="main" class="pb-3">
+    <main role="main" class="pb-3 mt-4">
         @RenderBody()
     </main>
 
     <!-- Footer -->
-    <footer class="border-top footer text-muted py-4">
-        <div class="container">
-            © 2025 - E-Learning System
+    <footer class="border-top text-muted py-4 mt-5">
+        <div class="container text-center">
+            © 2025 - E-Learning System | Made with ❤️
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>

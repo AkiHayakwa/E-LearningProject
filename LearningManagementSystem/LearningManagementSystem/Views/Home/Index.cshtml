@@ -9,39 +9,40 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <div class="promo-box bg-white p-4 shadow-sm" style="border-radius: 8px;">
+                <div class="promo-box bg-white p-4 shadow-lg" style="border-radius: 15px; animation: fadeInUp 1s ease-out;">
                     @if (Model.User != null)
                     {
-                        <h1 class="display-4 fw-bold">Chào mừng, @Model.User.FullName!</h1>
-                        <p class="lead mt-3">
-                            Bạn đang đăng nhập với vai trò: <strong>@Model.User.Role.RoleName</strong>.
-                            Học các kỹ năng bạn cần để thành công trong thế kỷ 21 - từ lập trình cơ bản đến các khóa học chuyên sâu.
-                            Các khóa học giá từ <strong>299.000 đ</strong>. Ưu đãi sẽ kết thúc hôm nay.
+                        <h1 class="display-4 fw-bold" style="color: #a435f0;">Chào mừng, @Model.User.FullName!</h1>
+                        <p class="lead mt-3" style="color: #666;">
+                            Bạn đang đăng nhập với vai trò: <strong>@(Model.User.Role != null ? Model.User.Role.RoleName : "Không xác định")</strong>.
+                            Khám phá các khóa học từ lập trình cơ bản đến chuyên sâu, giá chỉ từ <strong>299.000 đ</strong>.
+                            Ưu đãi kết thúc hôm nay!
                         </p>
+                        <a href="@Url.Action("Courses", "Home")" class="btn btn-purple">Khám phá ngay</a>
                     }
                     else
                     {
-                        <h1 class="display-4 fw-bold">Không ngừng phá <br />n đảo u</h1>
-                        <p class="lead mt-3">
-                            Học các kỹ năng bạn cần để thành công trong thế kỷ 21 - từ lập trình cơ bản đến các khóa học chuyên sâu.
-                            Các khóa học giá từ <strong>299.000 đ</strong>. Ưu đãi sẽ kết thúc hôm nay.
+                        <h1 class="display-4 fw-bold" style="color: #a435f0;">Không ngừng học hỏi & phát triển</h1>
+                        <p class="lead mt-3" style="color: #666;">
+                            Thành công trong thế kỷ 21 với các khóa học từ lập trình cơ bản đến chuyên sâu, giá chỉ từ <strong>299.000 đ</strong>.
+                            Ưu đãi kết thúc hôm nay!
                         </p>
-                        <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Đăng nhập để bắt đầu</a>
+                        <a href="@Url.Action("Login", "Account")" class="btn btn-purple">Đăng nhập để bắt đầu</a>
                     }
                 </div>
             </div>
             <div class="col-md-6 text-center">
-                <img src="/images/student.jpg" alt="Người học" class="img-fluid" style="max-height: 500px;" />
+                <img src="/images/student.jpg" alt="Người học" class="img-fluid" style="max-height: 500px; animation: fadeIn 1.5s ease-in;" />
             </div>
         </div>
     </div>
 </div>
 
 <!-- Partner Logos -->
-<div class="partner-logos py-5">
+<div class="partner-logos py-5 bg-light">
     <div class="container text-center">
-        <p class="text-muted mb-4">Được hơn 16.000 công ty và hàng triệu học viên trên khắp thế giới tin dùng</p>
-        <div class="d-flex justify-content-center flex-wrap gap-5">
+        <p class="text-muted mb-4" style="animation: fadeInUp 1s ease-out;">Được hơn 16.000 công ty và hàng triệu học viên trên khắp thế giới tin dùng</p>
+        <div class="d-flex justify-content-center flex-wrap gap-5" style="animation: fadeInUp 1s ease-out 0.2s;">
             <img src="/images/volkswagen.png" alt="Volkswagen" class="img-fluid" style="max-height: 50px;" />
             <img src="/images/samsung.png" alt="Samsung" class="img-fluid" style="max-height: 50px;" />
             <img src="/images/cisco.png" alt="Cisco" class="img-fluid" style="max-height: 50px;" />
@@ -56,28 +57,35 @@
 
 <!-- Học viên đang xem -->
 <div class="container py-5">
-    <h2 class="mb-4">Học viên đang xem</h2>
-    @if (Model.Courses.Any())
+    <h2 class="mb-4 fw-bold" style="color: #a435f0; animation: slideInLeft 1s ease-out;">Học viên đang xem</h2>
+    @{
+        var availableCourses = ViewBag.AvailableCourses as List<LearningManagementSystem.Models.Course>;
+    }
+    @if (availableCourses != null && availableCourses.Any())
     {
         <div class="row">
-            @foreach (var course in Model.Courses)
+            @foreach (var course in availableCourses.Take(4))
             {
                 <div class="col-md-3 mb-4">
-                    <div class="card shadow-sm">
-                        <img src="@(string.IsNullOrEmpty(course.ImageUrl) ? "/images/default-course.jpg" : course.ImageUrl)" class="card-img-top" alt="@course.CourseName" />
+                    <div class="card shadow-sm" style="border-radius: 10px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        <img src="@(string.IsNullOrEmpty(course.ImageUrl) ? "/images/default-course.jpg" : course.ImageUrl)" class="card-img-top" alt="@course.CourseName" style="height: 180px; object-fit: cover;" />
                         <div class="card-body">
-                            <h5 class="card-title">@course.CourseName</h5>
+                            <h5 class="card-title" style="color: #333;">@course.CourseName</h5>
                             <p class="card-text text-muted">Ngày tạo: @course.CreatedDate.ToString("dd/MM/yyyy")</p>
-                            <p class="card-text">299.000 đ</p>
+                            <p class="card-text fw-bold" style="color: #a435f0;">299.000 đ</p>
+                            <a href="@Url.Action("CourseDetails", "Home", new { courseId = course.CourseId })" class="btn btn-outline-purple btn-sm">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>
             }
         </div>
+        <div class="text-center mt-4">
+            <a href="@Url.Action("Courses", "Home")" class="btn btn-purple">Xem tất cả khóa học</a>
+        </div>
     }
     else
     {
-        <p class="text-muted">Không có khóa học nào để hiển thị.</p>
+        <p class="text-muted" style="animation: fadeInUp 1s ease-out;">Không có khóa học nào để hiển thị.</p>
     }
 </div>
 
@@ -85,9 +93,9 @@
     <style>
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(135deg, #f7d02c, #f7d02c 50%, #fff 50%, #fff);
+            background: linear-gradient(135deg, #a435f0, #f7d02c 50%, #fff 50%, #fff);
             padding: 5rem 0;
-            min-height: 500px;
+            min-height: 600px;
         }
 
         .promo-box {
@@ -95,7 +103,7 @@
         }
 
             .promo-box h1 {
-                font-size: 3rem;
+                font-size: 2.8rem;
                 line-height: 1.2;
             }
 
@@ -120,17 +128,69 @@
         /* Card Styling */
         .card {
             border: none;
-            transition: transform 0.3s ease;
         }
 
             .card:hover {
                 transform: translateY(-5px);
-                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 6px 15px rgba(164, 53, 240, 0.3);
             }
 
         .card-img-top {
-            height: 200px;
-            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .btn-purple:hover {
+            background-color: #8a2be2;
+            box-shadow: 0 4px 12px rgba(164, 53, 240, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-purple:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 6px rgba(164, 53, 240, 0.3);
+        }
+
+        .btn-outline-purple:hover {
+            background-color: #a435f0;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(164, 53, 240, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Animation */
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     </style>
 }

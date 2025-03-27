@@ -29,10 +29,10 @@ namespace LearningManagementSystem.Models
         public string RoleId { get; set; }
 
         // Navigation properties
-        public Role Role { get; set; }
-        public List<Comment> Comments { get; set; }
-        public List<Enrollment> Enrollments { get; set; }
-        public List<Progress> Progresses { get; set; }
+        public Role? Role { get; set; }
+        public List<Comment>? Comments { get; set; }
+        public List<Enrollment>? Enrollments { get; set; }
+        public List<Progress>? Progresses { get; set; }
 
         // Phương thức để băm mật khẩu
         public void HashPassword(IPasswordHasher<User> passwordHasher, string plainPassword)

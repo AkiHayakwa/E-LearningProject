@@ -36,6 +36,7 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 
+
 // Thêm hỗ trợ session (nếu cần cho giỏ hàng hoặc các tính năng khác)
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -44,6 +45,12 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+// Đăng ký IPasswordHasher
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+builder.Services.AddLogging();
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 

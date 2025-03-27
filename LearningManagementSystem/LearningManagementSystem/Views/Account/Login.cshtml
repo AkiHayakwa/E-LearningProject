@@ -1,28 +1,105 @@
-﻿@{
-    ViewData["Title"] = "Đăng nhập";
+﻿@model dynamic
+@{
     Layout = "_Layout";
+    ViewData["Title"] = "Đăng nhập - E-Learning System";
 }
 
-<div class="container py-5">
-    <h2>Đăng nhập</h2>
+<div class="container my-5">
+    <div class="row justify-content-center align-items-center">
+        <!-- Bên trái: Logo và thông điệp -->
+        <div class="col-md-6 col-sm-12 text-center text-md-start mb-4 mb-md-0">
+            <img src="/images/logo.png" alt="E-Learning Logo" class="img-fluid mb-3" style="max-width: 250px; animation: fadeIn 1s ease-in;" />
+            <h1 class="fw-bold" style="color: #a435f0; font-size: 2.5rem; animation: slideInLeft 1s ease-out;">Chào mừng quay lại!</h1>
+            <p class="lead" style="color: #666; animation: slideInLeft 1s ease-out 0.2s;">Đăng nhập để tiếp tục học tập và khám phá kiến thức.</p>
+        </div>
 
-    @if (ViewBag.Error != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            @ViewBag.Error
+        <!-- Bên phải: Form đăng nhập -->
+        <div class="col-md-5 col-sm-12">
+            <div class="card shadow-lg p-4" style="border-radius: 15px; border: none; animation: fadeInUp 1s ease-out;">
+                <h3 class="text-center mb-4" style="color: #333; font-weight: 600;">Đăng nhập</h3>
+                <form asp-action="Login" asp-controller="Account" method="post">
+                    <div class="mb-3">
+                        <label class="form-label" style="color: #333; font-weight: 500;">Tên đăng nhập</label>
+                        <input type="text" class="form-control" name="username" placeholder="Nhập tên đăng nhập" required style="border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: border-color 0.3s ease;" />
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" style="color: #333; font-weight: 500;">Mật khẩu</label>
+                        <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu" required style="border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: border-color 0.3s ease;" />
+                    </div>
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 8px; animation: slideInLeft 0.5s ease-out;">
+                            @ViewBag.Error
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    <button type="submit" class="btn btn-purple w-100" style="border-radius: 8px; padding: 12px; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="bi bi-box-arrow-in-right me-2"></i> Đăng nhập
+                    </button>
+                </form>
+                <p class="text-center mt-3" style="color: #666; font-size: 0.95rem;">
+                    Chưa có tài khoản?
+                    <a href="@Url.Action("Register", "Account")" class="text-purple fw-semibold" style="color: #a435f0 !important; text-decoration: none; transition: color 0.2s ease;">Đăng ký ngay</a>
+                </p>
+            </div>
         </div>
-    }
-
-    <form asp-action="Login" method="post">
-        <div class="mb-3">
-            <label for="userName" class="form-label">Tên đăng nhập</label>
-            <input type="text" class="form-control" id="userName" name="userName" required />
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Mật khẩu</label>
-            <input type="password" class="form-control" id="password" name="password" required />
-        </div>
-        <button type="submit" class="btn btn-primary">Đăng nhập</button>
-        <a asp-action="Register" class="btn btn-secondary">Đăng ký</a>
-    </form>
+    </div>
 </div>
+
+@section Styles {
+    <style>
+        .form-control:focus {
+            border-color: #a435f0;
+            box-shadow: 0 0 5px rgba(164, 53, 240, 0.5);
+        }
+
+        .btn-purple:hover {
+            background-color: #8a2be2;
+            box-shadow: 0 4px 12px rgba(164, 53, 240, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-purple:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 6px rgba(164, 53, 240, 0.3);
+        }
+
+        .text-purple:hover {
+            color: #8a2be2 !important;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+}

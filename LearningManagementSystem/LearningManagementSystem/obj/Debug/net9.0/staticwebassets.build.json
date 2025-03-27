@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "FxtR7tF9NL4CoU8xIY/MtErCEY7FnyFQNXZlp/LpF/0=",
+  "Hash": "tAIDs+du15B2C2DnoQDj7pZYdL0aOhXD9vxc4Jid9/8=",
   "Source": "LearningManagementSystem",
   "BasePath": "_content/LearningManagementSystem",
   "Mode": "Default",
@@ -1443,6 +1443,48 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\CodeSoEasy\\LapTrinhWeb\\DoAn\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\576b66fa-8471-4c0a-80b4-233784eb3f4c.webp",
+      "SourceId": "LearningManagementSystem",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CodeSoEasy\\LapTrinhWeb\\DoAn\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\",
+      "BasePath": "_content/LearningManagementSystem",
+      "RelativePath": "images/576b66fa-8471-4c0a-80b4-233784eb3f4c#[.{fingerprint}]?.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "h1vev8wlwm",
+      "Integrity": "W4wwuEqp/Y7+vpouYpyRUq/GCQPnuqQksFs3ctQx1jI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\576b66fa-8471-4c0a-80b4-233784eb3f4c.webp"
+    },
+    {
+      "Identity": "D:\\CodeSoEasy\\LapTrinhWeb\\DoAn\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\7d55022b-0f75-427e-9493-0b683791ce39.webp",
+      "SourceId": "LearningManagementSystem",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\CodeSoEasy\\LapTrinhWeb\\DoAn\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\",
+      "BasePath": "_content/LearningManagementSystem",
+      "RelativePath": "images/7d55022b-0f75-427e-9493-0b683791ce39#[.{fingerprint}]?.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "h1vev8wlwm",
+      "Integrity": "W4wwuEqp/Y7+vpouYpyRUq/GCQPnuqQksFs3ctQx1jI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\7d55022b-0f75-427e-9493-0b683791ce39.webp"
     },
     {
       "Identity": "D:\\CodeSoEasy\\LapTrinhWeb\\DoAn\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\graphic-design_7.jpg",
@@ -3362,6 +3404,170 @@
         {
           "Name": "integrity",
           "Value": "sha256-jcY0RXFOlcp4VNTCcYQtWVZZBlr+ZY+AOv6/0S5dnF8="
+        }
+      ]
+    },
+    {
+      "Route": "images/576b66fa-8471-4c0a-80b4-233784eb3f4c.h1vev8wlwm.webp",
+      "AssetFile": "D:\\CodeSoEasy\\LapTrinhWeb\\DoAn\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\576b66fa-8471-4c0a-80b4-233784eb3f4c.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "138654"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"W4wwuEqp/Y7+vpouYpyRUq/GCQPnuqQksFs3ctQx1jI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 27 Mar 2025 15:58:28 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "h1vev8wlwm"
+        },
+        {
+          "Name": "label",
+          "Value": "images/576b66fa-8471-4c0a-80b4-233784eb3f4c.webp"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-W4wwuEqp/Y7+vpouYpyRUq/GCQPnuqQksFs3ctQx1jI="
+        }
+      ]
+    },
+    {
+      "Route": "images/576b66fa-8471-4c0a-80b4-233784eb3f4c.webp",
+      "AssetFile": "D:\\CodeSoEasy\\LapTrinhWeb\\DoAn\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\576b66fa-8471-4c0a-80b4-233784eb3f4c.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "138654"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"W4wwuEqp/Y7+vpouYpyRUq/GCQPnuqQksFs3ctQx1jI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 27 Mar 2025 15:58:28 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-W4wwuEqp/Y7+vpouYpyRUq/GCQPnuqQksFs3ctQx1jI="
+        }
+      ]
+    },
+    {
+      "Route": "images/7d55022b-0f75-427e-9493-0b683791ce39.h1vev8wlwm.webp",
+      "AssetFile": "D:\\CodeSoEasy\\LapTrinhWeb\\DoAn\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\7d55022b-0f75-427e-9493-0b683791ce39.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "138654"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"W4wwuEqp/Y7+vpouYpyRUq/GCQPnuqQksFs3ctQx1jI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 27 Mar 2025 15:51:31 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "h1vev8wlwm"
+        },
+        {
+          "Name": "label",
+          "Value": "images/7d55022b-0f75-427e-9493-0b683791ce39.webp"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-W4wwuEqp/Y7+vpouYpyRUq/GCQPnuqQksFs3ctQx1jI="
+        }
+      ]
+    },
+    {
+      "Route": "images/7d55022b-0f75-427e-9493-0b683791ce39.webp",
+      "AssetFile": "D:\\CodeSoEasy\\LapTrinhWeb\\DoAn\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\7d55022b-0f75-427e-9493-0b683791ce39.webp",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "138654"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/webp"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"W4wwuEqp/Y7+vpouYpyRUq/GCQPnuqQksFs3ctQx1jI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 27 Mar 2025 15:51:31 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-W4wwuEqp/Y7+vpouYpyRUq/GCQPnuqQksFs3ctQx1jI="
         }
       ]
     },

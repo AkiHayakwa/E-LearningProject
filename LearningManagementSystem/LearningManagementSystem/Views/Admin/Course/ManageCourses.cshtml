@@ -1,9 +1,8 @@
-﻿@model LearningManagementSystem.Models.User
+﻿@model List<LearningManagementSystem.Models.Course>
 
 @{
-    Layout = "_Layout"; // Đổi từ "_AdminLayout" thành "_Layout" để đồng bộ với các view khác
-    ViewData["Title"] = "Thêm người dùng mới - E-Learning System (Admin)";
-    var roles = ViewBag.Roles as List<LearningManagementSystem.Models.Role> ?? new List<LearningManagementSystem.Models.Role>();
+    Layout = "_Layout";
+    ViewData["Title"] = "Manage Courses - E-Learning System (Admin)";
 }
 
 <div class="d-flex">
@@ -24,7 +23,7 @@
                 </a>
             </li>
             <li class="nav-item mb-2">
-                <a class="nav-link admin-btn admin-btn-green" asp-action="ManageCourses" asp-controller="Admin">
+                <a class="nav-link admin-btn admin-btn-green active" asp-action="ManageCourses" asp-controller="Admin">
                     <i class="bi bi-book me-2"></i> Course Management
                 </a>
             </li>
@@ -34,7 +33,7 @@
                 </a>
             </li>
             <li class="nav-item mb-2">
-                <a class="nav-link admin-btn admin-btn-cyan active" asp-action="ManageUsers" asp-controller="Admin">
+                <a class="nav-link admin-btn admin-btn-cyan" asp-action="ManageUsers" asp-controller="Admin">
                     <i class="bi bi-people me-2"></i> User Management
                 </a>
             </li>
@@ -52,7 +51,7 @@
             <!-- Nút ẩn/hiện sidebar -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="text-dark" style="background: #f5d78e; padding: 10px 20px; border-radius: 5px;">
-                    Thêm người dùng mới - E-Learning System (Admin)
+                    Manage Courses - E-Learning System (Admin)
                 </h1>
                 <button id="toggle-sidebar" class="admin-btn admin-btn-blue">
                     <i id="toggle-icon" class="bi bi-chevron-left"></i>
@@ -75,52 +74,66 @@
                 </div>
             }
 
-            <!-- Form tạo người dùng -->
+            <!-- Nút thêm khóa học -->
+            <div class="mb-4">
+                <a asp-action="CreateCourse" asp-controller="Admin" class="admin-btn admin-btn-cyan">
+                    <i class="bi bi-plus-circle me-2"></i> Add New Course
+                </a>
+            </div>
+
+            <!-- Bảng danh sách khóa học -->
             <div class="card shadow">
                 <div class="card-body">
-                    <h5 class="card-title">Thêm người dùng mới</h5>
-                    <form asp-action="CreateUser" asp-controller="Admin" method="post">
-                        @Html.AntiForgeryToken()
-
-                        <div class="mb-3">
-                            <label asp-for="UserName" class="form-label">Tên đăng nhập</label>
-                            <input asp-for="UserName" class="form-control" />
-                            <span asp-validation-for="UserName" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="FullName" class="form-label">Họ tên</label>
-                            <input asp-for="FullName" class="form-control" />
-                            <span asp-validation-for="FullName" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="Email" class="form-label">Email</label>
-                            <input asp-for="Email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Mật khẩu</label>
-                            <input type="password" name="password" class="form-control" required />
-                            <span class="text-danger">@Html.ValidationMessage("Password")</span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="RoleId" class="form-label">Vai trò</label>
-                            <select asp-for="RoleId" class="form-control" asp-items="@(new SelectList(roles, "RoleId", "RoleName"))">
-                                <option value="">Chọn vai trò</option>
-                            </select>
-                            <span asp-validation-for="RoleId" class="text-danger"></span>
-                        </div>
-
-                        <button type="submit" class="admin-btn admin-btn-cyan">
-                            <i class="bi bi-person-plus me-2"></i> Thêm người dùng
-                        </button>
-                        <a asp-action="ManageUsers" asp-controller="Admin" class="admin-btn admin-btn-blue ms-2">
-                            <i class="bi bi-arrow-left me-2"></i> Quay lại
-                        </a>
-                    </form>
+                    <h5 class="card-title">Course List</h5>
+                    @if (Model != null && Model.Any())
+                    {
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Description</th>
+                                    <th>Created Date</th>
+                                    <th>Image</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var course in Model)
+                                {
+                                    <tr>
+                                        <td>@course.CourseName</td>
+                                        <td>@course.Description</td>
+                                        <td>@course.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(course.ImageUrl))
+                                            {
+                                                <img src="@course.ImageUrl" alt="@course.CourseName" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;" />
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">No Image</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a asp-action="EditCourse" asp-controller="Admin" asp-route-id="@course.CourseId" class="admin-btn admin-btn-blue btn-sm me-2">
+                                                <i class="bi bi-pencil me-1"></i> Edit
+                                            </a>
+                                            <form asp-action="DeleteCourse" asp-controller="Admin" asp-route-id="@course.CourseId" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this course?');">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="admin-btn admin-btn-red btn-sm">
+                                                    <i class="bi bi-trash me-1"></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No courses found.</p>
+                    }
                 </div>
             </div>
         </div>
@@ -156,7 +169,7 @@
 
         /* Admin Button */
         .admin-btn {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             padding: 10px 15px;
             border-radius: 8px;
@@ -173,8 +186,20 @@
             background: linear-gradient(135deg, #007bff, #0056b3);
         }
 
+        .admin-btn-green {
+            background: linear-gradient(135deg, #2ecc71, #27ae60); /* Đồng bộ với CreateUser.cshtml */
+        }
+
+        .admin-btn-yellow {
+            background: linear-gradient(135deg, #f1c40f, #d4ac0d); /* Đồng bộ với CreateUser.cshtml */
+        }
+
         .admin-btn-cyan {
             background: linear-gradient(135deg, #17a2b8, #117a8b);
+        }
+
+        .admin-btn-red {
+            background: linear-gradient(135deg, #dc3545, #b02a37);
         }
 
         .admin-btn:hover {
@@ -203,12 +228,60 @@
         }
 
         .admin-btn.active {
-            background: linear-gradient(135deg, #0056b3, #003d82);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #0056b3, #003d82); /* Active cho admin-btn-blue */
+        }
+
+        .admin-btn-green.active {
+            background: linear-gradient(135deg, #27ae60, #219653); /* Active cho admin-btn-green */
+        }
+
+        .admin-btn-yellow.active {
+            background: linear-gradient(135deg, #d4ac0d, #b7950b); /* Active cho admin-btn-yellow */
+        }
+
+        .admin-btn-cyan.active {
+            background: linear-gradient(135deg, #117a8b, #0d6776); /* Active cho admin-btn-cyan */
         }
 
         .admin-btn i {
             font-size: 1.2rem;
+        }
+
+        /* Table */
+        .table {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+            .table th, .table td {
+                vertical-align: middle;
+                padding: 12px 15px;
+            }
+
+            .table th {
+                background: #f5d78e;
+                color: #333;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.9rem;
+                letter-spacing: 0.5px;
+            }
+
+            .table tbody tr {
+                transition: background 0.3s ease;
+            }
+
+        .table-hover tbody tr:hover {
+            background: #f1f1f1;
+            transform: scale(1.01);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .table td {
+            border-bottom: 1px solid #e9ecef;
         }
 
         /* Card */
@@ -221,21 +294,23 @@
             padding: 20px;
         }
 
-        /* Form */
-        .form-control {
-            border-radius: 5px;
+        /* Image */
+        img {
+            transition: transform 0.3s ease;
         }
 
-        .form-label {
-            font-weight: 500;
+            img:hover {
+                transform: scale(1.1);
+            }
+
+        /* Text muted */
+        .text-muted {
+            font-style: italic;
         }
     </style>
 }
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const sidebar = document.getElementById('sidebar');
