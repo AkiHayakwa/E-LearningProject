@@ -5,7 +5,6 @@ namespace LearningManagementSystem.Models
     public class Course
     {
         [Key]
-        [Required, StringLength(50)]
         public string CourseId { get; set; }
 
         [Required, StringLength(100)]
@@ -20,8 +19,8 @@ namespace LearningManagementSystem.Models
         public string ImageUrl { get; set; } 
 
        
-        public List<Lesson> Lessons { get; set; }
-        public List<Enrollment> Enrollments { get; set; }
-        public List<Comment> Comments { get; set; }
+        public List<Lesson>? Lessons { get; set; }
+        public List<Enrollment>? Enrollments { get; set; }
+        public List<Comment>? Comments { get; set; }
     }
 }

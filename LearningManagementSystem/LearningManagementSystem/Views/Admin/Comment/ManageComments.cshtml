@@ -1,0 +1,67 @@
+﻿@model IEnumerable<LearningManagementSystem.Models.Comment>
+
+@{
+    ViewData["Title"] = "Quản lý bình luận";
+    Layout = "_AdminLayout";
+}
+
+<h2>Quản lý bình luận</h2>
+
+<!-- Thông báo -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Người dùng</th>
+                <th>Khóa học</th>
+                <th>Nội dung</th>
+                <th>Ngày tạo</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var comment in Model)
+            {
+                <tr>
+                    <td>@comment.UserName</td>
+                    <td>@(comment.Course?.CourseName ?? "Không có khóa học")</td>
+                    <td>@comment.Content</td>
+                    <td>@comment.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        <form asp-action="DeleteComment" asp-route-id="@comment.CommentId" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bình luận này?');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Chưa có bình luận nào.</p>
+}
+
+<a asp-action="Dashboard" class="btn btn-secondary">Quay lại</a>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

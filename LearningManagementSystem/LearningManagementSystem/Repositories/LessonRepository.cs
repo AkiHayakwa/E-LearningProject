@@ -19,6 +19,7 @@ namespace LearningManagementSystem.Repositories
         {
             return _context.Lessons
                 .Include(l => l.Course)
+                .Include(l => l.Progresses) // Bao gồm Progresses
                 .ToList();
         }
 
@@ -26,6 +27,7 @@ namespace LearningManagementSystem.Repositories
         {
             return _context.Lessons
                 .Include(l => l.Course)
+                .Include(l => l.Progresses) // Bao gồm Progresses
                 .FirstOrDefault(l => l.LessonId == lessonId);
         }
 
@@ -33,7 +35,9 @@ namespace LearningManagementSystem.Repositories
         {
             return _context.Lessons
                 .Include(l => l.Course)
+                .Include(l => l.Progresses) // Bao gồm Progresses
                 .Where(l => l.CourseId == courseId)
+                .OrderBy(l => l.OrderNumber) // Sắp xếp theo OrderNumber
                 .ToList();
         }
 
@@ -49,9 +53,17 @@ namespace LearningManagementSystem.Repositories
 
         public void Delete(string lessonId)
         {
-            var lesson = _context.Lessons.FirstOrDefault(l => l.LessonId == lessonId);
+            var lesson = _context.Lessons
+                .Include(l => l.Progresses) // Bao gồm Progresses để xóa liên quan
+                .FirstOrDefault(l => l.LessonId == lessonId);
             if (lesson != null)
             {
+                // Xóa các Progress liên quan
+                if (lesson.Progresses != null && lesson.Progresses.Any())
+                {
+                    _context.Progresses.RemoveRange(lesson.Progresses);
+                }
+
                 _context.Lessons.Remove(lesson);
             }
         }

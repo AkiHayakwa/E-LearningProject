@@ -1,47 +1,86 @@
 ﻿@model LearningManagementSystem.Models.User
 
 @{
-    ViewData["Title"] = "Thêm người dùng mới";
+    ViewData["Title"] = "Add user";
     Layout = "_AdminLayout";
 }
 
-<div class="container mt-4">
-    <h2>Thêm người dùng mới</h2>
+<h2>Add user</h2>
 
-    <form asp-action="CreateUser" asp-controller="Admin" asp-area="" method="post">
-        <div class="mb-3">
-            <label asp-for="UserName" class="form-label">Tên đăng nhập</label>
-            <input asp-for="UserName" class="form-control" />
-            <span asp-validation-for="UserName" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="FullName" class="form-label">Họ tên</label>
-            <input asp-for="FullName" class="form-control" />
-            <span asp-validation-for="FullName" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Email" class="form-label">Email</label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Mật khẩu</label>
-            <input type="password" name="password" class="form-control" required />
-        </div>
-        <div class="mb-3">
-            <label asp-for="RoleId" class="form-label">Vai trò</label>
-            <select asp-for="RoleId" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "RoleId", "RoleName"))">
-                <option value="">Chọn vai trò</option>
-            </select>
-            <span asp-validation-for="RoleId" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-purple">Thêm người dùng</button>
-        <a asp-action="ManageUsers" asp-controller="Admin" asp-area="" class="btn btn-secondary">Quay lại</a>
-    </form>
-</div>
+<!-- Thông báo -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Hiển thị lỗi tổng quát từ ModelState -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form asp-action="CreateUser" method="post">
+    <div class="mb-3">
+        <label asp-for="UserName" class="form-label">Username</label>
+        <input asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FullName" class="form-label">Full name</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">E-mail</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" required />
+        <span class="text-danger" id="password-validation">
+            @if (ViewData.ModelState.ContainsKey("Password"))
+            {
+                foreach (var error in ViewData.ModelState["Password"].Errors)
+                {
+                    @error.ErrorMessage <br />
+                }
+            }
+        </span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="RoleId" class="form-label">Role</label>
+        <select asp-for="RoleId" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "RoleId", "RoleName"))">
+            <option value="">Select role</option>
+        </select>
+        <span asp-validation-for="RoleId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-purple">Add user</button>
+    <a asp-action="ManageUsers" class="btn btn-secondary">Come back</a>
+</form>
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 }

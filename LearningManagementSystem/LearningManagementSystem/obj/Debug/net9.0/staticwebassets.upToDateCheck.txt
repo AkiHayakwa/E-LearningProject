@@ -62,6 +62,7 @@ D:\doan\LearningManagementSystem\LearningManagementSystem\wwwroot\lib\bootstrap\
 D:\doan\LearningManagementSystem\LearningManagementSystem\wwwroot\js\site.js
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\f1df6b51-3b42-4eca-a391-d85edfed6eb3.jpg
 wwwroot\images\graphic-design_7.jpg
 wwwroot\images\student.jpg
 wwwroot\js\site.js

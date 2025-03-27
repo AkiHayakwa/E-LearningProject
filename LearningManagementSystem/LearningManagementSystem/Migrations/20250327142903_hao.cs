@@ -20,7 +20,8 @@ namespace LearningManagementSystem.Migrations
                     CourseId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CourseName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -164,11 +165,11 @@ namespace LearningManagementSystem.Migrations
 
             migrationBuilder.InsertData(
                 table: "Courses",
-                columns: new[] { "CourseId", "CourseName", "CreatedDate", "Description" },
+                columns: new[] { "CourseId", "CourseName", "CreatedDate", "Description", "ImageUrl" },
                 values: new object[,]
                 {
-                    { "course1", "Khóa học lập trình C# cơ bản", new DateTime(2025, 3, 26, 23, 22, 38, 96, DateTimeKind.Local).AddTicks(8938), "Khóa học này giới thiệu các khái niệm cơ bản về lập trình C#." },
-                    { "course2", "Khóa học ASP.NET Core", new DateTime(2025, 3, 26, 23, 22, 38, 97, DateTimeKind.Local).AddTicks(8172), "Khóa học này hướng dẫn xây dựng ứng dụng web với ASP.NET Core." }
+                    { "course1", "Khóa học lập trình C# cơ bản", new DateTime(2025, 3, 27, 21, 29, 3, 310, DateTimeKind.Local).AddTicks(1429), "Khóa học này giới thiệu các khái niệm cơ bản về lập trình C#.", "/images/course1.jpg" },
+                    { "course2", "Khóa học ASP.NET Core", new DateTime(2025, 3, 27, 21, 29, 3, 311, DateTimeKind.Local).AddTicks(2491), "Khóa học này hướng dẫn xây dựng ứng dụng web với ASP.NET Core.", "/images/course2.jpg" }
                 });
 
             migrationBuilder.InsertData(
@@ -194,24 +195,24 @@ namespace LearningManagementSystem.Migrations
                 columns: new[] { "UserName", "Email", "FullName", "Password", "RoleId" },
                 values: new object[,]
                 {
-                    { "admin1", "admin1@example.com", "Admin One", "AQAAAAIAAYagAAAAELOj0BL4JpXWImXEToM1Z6cphg76qxPajJj75MalKGawFwfmu7CXOiemH7mP1u7Y+w==", "role1" },
-                    { "student1", "student1@example.com", "Student One", "AQAAAAIAAYagAAAAEOEhjYNYbwrYMSqZXw8KNqfP/zWRd1zx7aCISzh5ChfWFat2WGwGaM/8T7aw6QFJzQ==", "role2" }
+                    { "admin1", "admin1@example.com", "Admin One", "AQAAAAIAAYagAAAAEIx6pqZRtS/Mef0yhrcOamVgF5ZXwhggTJZC36YNV9eW6w/sx08rRVfI9KsMiyt2vg==", "role1" },
+                    { "student1", "student1@example.com", "Student One", "AQAAAAIAAYagAAAAEHWvvglOkP5JEeerSOVovDol5LvSENHY8MS31qgrhrrN56b4C+yIhD36hJSNmIbXsA==", "role2" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Comments",
                 columns: new[] { "CommentId", "Content", "CourseId", "CreatedDate", "UserName" },
-                values: new object[] { "comment1", "Khóa học rất hữu ích!", "course1", new DateTime(2025, 3, 26, 23, 22, 38, 98, DateTimeKind.Local).AddTicks(1589), "student1" });
+                values: new object[] { "comment1", "Khóa học rất hữu ích!", "course1", new DateTime(2025, 3, 27, 21, 29, 3, 311, DateTimeKind.Local).AddTicks(5337), "student1" });
 
             migrationBuilder.InsertData(
                 table: "Enrollments",
                 columns: new[] { "EnrollmentId", "CourseId", "EnrollmentDate", "UserName" },
-                values: new object[] { "enrollment1", "course1", new DateTime(2025, 3, 26, 23, 22, 38, 98, DateTimeKind.Local).AddTicks(723), "student1" });
+                values: new object[] { "enrollment1", "course1", new DateTime(2025, 3, 27, 21, 29, 3, 311, DateTimeKind.Local).AddTicks(4500), "student1" });
 
             migrationBuilder.InsertData(
                 table: "Progresses",
                 columns: new[] { "ProgressId", "CompletionDate", "CompletionStatus", "LessonId", "UserName" },
-                values: new object[] { "progress1", new DateTime(2025, 3, 26, 23, 22, 38, 98, DateTimeKind.Local).AddTicks(2500), true, "lesson1", "student1" });
+                values: new object[] { "progress1", new DateTime(2025, 3, 27, 21, 29, 3, 311, DateTimeKind.Local).AddTicks(6210), true, "lesson1", "student1" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_CourseId",

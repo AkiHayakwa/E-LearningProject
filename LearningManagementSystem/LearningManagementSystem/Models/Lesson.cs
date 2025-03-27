@@ -23,7 +23,7 @@ namespace LearningManagementSystem.Models
         public int OrderNumber { get; set; }
 
         // Navigation properties
-        public Course Course { get; set; }
-        public List<Progress> Progresses { get; set; }
+        public Course? Course { get; set; }
+        public List<Progress>? Progresses { get; set; }
     }
 }

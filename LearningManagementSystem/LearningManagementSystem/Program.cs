@@ -113,7 +113,7 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         logger.LogError(ex, "Lỗi khi tạo tài khoản Admin hoặc vai trò mặc định.");
-        throw; // Ném lại lỗi để dễ debug trong môi trường development
+        throw; 
     }
 }
 

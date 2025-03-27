@@ -1,0 +1,73 @@
+﻿@model LearningManagementSystem.Models.Course
+
+@{
+    ViewData["Title"] = "Create Course";
+    Layout = "_AdminLayout";
+}
+
+<h2>Create Course</h2>
+
+<!-- Thông báo -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Hiển thị lỗi tổng quát từ ModelState -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+        <p class="text-info">Note: The selected image is not retained. Please reselect the image if necessary.</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form asp-action="CreateCourse" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label asp-for="CourseName" class="form-label">Course Name</label>
+        <input asp-for="CourseName" class="form-control" />
+        <span asp-validation-for="CourseName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ImageUrl" class="form-label">Course Image</label>
+        <input type="file" name="imageFile" class="form-control" accept="image/*" />
+        <span class="text-danger" id="imageFile-validation">
+            @if (ViewData.ModelState.ContainsKey("imageFile"))
+            {
+                foreach (var error in ViewData.ModelState["imageFile"].Errors)
+                {
+                    @error.ErrorMessage <br />
+                }
+            }
+        </span>
+    </div>
+
+    <button type="submit" class="btn btn-purple">Create Course</button>
+    <a asp-action="ManageCourses" class="btn btn-secondary">Come back</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

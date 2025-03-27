@@ -1,0 +1,173 @@
+﻿@model LearningManagementSystem.Models.Course
+
+@{
+    ViewData["Title"] = "Chỉnh sửa khóa học - E-Learning System (Admin)";
+    Layout = "_AdminLayout";
+}
+
+<h2>Chỉnh sửa khóa học</h2>
+
+<!-- Thông báo -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form asp-action="EditCourse" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="CourseId" />
+
+    <div class="mb-3">
+        <label asp-for="CourseName" class="form-label">Tên khóa học</label>
+        <input asp-for="CourseName" class="form-control" />
+        <span asp-validation-for="CourseName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Mô tả</label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Hình ảnh hiện tại</label>
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div>
+                <img src="@Model.ImageUrl" alt="Hình ảnh khóa học" style="max-width: 200px; max-height: 200px;" />
+            </div>
+        }
+        else
+        {
+            <p>Không có hình ảnh</p>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Thay đổi hình ảnh</label>
+        <input type="file" name="imageFile" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+    <a asp-action="ManageCourses" class="btn btn-secondary">Quay lại</a>
+</form>
+
+<!-- Quản lý bài học -->
+<hr />
+<h3>Quản lý bài học</h3>
+
+<!-- Form thêm bài học -->
+<h4>Thêm bài học mới</h4>
+<form asp-action="AddLessonInEditCourse" asp-route-courseId="@Model.CourseId" method="post">
+    <div class="mb-3">
+        <label class="form-label">Tiêu đề bài học</label>
+        <input name="LessonTitle" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Nội dung</label>
+        <textarea name="Content" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Link YouTube</label>
+        <input name="LinkYoutube" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm bài học</button>
+</form>
+
+<!-- Danh sách bài học -->
+<h4 class="mt-4">Danh sách bài học</h4>
+@if (Model.Lessons != null && Model.Lessons.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Số thứ tự</th>
+                <th>Tiêu đề bài học</th>
+                <th>Nội dung</th>
+                <th>Link YouTube</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lesson in Model.Lessons)
+            {
+                <tr>
+                    <td>@lesson.OrderNumber</td>
+                    <td>@lesson.LessonTitle</td>
+                    <td>@lesson.Content</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(lesson.LinkYoutube))
+                        {
+                            <a href="@lesson.LinkYoutube" target="_blank">Xem video</a>
+                        }
+                        else
+                        {
+                            <span>Không có</span>
+                        }
+                    </td>
+                    <td>
+                        <!-- Form chỉnh sửa bài học -->
+                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editLessonModal-@lesson.LessonId">Sửa</button>
+                        <form asp-action="DeleteLessonInEditCourse" asp-route-lessonId="@lesson.LessonId" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài học này?');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                        </form>
+
+                        <!-- Modal chỉnh sửa bài học -->
+                        <div class="modal fade" id="editLessonModal-@lesson.LessonId" tabindex="-1" aria-labelledby="editLessonModalLabel-@lesson.LessonId" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editLessonModalLabel-@lesson.LessonId">Chỉnh sửa bài học</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form asp-action="EditLessonInEditCourse" asp-route-lessonId="@lesson.LessonId" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <div class="mb-3">
+                                                <label class="form-label">Tiêu đề bài học</label>
+                                                <input name="LessonTitle" class="form-control" value="@lesson.LessonTitle" required />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Nội dung</label>
+                                                <textarea name="Content" class="form-control" rows="3">@lesson.Content</textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Link YouTube</label>
+                                                <input name="LinkYoutube" class="form-control" value="@lesson.LinkYoutube" />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Số thứ tự</label>
+                                                <input name="OrderNumber" class="form-control" type="number" value="@lesson.OrderNumber" required />
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Chưa có bài học nào cho khóa học này.</p>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

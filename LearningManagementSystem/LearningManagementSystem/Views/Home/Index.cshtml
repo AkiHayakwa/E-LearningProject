@@ -14,10 +14,11 @@
                     {
                         <h1 class="display-4 fw-bold">Chào mừng, @Model.User.FullName!</h1>
                         <p class="lead mt-3">
-                            Bạn đang đăng nhập với vai trò: <strong>@Model.User.Role.RoleName</strong>.
+                            Bạn đang đăng nhập với vai trò: <strong>@(Model.User.Role != null ? Model.User.Role.RoleName : "Không xác định")</strong>.
                             Học các kỹ năng bạn cần để thành công trong thế kỷ 21 - từ lập trình cơ bản đến các khóa học chuyên sâu.
                             Các khóa học giá từ <strong>299.000 đ</strong>. Ưu đãi sẽ kết thúc hôm nay.
                         </p>
+                        <a href="@Url.Action("Logout", "Account")" class="btn btn-outline-danger">Đăng xuất</a>
                     }
                     else
                     {
@@ -26,7 +27,8 @@
                             Học các kỹ năng bạn cần để thành công trong thế kỷ 21 - từ lập trình cơ bản đến các khóa học chuyên sâu.
                             Các khóa học giá từ <strong>299.000 đ</strong>. Ưu đãi sẽ kết thúc hôm nay.
                         </p>
-                        <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Đăng nhập để bắt đầu</a>
+                        <a href="@Url.Action("Login", "Account")" class="btn btn-primary me-2">Đăng nhập để bắt đầu</a>
+                        <a href="@Url.Action("Register", "Account")" class="btn btn-outline-primary">Đăng ký ngay</a>
                     }
                 </div>
             </div>
@@ -57,7 +59,7 @@
 <!-- Học viên đang xem -->
 <div class="container py-5">
     <h2 class="mb-4">Học viên đang xem</h2>
-    @if (Model.Courses.Any())
+    @if (Model.Courses != null && Model.Courses.Any())
     {
         <div class="row">
             @foreach (var course in Model.Courses)

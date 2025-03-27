@@ -112,9 +112,10 @@
             <img src="/images/logo.png" alt="E-Learning System Logo" />
         </div>
         <a href="@Url.Action("Index", "Home")"><i class="bi bi-house me-2"></i> Trang chủ</a>
-        <a href="@Url.Action("ManageCourses", "Admin")" class="active"><i class="bi bi-book me-2"></i> Quản lý khóa học</a>
-        <a href="@Url.Action("ManageComments", "AdminComment")"><i class="bi bi-chat-left-text me-2"></i> Quản lý bình luận</a>
-        <a href="@Url.Action("ManageUsers", "Admin")"><i class="bi bi-person me-2"></i> Quản lý người dùng</a>
+        <a asp-action="Dashboard" asp-controller="Admin" class="@(ViewContext.RouteData.Values["Action"].ToString() == "Dashboard" ? "active" : "")"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+        <a asp-action="ManageCourses" asp-controller="Admin" class="@(ViewContext.RouteData.Values["Action"].ToString() == "ManageCourses" ? "active" : "")"><i class="bi bi-book me-2"></i> Quản lý khóa học</a>
+        <a asp-action="ManageComments" asp-controller="Admin" class="@(ViewContext.RouteData.Values["Action"].ToString() == "ManageComments" ? "active" : "")"><i class="bi bi-chat-left-text me-2"></i> Quản lý bình luận</a>
+        <a asp-action="ManageUsers" asp-controller="Admin" class="@(ViewContext.RouteData.Values["Action"].ToString() == "ManageUsers" ? "active" : "")"><i class="bi bi-person me-2"></i> Quản lý người dùng</a>
         <a href="@Url.Action("Logout", "Account")"><i class="bi bi-box-arrow-right me-2"></i> Đăng xuất</a>
     </div>
 

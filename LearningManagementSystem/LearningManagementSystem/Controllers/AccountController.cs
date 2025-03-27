@@ -20,6 +20,8 @@ public class AccountController : Controller
         _passwordHasher = passwordHasher;
     }
 
+    #region Đăng nhập (Login)
+
     // GET: Account/Login
     [AllowAnonymous]
     public IActionResult Login()
@@ -93,11 +95,88 @@ public class AccountController : Controller
 
         if (user.Role.RoleName == "Admin")
         {
-            return RedirectToAction("ManageCourses", "Admin", new { area = "" }); 
+            return RedirectToAction("Dashboard", "Admin", new { area = "" }); // Chuyển hướng đến Dashboard
         }
 
         return RedirectToAction("Index", "Home"); // Chuyển hướng đến trang chủ cho Student
     }
+
+    #endregion
+
+    #region Đăng ký (Register)
+
+    // GET: Account/Register
+    [AllowAnonymous]
+    public IActionResult Register()
+    {
+        ViewBag.Roles = _context.Roles.ToList();
+        return View();
+    }
+
+    // POST: Account/Register
+    [HttpPost]
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public IActionResult Register(User model, string password, string confirmPassword)
+    {
+        // Kiểm tra mật khẩu và xác nhận mật khẩu
+        if (password != confirmPassword)
+        {
+            ModelState.AddModelError("ConfirmPassword", "Mật khẩu xác nhận không khớp.");
+        }
+
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                // Kiểm tra xem tên đăng nhập đã tồn tại chưa
+                var existingUser = _context.Users.FirstOrDefault(u => u.UserName == model.UserName);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("UserName", "Tên đăng nhập đã tồn tại.");
+                    ViewBag.Roles = _context.Roles.ToList();
+                    return View(model);
+                }
+
+                // Kiểm tra email đã tồn tại chưa
+                var existingEmail = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+                if (existingEmail != null)
+                {
+                    ModelState.AddModelError("Email", "Email đã được sử dụng.");
+                    ViewBag.Roles = _context.Roles.ToList();
+                    return View(model);
+                }
+
+                // Kiểm tra vai trò
+                var role = _context.Roles.FirstOrDefault(r => r.RoleId == model.RoleId);
+                if (role == null)
+                {
+                    ModelState.AddModelError("RoleId", "Vai trò không hợp lệ.");
+                    ViewBag.Roles = _context.Roles.ToList();
+                    return View(model);
+                }
+
+                // Băm mật khẩu và lưu người dùng mới
+                model.HashPassword(_passwordHasher, password);
+                _context.Users.Add(model);
+                _context.SaveChanges();
+
+                TempData["Success"] = "Đăng ký thành công! Vui lòng đăng nhập để tiếp tục.";
+                return RedirectToAction("Login");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại.");
+            }
+        }
+
+        ViewBag.Roles = _context.Roles.ToList();
+        return View(model);
+    }
+
+    #endregion
+
+    #region Đăng xuất (Logout)
 
     // GET: Account/Logout
     [Authorize]
@@ -106,4 +185,6 @@ public class AccountController : Controller
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Home");
     }
+
+    #endregion
 }

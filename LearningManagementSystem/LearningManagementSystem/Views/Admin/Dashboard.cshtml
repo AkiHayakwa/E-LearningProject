@@ -1,107 +1,100 @@
 ﻿@model LearningManagementSystem.Models.ViewModels.AdminDashboardViewModel
 
 @{
-    Layout = "_Layout";
-    ViewData["Title"] = "Bảng điều khiển Admin";
+    ViewData["Title"] = "Dashboard - E-Learning System (Admin)";
+    Layout = "_AdminLayout";
 }
 
-<div class="container py-5">
-    <h1 class="text-center mb-4">Bảng điều khiển Admin</h1>
-
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger">@TempData["Error"]</div>
-    }
-
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success">@TempData["Success"]</div>
-    }
-
-    <div class="dashboard-actions mb-4 d-flex justify-content-center">
-        <a asp-action="AddUser" asp-controller="Admin" class="btn btn-success me-2">Thêm người dùng</a>
-        <a asp-action="AddCourse" asp-controller="Admin" class="btn btn-success me-2">Thêm khóa học</a>
-        <a asp-action="AddLesson" asp-controller="Admin" class="btn btn-success">Thêm bài học</a>
+<!-- Thông báo -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+}
 
-    <div class="dashboard-stats">
-        <div class="card">
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Thống kê tổng quan -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary shadow-sm">
             <div class="card-body">
-                <h3>Tổng số người dùng</h3>
-                <p><a asp-action="ManageUsers" asp-controller="Admin" class="text-primary">@Model.TotalUsers</a></p>
+                <h5 class="card-title">Tổng số người dùng</h5>
+                <p class="card-text display-4">@Model.TotalUsers</p>
             </div>
         </div>
-        <div class="card">
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success shadow-sm">
             <div class="card-body">
-                <h3>Tổng số khóa học</h3>
-                <p><a asp-action="ManageCourses" asp-controller="Admin" class="text-primary">@Model.TotalCourses</a></p>
+                <h5 class="card-title">Tổng số khóa học</h5>
+                <p class="card-text display-4">@Model.TotalCourses</p>
             </div>
         </div>
-        <div class="card">
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning shadow-sm">
             <div class="card-body">
-                <h3>Tổng số bài học</h3>
-                <p><a asp-action="ManageLessons" asp-controller="Admin" class="text-primary">@Model.TotalLessons</a></p>
+                <h5 class="card-title">Tổng số bình luận</h5>
+                <p class="card-text display-4">@Model.TotalComments</p>
             </div>
         </div>
-        <div class="card">
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info shadow-sm">
             <div class="card-body">
-                <h3>Tổng số bình luận</h3>
-                <p><a asp-action="ManageComments" asp-controller="Admin" class="text-primary">@Model.TotalComments</a></p>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <h3>Tổng số đăng ký</h3>
-                <p>@Model.TotalEnrollments</p>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <h3>Tổng số tiến độ</h3>
-                <p>@Model.TotalProgresses</p>
+                <h5 class="card-title">Tổng số ghi danh</h5>
+                <p class="card-text display-4">@Model.TotalEnrollments</p>
             </div>
         </div>
     </div>
 </div>
 
-<style>
-    .dashboard-actions {
-        margin-bottom: 20px;
-    }
+<!-- Biểu đồ (có thể thêm sau) -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Thống kê hoạt động</h5>
+                <p class="text-muted">Biểu đồ thống kê sẽ được thêm vào sau.</p>
+                <!-- Bạn có thể tích hợp Chart.js hoặc một thư viện biểu đồ khác ở đây -->
+            </div>
+        </div>
+    </div>
+</div>
 
-    .dashboard-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        padding: 20px;
-    }
-
-    .card {
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-
-    .card-body {
-        padding: 20px;
-    }
-
-    h3 {
-        margin-bottom: 10px;
-        font-size: 1.2rem;
-    }
-
-    p {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #007bff;
-    }
-
-    .text-primary {
-        text-decoration: none;
-    }
-
-        .text-primary:hover {
-            text-decoration: underline;
+@section Styles {
+    <style>
+        .card {
+            border: none;
+            transition: transform 0.3s ease;
         }
-</style>
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            }
+
+        .card-body {
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-text.display-4 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+    </style>
+}

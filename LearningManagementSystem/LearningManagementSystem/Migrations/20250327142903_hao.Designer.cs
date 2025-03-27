@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearningManagementSystem.Migrations
 {
     [DbContext(typeof(LMSContext))]
-    [Migration("20250327055732_hao1")]
-    partial class hao1
+    [Migration("20250327142903_hao")]
+    partial class hao
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,7 +63,7 @@ namespace LearningManagementSystem.Migrations
                             CommentId = "comment1",
                             Content = "Khóa học rất hữu ích!",
                             CourseId = "course1",
-                            CreatedDate = new DateTime(2025, 3, 27, 12, 57, 30, 916, DateTimeKind.Local).AddTicks(3184),
+                            CreatedDate = new DateTime(2025, 3, 27, 21, 29, 3, 311, DateTimeKind.Local).AddTicks(5337),
                             UserName = "student1"
                         });
                 });
@@ -101,7 +101,7 @@ namespace LearningManagementSystem.Migrations
                         {
                             CourseId = "course1",
                             CourseName = "Khóa học lập trình C# cơ bản",
-                            CreatedDate = new DateTime(2025, 3, 27, 12, 57, 30, 915, DateTimeKind.Local).AddTicks(832),
+                            CreatedDate = new DateTime(2025, 3, 27, 21, 29, 3, 310, DateTimeKind.Local).AddTicks(1429),
                             Description = "Khóa học này giới thiệu các khái niệm cơ bản về lập trình C#.",
                             ImageUrl = "/images/course1.jpg"
                         },
@@ -109,7 +109,7 @@ namespace LearningManagementSystem.Migrations
                         {
                             CourseId = "course2",
                             CourseName = "Khóa học ASP.NET Core",
-                            CreatedDate = new DateTime(2025, 3, 27, 12, 57, 30, 916, DateTimeKind.Local).AddTicks(147),
+                            CreatedDate = new DateTime(2025, 3, 27, 21, 29, 3, 311, DateTimeKind.Local).AddTicks(2491),
                             Description = "Khóa học này hướng dẫn xây dựng ứng dụng web với ASP.NET Core.",
                             ImageUrl = "/images/course2.jpg"
                         });
@@ -148,7 +148,7 @@ namespace LearningManagementSystem.Migrations
                         {
                             EnrollmentId = "enrollment1",
                             CourseId = "course1",
-                            EnrollmentDate = new DateTime(2025, 3, 27, 12, 57, 30, 916, DateTimeKind.Local).AddTicks(2365),
+                            EnrollmentDate = new DateTime(2025, 3, 27, 21, 29, 3, 311, DateTimeKind.Local).AddTicks(4500),
                             UserName = "student1"
                         });
                 });
@@ -244,7 +244,7 @@ namespace LearningManagementSystem.Migrations
                         new
                         {
                             ProgressId = "progress1",
-                            CompletionDate = new DateTime(2025, 3, 27, 12, 57, 30, 916, DateTimeKind.Local).AddTicks(4053),
+                            CompletionDate = new DateTime(2025, 3, 27, 21, 29, 3, 311, DateTimeKind.Local).AddTicks(6210),
                             CompletionStatus = true,
                             LessonId = "lesson1",
                             UserName = "student1"
@@ -320,7 +320,7 @@ namespace LearningManagementSystem.Migrations
                             UserName = "admin1",
                             Email = "admin1@example.com",
                             FullName = "Admin One",
-                            Password = "AQAAAAIAAYagAAAAEElzZekPDj1SyBD4gcKVM6fdwz+u8sT7Xy6EA4KSyzpK/Us+934It3+XSPqy0H8t8Q==",
+                            Password = "AQAAAAIAAYagAAAAEIx6pqZRtS/Mef0yhrcOamVgF5ZXwhggTJZC36YNV9eW6w/sx08rRVfI9KsMiyt2vg==",
                             RoleId = "role1"
                         },
                         new
@@ -328,7 +328,7 @@ namespace LearningManagementSystem.Migrations
                             UserName = "student1",
                             Email = "student1@example.com",
                             FullName = "Student One",
-                            Password = "AQAAAAIAAYagAAAAEOKfdGC28e5T8DcUn91D05+HbDWtWhl8guaWS918h+KLMT5vUPMJBm6m8Oj8IrgYDQ==",
+                            Password = "AQAAAAIAAYagAAAAEHWvvglOkP5JEeerSOVovDol5LvSENHY8MS31qgrhrrN56b4C+yIhD36hJSNmIbXsA==",
                             RoleId = "role2"
                         });
                 });

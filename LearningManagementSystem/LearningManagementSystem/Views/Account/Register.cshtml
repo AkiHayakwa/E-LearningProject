@@ -1,45 +1,75 @@
 ﻿@model LearningManagementSystem.Models.User
+
 @{
-    ViewData["Title"] = "Đăng ký";
+    ViewData["Title"] = "Đăng ký - E-Learning System";
     Layout = "_Layout";
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4">Đăng ký</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Đăng ký tài khoản</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Thông báo -->
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
 
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["Success"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <form asp-action="Register" asp-controller="Account" method="post">
+                        <div class="mb-3">
+                            <label asp-for="UserName" class="form-label">Tên đăng nhập</label>
+                            <input asp-for="UserName" class="form-control" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label">Họ tên</label>
+                            <input asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <input type="password" name="password" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                            <input type="password" name="confirmPassword" class="form-control" required />
+                            @if (ViewData.ModelState.ContainsKey("ConfirmPassword"))
+                            {
+                                <span class="text-danger">@ViewData.ModelState["ConfirmPassword"].Errors.FirstOrDefault()?.ErrorMessage</span>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="RoleId" class="form-label">Vai trò</label>
+                            <select asp-for="RoleId" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "RoleId", "RoleName"))">
+                                <option value="">Chọn vai trò</option>
+                            </select>
+                            <span asp-validation-for="RoleId" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p class="mb-0">Đã có tài khoản? <a asp-action="Login" asp-controller="Account">Đăng nhập ngay</a></p>
+                </div>
+            </div>
         </div>
-    }
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            @TempData["Error"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-
-    <form asp-action="Register" method="post">
-        <div class="mb-3">
-            <label for="userName" class="form-label">Tên đăng nhập</label>
-            <input type="text" class="form-control" id="userName" name="UserName" required />
-        </div>
-        <div class="mb-3">
-            <label for="fullName" class="form-label">Họ và tên</label>
-            <input type="text" class="form-control" id="fullName" name="FullName" required />
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="Email" required />
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Mật khẩu</label>
-            <input type="password" class="form-control" id="password" name="Password" required />
-        </div>
-        <button type="submit" class="btn btn-primary">Đăng ký</button>
-        <a href="@Url.Action("Login", "Account")" class="btn btn-link">Đã có tài khoản? Đăng nhập</a>
-    </form>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}
