@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearningManagementSystem.Migrations
 {
     [DbContext(typeof(LMSContext))]
-    [Migration("20250326162238_hao")]
-    partial class hao
+    [Migration("20250327072323_Hnam")]
+    partial class Hnam
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,7 +63,7 @@ namespace LearningManagementSystem.Migrations
                             CommentId = "comment1",
                             Content = "Khóa học rất hữu ích!",
                             CourseId = "course1",
-                            CreatedDate = new DateTime(2025, 3, 26, 23, 22, 38, 98, DateTimeKind.Local).AddTicks(1589),
+                            CreatedDate = new DateTime(2025, 3, 27, 14, 23, 23, 312, DateTimeKind.Local).AddTicks(3054),
                             UserName = "student1"
                         });
                 });
@@ -87,6 +87,11 @@ namespace LearningManagementSystem.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.HasKey("CourseId");
 
                     b.ToTable("Courses");
@@ -96,15 +101,17 @@ namespace LearningManagementSystem.Migrations
                         {
                             CourseId = "course1",
                             CourseName = "Khóa học lập trình C# cơ bản",
-                            CreatedDate = new DateTime(2025, 3, 26, 23, 22, 38, 96, DateTimeKind.Local).AddTicks(8938),
-                            Description = "Khóa học này giới thiệu các khái niệm cơ bản về lập trình C#."
+                            CreatedDate = new DateTime(2025, 3, 27, 14, 23, 23, 308, DateTimeKind.Local).AddTicks(358),
+                            Description = "Khóa học này giới thiệu các khái niệm cơ bản về lập trình C#.",
+                            ImageUrl = "/images/course1.jpg"
                         },
                         new
                         {
                             CourseId = "course2",
                             CourseName = "Khóa học ASP.NET Core",
-                            CreatedDate = new DateTime(2025, 3, 26, 23, 22, 38, 97, DateTimeKind.Local).AddTicks(8172),
-                            Description = "Khóa học này hướng dẫn xây dựng ứng dụng web với ASP.NET Core."
+                            CreatedDate = new DateTime(2025, 3, 27, 14, 23, 23, 312, DateTimeKind.Local).AddTicks(17),
+                            Description = "Khóa học này hướng dẫn xây dựng ứng dụng web với ASP.NET Core.",
+                            ImageUrl = "/images/course2.jpg"
                         });
                 });
 
@@ -141,7 +148,7 @@ namespace LearningManagementSystem.Migrations
                         {
                             EnrollmentId = "enrollment1",
                             CourseId = "course1",
-                            EnrollmentDate = new DateTime(2025, 3, 26, 23, 22, 38, 98, DateTimeKind.Local).AddTicks(723),
+                            EnrollmentDate = new DateTime(2025, 3, 27, 14, 23, 23, 312, DateTimeKind.Local).AddTicks(2313),
                             UserName = "student1"
                         });
                 });
@@ -237,7 +244,7 @@ namespace LearningManagementSystem.Migrations
                         new
                         {
                             ProgressId = "progress1",
-                            CompletionDate = new DateTime(2025, 3, 26, 23, 22, 38, 98, DateTimeKind.Local).AddTicks(2500),
+                            CompletionDate = new DateTime(2025, 3, 27, 14, 23, 23, 312, DateTimeKind.Local).AddTicks(3901),
                             CompletionStatus = true,
                             LessonId = "lesson1",
                             UserName = "student1"
@@ -313,7 +320,7 @@ namespace LearningManagementSystem.Migrations
                             UserName = "admin1",
                             Email = "admin1@example.com",
                             FullName = "Admin One",
-                            Password = "AQAAAAIAAYagAAAAELOj0BL4JpXWImXEToM1Z6cphg76qxPajJj75MalKGawFwfmu7CXOiemH7mP1u7Y+w==",
+                            Password = "AQAAAAIAAYagAAAAEIYclZbKMR8pcuabcqqmvYko8N63G4v/8BQkYTZcNtLIy1Dh9XTEppASZo9u0jq+Kw==",
                             RoleId = "role1"
                         },
                         new
@@ -321,7 +328,7 @@ namespace LearningManagementSystem.Migrations
                             UserName = "student1",
                             Email = "student1@example.com",
                             FullName = "Student One",
-                            Password = "AQAAAAIAAYagAAAAEOEhjYNYbwrYMSqZXw8KNqfP/zWRd1zx7aCISzh5ChfWFat2WGwGaM/8T7aw6QFJzQ==",
+                            Password = "AQAAAAIAAYagAAAAEHNdbUqEDafOotiQt+f2itQTWQRlimIBhEhyxJ1S/p8mNj39nXbMcP/qyGNwF1fg0Q==",
                             RoleId = "role2"
                         });
                 });

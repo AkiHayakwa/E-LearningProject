@@ -60,7 +60,7 @@ namespace LearningManagementSystem.Migrations
                             CommentId = "comment1",
                             Content = "Khóa học rất hữu ích!",
                             CourseId = "course1",
-                            CreatedDate = new DateTime(2025, 3, 27, 12, 57, 30, 916, DateTimeKind.Local).AddTicks(3184),
+                            CreatedDate = new DateTime(2025, 3, 27, 14, 23, 23, 312, DateTimeKind.Local).AddTicks(3054),
                             UserName = "student1"
                         });
                 });
@@ -98,7 +98,7 @@ namespace LearningManagementSystem.Migrations
                         {
                             CourseId = "course1",
                             CourseName = "Khóa học lập trình C# cơ bản",
-                            CreatedDate = new DateTime(2025, 3, 27, 12, 57, 30, 915, DateTimeKind.Local).AddTicks(832),
+                            CreatedDate = new DateTime(2025, 3, 27, 14, 23, 23, 308, DateTimeKind.Local).AddTicks(358),
                             Description = "Khóa học này giới thiệu các khái niệm cơ bản về lập trình C#.",
                             ImageUrl = "/images/course1.jpg"
                         },
@@ -106,7 +106,7 @@ namespace LearningManagementSystem.Migrations
                         {
                             CourseId = "course2",
                             CourseName = "Khóa học ASP.NET Core",
-                            CreatedDate = new DateTime(2025, 3, 27, 12, 57, 30, 916, DateTimeKind.Local).AddTicks(147),
+                            CreatedDate = new DateTime(2025, 3, 27, 14, 23, 23, 312, DateTimeKind.Local).AddTicks(17),
                             Description = "Khóa học này hướng dẫn xây dựng ứng dụng web với ASP.NET Core.",
                             ImageUrl = "/images/course2.jpg"
                         });
@@ -145,7 +145,7 @@ namespace LearningManagementSystem.Migrations
                         {
                             EnrollmentId = "enrollment1",
                             CourseId = "course1",
-                            EnrollmentDate = new DateTime(2025, 3, 27, 12, 57, 30, 916, DateTimeKind.Local).AddTicks(2365),
+                            EnrollmentDate = new DateTime(2025, 3, 27, 14, 23, 23, 312, DateTimeKind.Local).AddTicks(2313),
                             UserName = "student1"
                         });
                 });
@@ -241,7 +241,7 @@ namespace LearningManagementSystem.Migrations
                         new
                         {
                             ProgressId = "progress1",
-                            CompletionDate = new DateTime(2025, 3, 27, 12, 57, 30, 916, DateTimeKind.Local).AddTicks(4053),
+                            CompletionDate = new DateTime(2025, 3, 27, 14, 23, 23, 312, DateTimeKind.Local).AddTicks(3901),
                             CompletionStatus = true,
                             LessonId = "lesson1",
                             UserName = "student1"
@@ -317,7 +317,7 @@ namespace LearningManagementSystem.Migrations
                             UserName = "admin1",
                             Email = "admin1@example.com",
                             FullName = "Admin One",
-                            Password = "AQAAAAIAAYagAAAAEElzZekPDj1SyBD4gcKVM6fdwz+u8sT7Xy6EA4KSyzpK/Us+934It3+XSPqy0H8t8Q==",
+                            Password = "AQAAAAIAAYagAAAAEIYclZbKMR8pcuabcqqmvYko8N63G4v/8BQkYTZcNtLIy1Dh9XTEppASZo9u0jq+Kw==",
                             RoleId = "role1"
                         },
                         new
@@ -325,7 +325,7 @@ namespace LearningManagementSystem.Migrations
                             UserName = "student1",
                             Email = "student1@example.com",
                             FullName = "Student One",
-                            Password = "AQAAAAIAAYagAAAAEOKfdGC28e5T8DcUn91D05+HbDWtWhl8guaWS918h+KLMT5vUPMJBm6m8Oj8IrgYDQ==",
+                            Password = "AQAAAAIAAYagAAAAEHNdbUqEDafOotiQt+f2itQTWQRlimIBhEhyxJ1S/p8mNj39nXbMcP/qyGNwF1fg0Q==",
                             RoleId = "role2"
                         });
                 });
