@@ -51,6 +51,25 @@
                         <div class="card-body">
                             <h5 class="card-title">@course.CourseName</h5>
                             <p class="card-text text-muted">Ngày tạo: @course.CreatedDate.ToString("dd/MM/yyyy")</p>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                if (course.IsEnrolled)
+                                {
+                                    <button class="btn btn-danger w-100" disabled>Đã đăng ký</button>
+                                }
+                                else
+                                {
+                                    <form asp-action="Enroll" asp-controller="Course" asp-route-id="@course.CourseId" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-success w-100">Đăng ký</button>
+                                    </form>
+                                }
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Login", "Account")" class="btn btn-success w-100">Đăng ký</a>
+                            }
+                            <a href="@Url.Action("CourseDetails", "Course", new { id = course.CourseId })" class="btn btn-primary btn-sm mt-2">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>
@@ -114,5 +133,36 @@
             height: 200px;
             object-fit: cover;
         }
+
+        /* Button Styling */
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+            .btn-success:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+            }
     </style>
 }

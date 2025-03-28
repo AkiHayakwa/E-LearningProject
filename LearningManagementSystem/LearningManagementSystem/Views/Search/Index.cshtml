@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LearningManagementSystem.Models.Course>
+﻿@model IEnumerable<LearningManagementSystem.Models.ViewModels.CourseViewModel>
 @{
     ViewData["Title"] = "Kết quả tìm kiếm";
     Layout = "_Layout";
@@ -19,7 +19,7 @@
                     <!-- Thông tin khóa học -->
                     <div class="course-info flex-grow-1">
                         <h5 class="course-title mb-1">
-                            <a href="@Url.Action("Details", "Course", new { id = course.CourseId })" class="text-dark text-decoration-none">@course.CourseName</a>
+                            <a href="@Url.Action("CourseDetails", "Course", new { id = course.CourseId })" class="text-dark text-decoration-none">@course.CourseName</a>
                         </h5>
                         <p class="course-description text-muted mb-1">
                             @(string.IsNullOrEmpty(course.Description) ? "Không có mô tả." : (course.Description.Length > 100 ? course.Description.Substring(0, 100) + "..." : course.Description))
@@ -28,6 +28,29 @@
                         <p class="course-details text-muted mb-0">
                             @(course.Lessons?.Count() ?? 0) bài giảng • All Levels
                         </p>
+                    </div>
+                    <!-- Nút Đăng ký/Đã đăng ký và See Detail -->
+                    <div class="course-actions ms-3 d-flex align-items-center">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (course.IsEnrolled)
+                            {
+                                <button class="btn btn-danger btn-sm me-2" disabled>Đã đăng ký</button>
+                            }
+                            else
+                            {
+                                <form asp-action="Enroll" asp-controller="Course" asp-route-id="@course.CourseId" method="post" class="d-inline me-2">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-success btn-sm">Đăng ký</button>
+                                </form>
+                            }
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Login", "Account")" class="btn btn-success btn-sm me-2">Đăng ký</a>
+                        }
+                        <!-- Nút See Detail -->
+                        <a href="@Url.Action("CourseDetails", "Course", new { id = course.CourseId })" class="btn btn-primary btn-sm">See Detail</a>
                     </div>
                 </div>
             }
@@ -65,6 +88,42 @@
 
         .course-details {
             font-size: 0.85rem;
+        }
+
+        /* Button Styling */
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+            .btn-success:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+            }
+
+        .course-actions {
+            min-width: 200px; /* Tăng chiều rộng để chứa cả hai nút */
+            text-align: right;
         }
     </style>
 }

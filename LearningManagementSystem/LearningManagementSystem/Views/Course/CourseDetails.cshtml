@@ -1,0 +1,129 @@
+﻿@model LearningManagementSystem.Models.ViewModels.CourseDetailsViewModel
+@{
+    ViewData["Title"] = $"{Model.Course.CourseName} - E-Learning System";
+    Layout = "_Layout";
+}
+
+<div class="container my-5">
+    <!-- Thông tin khóa học -->
+    <div class="row mb-5">
+        <div class="col-md-8">
+            <h1>@Model.Course.CourseName</h1>
+            <p class="text-muted">@Model.Course.Description</p>
+            <p class="text-muted">Ngày tạo: @Model.Course.CreatedDate.ToString("dd/MM/yyyy")</p>
+            @if (!string.IsNullOrEmpty(Model.Course.ImageUrl))
+            {
+                <img src="@Model.Course.ImageUrl" alt="@Model.Course.CourseName" class="img-fluid mb-3" style="max-height: 400px; object-fit: cover;" />
+            }
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    @if (Model.IsEnrolled)
+                    {
+                        <p class="text-success">Bạn đã đăng ký khóa học này.</p>
+                    }
+                    else
+                    {
+                        <form asp-action="Enroll" asp-controller="Course" asp-route-id="@Model.Course.CourseId" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-success w-100 mb-3">Đăng ký ngay</button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Danh sách bài học -->
+    <h2 class="mb-4">Nội dung khóa học</h2>
+    @if (Model.Course.Lessons != null && Model.Course.Lessons.Any())
+    {
+        <div class="accordion" id="lessonsAccordion">
+            @foreach (var lesson in Model.Course.Lessons.OrderBy(l => l.OrderNumber))
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-@lesson.LessonId">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@lesson.LessonId" aria-expanded="false" aria-controls="collapse-@lesson.LessonId">
+                            @lesson.OrderNumber. @lesson.LessonTitle
+                        </button>
+                    </h2>
+                    <div id="collapse-@lesson.LessonId" class="accordion-collapse collapse" aria-labelledby="heading-@lesson.LessonId" data-bs-parent="#lessonsAccordion">
+                        <div class="accordion-body">
+                            @if (!string.IsNullOrEmpty(lesson.LinkYoutube))
+                            {
+                                <p><strong>Video:</strong> <a href="@lesson.LinkYoutube" target="_blank">Xem trên YouTube</a></p>
+                            }
+                            else
+                            {
+                                <p>Không có video cho bài học này.</p>
+                            }
+                            @if (!string.IsNullOrEmpty(lesson.Content))
+                            {
+                                <p><strong>Nội dung:</strong> @lesson.Content</p>
+                            }
+                            @if (Model.IsEnrolled)
+                            {
+                                <a href="@Url.Action("ViewLesson", "Lesson", new { lessonId = lesson.LessonId })" class="btn btn-primary btn-sm">Xem bài học</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">Khóa học này chưa có bài học nào.</p>
+    }
+
+    <!-- Danh sách bình luận -->
+    <h2 class="mt-5 mb-4">Bình luận</h2>
+    @if (Model.Comments != null && Model.Comments.Any())
+    {
+        <div class="list-group">
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="list-group-item mb-3">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@comment.UserName</h5>
+                        <small class="text-muted">@comment.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
+                    </div>
+                    <p class="mb-1">@comment.Content</p>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">Chưa có bình luận nào cho khóa học này.</p>
+    }
+</div>
+
+@section Styles {
+    <style>
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+            .btn-success:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+
+        .text-success {
+            color: #28a745 !important;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+            }
+    </style>
+}

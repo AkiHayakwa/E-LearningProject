@@ -10,7 +10,6 @@ namespace LearningManagementSystem.Repositories
     {
         private readonly LMSContext _context;
 
-        // Constructor nhận DbContext qua DI
         public CourseRepository(LMSContext context)
         {
             _context = context;
@@ -18,13 +17,15 @@ namespace LearningManagementSystem.Repositories
 
         public IQueryable<Course> GetAll()
         {
-            return _context.Courses.AsQueryable();
+            return _context.Courses
+                .Include(c => c.Lessons); // Tải danh sách bài học
         }
 
-        public Course GetById(string courseId)
+        public Course GetById(string id)
         {
             return _context.Courses
-                .FirstOrDefault(c => c.CourseId == courseId);
+                .Include(c => c.Lessons) // Tải danh sách bài học
+                .FirstOrDefault(c => c.CourseId == id);
         }
 
         public void Add(Course course)
@@ -37,9 +38,9 @@ namespace LearningManagementSystem.Repositories
             _context.Courses.Update(course);
         }
 
-        public void Delete(string courseId)
+        public void Delete(string id)
         {
-            var course = _context.Courses.FirstOrDefault(c => c.CourseId == courseId);
+            var course = _context.Courses.Find(id);
             if (course != null)
             {
                 _context.Courses.Remove(course);
