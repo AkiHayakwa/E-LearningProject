@@ -1,75 +1,147 @@
 ﻿@model LearningManagementSystem.Models.User
-
 @{
-    ViewData["Title"] = "Đăng ký - E-Learning System";
     Layout = "_Layout";
+    ViewData["Title"] = "Đăng ký - E-Learning System";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Đăng ký tài khoản</h4>
-                </div>
-                <div class="card-body">
-                    <!-- Thông báo -->
+<div class="container my-5">
+    <div class="row justify-content-center align-items-center">
+        <!-- Bên trái: Logo và thông điệp -->
+        <div class="col-md-6 col-sm-12 text-center text-md-start mb-4 mb-md-0">
+            <img src="/images/logo.png" alt="E-Learning Logo" class="img-fluid mb-3" style="max-width: 250px; animation: fadeIn 1s ease-in;" />
+            <h1 class="fw-bold" style="color: #a435f0; font-size: 2.5rem; animation: slideInLeft 1s ease-out;">Tham gia ngay hôm nay!</h1>
+            <p class="lead" style="color: #666; animation: slideInLeft 1s ease-out 0.2s;">Tạo tài khoản để bắt đầu hành trình học tập của bạn.</p>
+        </div>
+
+        <!-- Bên phải: Form đăng ký -->
+        <div class="col-md-5 col-sm-12">
+            <div class="card shadow-lg p-4" style="border-radius: 15px; border: none; animation: fadeInUp 1s ease-out;">
+                <h3 class="text-center mb-4" style="color: #333; font-weight: 600;">Đăng ký</h3>
+                <form asp-action="Register" asp-controller="Account" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <!-- Hiển thị thông báo thành công trước -->
                     @if (TempData["Success"] != null)
                     {
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 8px; animation: slideInLeft 0.5s ease-out;">
                             @TempData["Success"]
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     }
-
-                    <form asp-action="Register" asp-controller="Account" method="post">
-                        <div class="mb-3">
-                            <label asp-for="UserName" class="form-label">Tên đăng nhập</label>
-                            <input asp-for="UserName" class="form-control" />
-                            <span asp-validation-for="UserName" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="FullName" class="form-label">Họ tên</label>
-                            <input asp-for="FullName" class="form-control" />
-                            <span asp-validation-for="FullName" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Email" class="form-label">Email</label>
-                            <input asp-for="Email" class="form-control" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Mật khẩu</label>
-                            <input type="password" name="password" class="form-control" required />
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
-                            <input type="password" name="confirmPassword" class="form-control" required />
-                            @if (ViewData.ModelState.ContainsKey("ConfirmPassword"))
+                    else if (!ViewData.ModelState.IsValid)
+                    {
+                        <!-- Chỉ hiển thị lỗi nếu không có thông báo thành công -->
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 8px; animation: slideInLeft 0.5s ease-out;">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
                             {
-                                <span class="text-danger">@ViewData.ModelState["ConfirmPassword"].Errors.FirstOrDefault()?.ErrorMessage</span>
+                                <p>@error.ErrorMessage</p>
                             }
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="RoleId" class="form-label">Vai trò</label>
-                            <select asp-for="RoleId" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "RoleId", "RoleName"))">
-                                <option value="">Chọn vai trò</option>
-                            </select>
-                            <span asp-validation-for="RoleId" class="text-danger"></span>
+                    }
+
+                    <div class="mb-3">
+                        <label asp-for="UserName" class="form-label" style="color: #333; font-weight: 500;">Tên đăng nhập</label>
+                        <input asp-for="UserName" class="form-control" placeholder="Nhập tên đăng nhập" required style="border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: border-color 0.3s ease;" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label" style="color: #333; font-weight: 500;">Mật khẩu</label>
+                        <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required style="border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: border-color 0.3s ease;" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" style="color: #333; font-weight: 500;">Xác nhận mật khẩu</label>
+                        <input type="password" name="confirmPassword" class="form-control" placeholder="Xác nhận mật khẩu" required style="border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: border-color 0.3s ease;" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label" style="color: #333; font-weight: 500;">Họ và tên</label>
+                        <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên" required style="border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: border-color 0.3s ease;" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label" style="color: #333; font-weight: 500;">Email</label>
+                        <input asp-for="Email" class="form-control" placeholder="Nhập email" required style="border-radius: 8px; padding: 12px; background-color: #f8f9fa; transition: border-color 0.3s ease;" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 8px; animation: slideInLeft 0.5s ease-out;">
+                            @ViewBag.Error
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Đăng ký</button>
-                    </form>
-                </div>
-                <div class="card-footer text-center">
-                    <p class="mb-0">Đã có tài khoản? <a asp-action="Login" asp-controller="Account">Đăng nhập ngay</a></p>
-                </div>
+                    }
+                    <button type="submit" class="btn btn-purple w-100" style="border-radius: 8px; padding: 12px; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="bi bi-person-plus me-2"></i> Đăng ký
+                    </button>
+                </form>
+                <p class="text-center mt-3" style="color: #666; font-size: 0.95rem;">
+                    Đã có tài khoản?
+                    <a href="@Url.Action("Login", "Account")" class="text-purple fw-semibold" style="color: #a435f0 !important; text-decoration: none; transition: color 0.2s ease;">Đăng nhập</a>
+                </p>
             </div>
         </div>
     </div>
 </div>
 
+@section Styles {
+    <style>
+        .form-control:focus {
+            border-color: #a435f0;
+            box-shadow: 0 0 5px rgba(164, 53, 240, 0.5);
+        }
+
+        .btn-purple:hover {
+            background-color: #8a2be2;
+            box-shadow: 0 4px 12px rgba(164, 53, 240, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-purple:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 6px rgba(164, 53, 240, 0.3);
+        }
+
+        .text-purple:hover {
+            color: #8a2be2 !important;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+}
+
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }

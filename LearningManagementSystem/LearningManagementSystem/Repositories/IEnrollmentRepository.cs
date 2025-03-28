@@ -12,5 +12,10 @@ namespace LearningManagementSystem.Repositories
         void Update(Enrollment enrollment);
         void Delete(string id);
         void Save();
+
+        bool Enroll(string userName, string courseId);
+        bool Unenroll(string userName, string courseId);
+        List<Course> GetEnrolledCourses(string userName);
+        bool IsEnrolled(string userName, string courseId);
     }
 }

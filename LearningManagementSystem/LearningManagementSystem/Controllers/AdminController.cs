@@ -387,7 +387,7 @@ namespace LearningManagementSystem.Controllers.Admin
             lesson.OrderNumber = model.OrderNumber;
 
             // Đảm bảo CourseId không bị thay đổi
-            lesson.CourseId = lesson.CourseId; // Giữ nguyên CourseId từ bản ghi hiện tại
+            lesson.CourseId = lesson.CourseId; 
 
             // Khởi tạo Progresses (danh sách rỗng) nếu cần
             lesson.Progresses = lesson.Progresses ?? new List<Progress>();

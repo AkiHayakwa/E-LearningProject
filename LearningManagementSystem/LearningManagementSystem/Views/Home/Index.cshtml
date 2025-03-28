@@ -14,18 +14,16 @@
                     {
                         <h1 class="display-4 fw-bold">Chào mừng, @Model.User.FullName!</h1>
                         <p class="lead mt-3">
-                            Bạn đang đăng nhập với vai trò: <strong>@(Model.User.Role != null ? Model.User.Role.RoleName : "Không xác định")</strong>.
-                            Học các kỹ năng bạn cần để thành công trong thế kỷ 21 - từ lập trình cơ bản đến các khóa học chuyên sâu.
-                            Các khóa học giá từ <strong>299.000 đ</strong>. Ưu đãi sẽ kết thúc hôm nay.
+                            Bạn đang đăng nhập với vai trò: <strong>@(Model.User.Role != null ? Model.User.Role.RoleName : "Không xác định")</strong>.<br />
+                            Khám phá các khóa học miễn phí để nâng cao kỹ năng của bạn - từ lập trình cơ bản đến các khóa học chuyên sâu.
                         </p>
                         <a href="@Url.Action("Logout", "Account")" class="btn btn-outline-danger">Đăng xuất</a>
                     }
                     else
                     {
-                        <h1 class="display-4 fw-bold">Không ngừng phá <br />n đảo u</h1>
+                        <h1 class="display-4 fw-bold">Học tập miễn phí <br />mọi lúc, mọi nơi</h1>
                         <p class="lead mt-3">
-                            Học các kỹ năng bạn cần để thành công trong thế kỷ 21 - từ lập trình cơ bản đến các khóa học chuyên sâu.
-                            Các khóa học giá từ <strong>299.000 đ</strong>. Ưu đãi sẽ kết thúc hôm nay.
+                            Khám phá các khóa học miễn phí để nâng cao kỹ năng của bạn - từ lập trình cơ bản đến các khóa học chuyên sâu.
                         </p>
                         <a href="@Url.Action("Login", "Account")" class="btn btn-primary me-2">Đăng nhập để bắt đầu</a>
                         <a href="@Url.Action("Register", "Account")" class="btn btn-outline-primary">Đăng ký ngay</a>
@@ -39,26 +37,9 @@
     </div>
 </div>
 
-<!-- Partner Logos -->
-<div class="partner-logos py-5">
-    <div class="container text-center">
-        <p class="text-muted mb-4">Được hơn 16.000 công ty và hàng triệu học viên trên khắp thế giới tin dùng</p>
-        <div class="d-flex justify-content-center flex-wrap gap-5">
-            <img src="/images/volkswagen.png" alt="Volkswagen" class="img-fluid" style="max-height: 50px;" />
-            <img src="/images/samsung.png" alt="Samsung" class="img-fluid" style="max-height: 50px;" />
-            <img src="/images/cisco.png" alt="Cisco" class="img-fluid" style="max-height: 50px;" />
-            <img src="/images/vimeo.png" alt="Vimeo" class="img-fluid" style="max-height: 50px;" />
-            <img src="/images/p-and-g.png" alt="P&G" class="img-fluid" style="max-height: 50px;" />
-            <img src="/images/hewlett-packard.png" alt="Hewlett Packard" class="img-fluid" style="max-height: 50px;" />
-            <img src="/images/citi.png" alt="Citi" class="img-fluid" style="max-height: 50px;" />
-            <img src="/images/ericsson.png" alt="Ericsson" class="img-fluid" style="max-height: 50px;" />
-        </div>
-    </div>
-</div>
-
-<!-- Học viên đang xem -->
+<!-- Danh sách khóa học -->
 <div class="container py-5">
-    <h2 class="mb-4">Học viên đang xem</h2>
+    <h2 class="mb-4">Danh sách khóa học</h2>
     @if (Model.Courses != null && Model.Courses.Any())
     {
         <div class="row">
@@ -70,7 +51,6 @@
                         <div class="card-body">
                             <h5 class="card-title">@course.CourseName</h5>
                             <p class="card-text text-muted">Ngày tạo: @course.CreatedDate.ToString("dd/MM/yyyy")</p>
-                            <p class="card-text">299.000 đ</p>
                         </div>
                     </div>
                 </div>

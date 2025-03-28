@@ -68,5 +68,65 @@ namespace LearningManagementSystem.Repositories
         {
             _context.SaveChanges();
         }
+
+        public bool Enroll(string userName, string courseId)
+        {
+            // Kiểm tra xem người dùng và khóa học có tồn tại không
+            var user = _context.Users.FirstOrDefault(u => u.UserName == userName);
+            var course = _context.Courses.FirstOrDefault(c => c.CourseId == courseId);
+            if (user == null || course == null)
+            {
+                return false;
+            }
+
+            // Kiểm tra xem người dùng đã đăng ký khóa học này chưa
+            var existingEnrollment = GetEnrollment(userName, courseId);
+            if (existingEnrollment != null)
+            {
+                return false; // Đã đăng ký rồi
+            }
+
+            // Thêm bản ghi đăng ký
+            var enrollment = new Enrollment
+            {
+                EnrollmentId = Guid.NewGuid().ToString(), // Tạo ID ngẫu nhiên
+                UserName = userName,
+                CourseId = courseId,
+                EnrollmentDate = DateTime.Now
+            };
+            Add(enrollment);
+            Save();
+            return true;
+        }
+
+        public bool Unenroll(string userName, string courseId)
+        {
+            // Tìm bản ghi đăng ký
+            var enrollment = GetEnrollment(userName, courseId);
+            if (enrollment == null)
+            {
+                return false; // Không tìm thấy bản ghi đăng ký
+            }
+
+            // Xóa bản ghi đăng ký
+            Delete(enrollment.EnrollmentId);
+            Save();
+            return true;
+        }
+
+        public List<Course> GetEnrolledCourses(string userName)
+        {
+            return _context.Enrollments
+                .Where(e => e.UserName == userName)
+                .Include(e => e.Course) // Bao gồm Course để lấy thông tin khóa học
+                .Select(e => e.Course)
+                .ToList();
+        }
+
+        public bool IsEnrolled(string userName, string courseId)
+        {
+            return _context.Enrollments
+                .Any(e => e.UserName == userName && e.CourseId == courseId);
+        }
     }
 }

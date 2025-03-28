@@ -8,17 +8,26 @@
     <h2 class="mb-4">Kết quả tìm kiếm cho "@ViewBag.Query"</h2>
     @if (Model.Any())
     {
-        <div class="row">
+        <div class="course-list">
             @foreach (var course in Model)
             {
-                <div class="col-md-3 mb-4">
-                    <div class="card shadow-sm">
-                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="@course.CourseName" />
-                        <div class="card-body">
-                            <h5 class="card-title">@course.CourseName</h5>
-                            <p class="card-text text-muted">Ngày tạo: @course.CreatedDate.ToString("dd/MM/yyyy")</p>
-                            <p class="card-text">299.000 đ</p>
-                        </div>
+                <div class="course-item d-flex border-bottom py-3">
+                    <!-- Ảnh đại diện -->
+                    <div class="course-image me-3">
+                        <img src="@(string.IsNullOrEmpty(course.ImageUrl) ? "/images/default-course.jpg" : course.ImageUrl)" alt="@course.CourseName" class="img-fluid" style="width: 200px; height: 120px; object-fit: cover;" />
+                    </div>
+                    <!-- Thông tin khóa học -->
+                    <div class="course-info flex-grow-1">
+                        <h5 class="course-title mb-1">
+                            <a href="@Url.Action("Details", "Course", new { id = course.CourseId })" class="text-dark text-decoration-none">@course.CourseName</a>
+                        </h5>
+                        <p class="course-description text-muted mb-1">
+                            @(string.IsNullOrEmpty(course.Description) ? "Không có mô tả." : (course.Description.Length > 100 ? course.Description.Substring(0, 100) + "..." : course.Description))
+                        </p>
+                        <p class="course-author text-muted mb-1">Admin</p>
+                        <p class="course-details text-muted mb-0">
+                            @(course.Lessons?.Count() ?? 0) bài giảng • All Levels
+                        </p>
                     </div>
                 </div>
             }
@@ -29,3 +38,33 @@
         <p class="text-muted">Không tìm thấy khóa học nào phù hợp với từ khóa "@ViewBag.Query".</p>
     }
 </div>
+
+@section Styles {
+    <style>
+        .course-item {
+            transition: background-color 0.2s ease;
+        }
+
+            .course-item:hover {
+                background-color: #f8f9fa;
+            }
+
+        .course-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .course-description {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .course-author {
+            font-size: 0.85rem;
+        }
+
+        .course-details {
+            font-size: 0.85rem;
+        }
+    </style>
+}
