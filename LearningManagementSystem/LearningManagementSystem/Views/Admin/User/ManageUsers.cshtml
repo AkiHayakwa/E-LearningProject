@@ -30,6 +30,10 @@
     </a>
 </div>
 
+<div class="input-group mb-3 w-50">
+    <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm tên người dùng..." />
+</div>
+
 <!-- Bảng người dùng -->
 @if (!Model.Any())
 {
@@ -80,6 +84,29 @@ else
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+
+             document.addEventListener("DOMContentLoaded", function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Tìm kiếm khóa học
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function () {
+                const filter = searchInput.value.toLowerCase();
+                const rows = document.querySelectorAll('table tbody tr');
+
+                rows.forEach(row => {
+                    const courseName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    if (courseName.includes(filter)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
             });
         });
     </script>

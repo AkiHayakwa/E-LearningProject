@@ -1,107 +1,164 @@
 ﻿@model LearningManagementSystem.Models.ViewModels.CourseDetailsViewModel
 @{
-    ViewData["Title"] = $"{Model.Course.CourseName} - E-Learning System";
+    ViewData["Title"] = "Chi tiết khóa học - " + Model.Course.CourseName;
     Layout = "_Layout";
 }
 
-<div class="container my-5">
+<div class="container py-5">
     <!-- Thông tin khóa học -->
-    <div class="row mb-5">
+    <div class="row">
         <div class="col-md-8">
-            <h1>@Model.Course.CourseName</h1>
-            <p class="text-muted">@Model.Course.Description</p>
+            <h1 class="mb-3">@Model.Course.CourseName</h1>
+            <p class="text-muted mb-3">@Model.Course.Description</p>
             <p class="text-muted">Ngày tạo: @Model.Course.CreatedDate.ToString("dd/MM/yyyy")</p>
-            @if (!string.IsNullOrEmpty(Model.Course.ImageUrl))
-            {
-                <img src="@Model.Course.ImageUrl" alt="@Model.Course.CourseName" class="img-fluid mb-3" style="max-height: 400px; object-fit: cover;" />
-            }
+            <p class="text-muted">Số lượng bài học: @(Model.Course.Lessons?.Count() ?? 0)</p>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    @if (Model.IsEnrolled)
-                    {
-                        <p class="text-success">Bạn đã đăng ký khóa học này.</p>
-                    }
-                    else
-                    {
-                        <form asp-action="Enroll" asp-controller="Course" asp-route-id="@Model.Course.CourseId" method="post">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-success w-100 mb-3">Đăng ký ngay</button>
-                        </form>
-                    }
-                </div>
-            </div>
+        <div class="col-md-4 text-center">
+            <img src="@(string.IsNullOrEmpty(Model.Course.ImageUrl) ? "/images/default-course.jpg" : Model.Course.ImageUrl)" alt="@Model.Course.CourseName" class="img-fluid rounded mb-3" style="max-height: 200px;" />
+            @if (Model.IsEnrolled)
+            {
+                <button class="btn btn-danger w-100" disabled>Đã đăng ký</button>
+            }
+            else
+            {
+                <form asp-action="Enroll" asp-controller="Course" asp-route-id="@Model.Course.CourseId" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-success w-100">Đăng ký</button>
+                </form>
+            }
         </div>
     </div>
 
     <!-- Danh sách bài học -->
-    <h2 class="mb-4">Nội dung khóa học</h2>
-    @if (Model.Course.Lessons != null && Model.Course.Lessons.Any())
+    <h2 class="mt-5 mb-3">Danh sách bài học</h2>
+    @if (Model.IsEnrolled)
     {
-        <div class="accordion" id="lessonsAccordion">
-            @foreach (var lesson in Model.Course.Lessons.OrderBy(l => l.OrderNumber))
+        @if (Model.Course.Lessons != null && Model.Course.Lessons.Any())
+        {
+            <!-- Debug: Hiển thị thông tin Progresses -->
+            @if (Model.Progresses != null && Model.Progresses.Any())
             {
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading-@lesson.LessonId">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@lesson.LessonId" aria-expanded="false" aria-controls="collapse-@lesson.LessonId">
-                            @lesson.OrderNumber. @lesson.LessonTitle
-                        </button>
-                    </h2>
-                    <div id="collapse-@lesson.LessonId" class="accordion-collapse collapse" aria-labelledby="heading-@lesson.LessonId" data-bs-parent="#lessonsAccordion">
-                        <div class="accordion-body">
-                            @if (!string.IsNullOrEmpty(lesson.LinkYoutube))
-                            {
-                                <p><strong>Video:</strong> <a href="@lesson.LinkYoutube" target="_blank">Xem trên YouTube</a></p>
-                            }
-                            else
-                            {
-                                <p>Không có video cho bài học này.</p>
-                            }
-                            @if (!string.IsNullOrEmpty(lesson.Content))
-                            {
-                                <p><strong>Nội dung:</strong> @lesson.Content</p>
-                            }
-                            @if (Model.IsEnrolled)
-                            {
-                                <a href="@Url.Action("ViewLesson", "Lesson", new { lessonId = lesson.LessonId })" class="btn btn-primary btn-sm">Xem bài học</a>
-                            }
+                <p>Debug: Found @Model.Progresses.Count progress records</p>
+                @foreach (var progress in Model.Progresses)
+                {
+                    <p>Debug: LessonId = @progress.LessonId, CompletionStatus = @progress.CompletionStatus</p>
+                }
+            }
+            else
+            {
+                <p>Debug: No progress records found</p>
+            }
+
+            <div class="accordion" id="lessonsAccordion">
+                @for (int i = 0; i < Model.Course.Lessons.Count; i++)
+                {
+                    var lesson = Model.Course.Lessons[i];
+                    // Debug: Hiển thị LessonId của bài học
+                    <p>Debug: Lesson @lesson.OrderNumber - LessonId = @lesson.LessonId</p>
+
+                    // Kiểm tra tiến trình hoàn thành từ Model.Progresses
+                    bool isCompleted = Model.Progresses?.Any(p => p.LessonId == lesson.LessonId && p.CompletionStatus) ?? false;
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-@i">
+                            <button class="accordion-button @(i == 0 ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@i" aria-expanded="@(i == 0 ? "true" : "false")" aria-controls="collapse-@i">
+                                Bài @(lesson.OrderNumber): @lesson.LessonTitle [Video: @(string.IsNullOrEmpty(lesson.LinkYoutube) ? "Không có video" : "Có sẵn")]
+                                <span class="ms-2">
+                                    <i class="bi bi-check-circle-fill @(isCompleted ? "text-success" : "text-muted")"
+                                       data-lesson-id="@lesson.LessonId"></i>
+                                </span>
+                            </button>
+                        </h2>
+                        <div id="collapse-@i" class="accordion-collapse collapse @(i == 0 ? "show" : "")" aria-labelledby="heading-@i" data-bs-parent="#lessonsAccordion" data-lesson-id="@lesson.LessonId">
+                            <div class="accordion-body">
+                                <p>@lesson.Content</p>
+                                @if (!string.IsNullOrEmpty(lesson.LinkYoutube))
+                                {
+                                    var videoId = lesson.LinkYoutube.Contains("v=") ? lesson.LinkYoutube.Split("v=")[1].Split('& W')[0] : lesson.LinkYoutube.Split('/').Last();
+                                    var embedUrl = $"https://www.youtube.com/embed/{videoId}?enablejsapi=1";
+                                    <div class="video-container mb-3">
+                                        <iframe width="100%"
+                                                height="400"
+                                                src="@embedUrl"
+                                                title="@lesson.LessonTitle"
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen
+                                                data-lesson-id="@lesson.LessonId"
+                                                class="youtube-video"></iframe>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">Bài học này không có video.</p>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">Khóa học này chưa có bài học nào.</p>
+        }
     }
     else
     {
-        <p class="text-muted">Khóa học này chưa có bài học nào.</p>
+        <p class="text-warning">Vui lòng đăng ký khóa học để xem nội dung bài học.</p>
     }
 
-    <!-- Danh sách bình luận -->
-    <h2 class="mt-5 mb-4">Bình luận</h2>
+    <!-- Phần bình luận -->
+    <h2 class="mt-5 mb-3">Bình luận</h2>
     @if (Model.Comments != null && Model.Comments.Any())
     {
-        <div class="list-group">
+        <div class="comments-list">
             @foreach (var comment in Model.Comments)
             {
-                <div class="list-group-item mb-3">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">@comment.UserName</h5>
-                        <small class="text-muted">@comment.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small>
-                    </div>
-                    <p class="mb-1">@comment.Content</p>
+                <div class="comment border-bottom py-3">
+                    <p><strong>@comment.UserName</strong> <small class="text-muted">@comment.CreatedDate.ToString("dd/MM/yyyy HH:mm")</small></p>
+                    <p>@comment.Content</p>
                 </div>
             }
         </div>
     }
     else
     {
-        <p class="text-muted">Chưa có bình luận nào cho khóa học này.</p>
+        <p class="text-muted">Chưa có bình luận nào.</p>
     }
 </div>
 
 @section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* Tỷ lệ 16:9 */
+            height: 0;
+            overflow: hidden;
+        }
+
+            .video-container iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+        .accordion-button {
+            font-size: 1.1rem;
+        }
+
+        .accordion-body {
+            font-size: 0.95rem;
+        }
+
+        .bi-check-circle-fill {
+            font-size: 1.2rem;
+            vertical-align: middle;
+        }
+
         .btn-success {
             background-color: #28a745;
             border-color: #28a745;
@@ -112,18 +169,102 @@
                 border-color: #1e7e34;
             }
 
-        .text-success {
-            color: #28a745 !important;
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
         }
 
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-            .btn-primary:hover {
-                background-color: #0056b3;
-                border-color: #004085;
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
             }
     </style>
+}
+
+@section Scripts {
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        let players = {};
+
+        function onYouTubeIframeAPIReady() {
+            document.querySelectorAll('.youtube-video').forEach(function(iframe) {
+                const lessonId = iframe.getAttribute('data-lesson-id');
+                console.log("Initializing player for LessonId:", lessonId); // Debug
+                if (!lessonId) {
+                    console.error("LessonId is null or undefined for iframe:", iframe);
+                    return;
+                }
+                players[lessonId] = new YT.Player(iframe, {
+                    events: {
+                        'onStateChange': function(event) {
+                            onPlayerStateChange(event, lessonId);
+                        }
+                    }
+                });
+            });
+        }
+
+        function onPlayerStateChange(event, lessonId) {
+            console.log("Player state changed for LessonId:", lessonId, "State:", event.data); // Debug
+            if (event.data === YT.PlayerState.ENDED) {
+                console.log("Video ended for LessonId:", lessonId); // Debug
+                updateProgress(lessonId, true); // Gọi với completionStatus = true khi video kết thúc
+            }
+        }
+
+        // Hàm updateProgress chung, nhận thêm tham số completionStatus
+        function updateProgress(lessonId, completionStatus) {
+            if (!lessonId) {
+                console.error("LessonId is undefined or null in updateProgress");
+                return;
+            }
+            console.log(`Updating progress for LessonId: ${lessonId}, CompletionStatus: ${completionStatus}`); // Debug
+            fetch('/Progress/UpdateProgress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({ lessonId: lessonId, completionStatus: completionStatus })
+            })
+            .then(response => {
+                console.log("Response status:", response.status); // Debug
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Response from UpdateProgress:", data); // Debug
+                if (data.success) {
+                    if (completionStatus) { // Chỉ cập nhật icon nếu completionStatus = true
+                        const icon = document.querySelector(`i[data-lesson-id="${lessonId}"]`);
+                        if (icon) {
+                            console.log("Updating icon to green for LessonId:", lessonId); // Debug
+                            icon.classList.remove('text-muted');
+                            icon.classList.add('text-success');
+                        } else {
+                            console.error("Icon not found for LessonId:", lessonId);
+                        }
+                    }
+                } else {
+                    console.error("Update failed:", data.error);
+                }
+            })
+            .catch(error => console.error('Fetch error:', error));
+        }
+
+        // Thêm sự kiện khi accordion được mở
+        document.addEventListener('DOMContentLoaded', function () {
+            const accordionItems = document.querySelectorAll('.accordion-collapse');
+            accordionItems.forEach(item => {
+                item.addEventListener('shown.bs.collapse', function () {
+                    const lessonId = this.getAttribute('data-lesson-id');
+                    console.log(`Accordion opened for LessonId: ${lessonId}`); // Debug
+                    // Gọi updateProgress với completionStatus = false khi mở accordion
+                    updateProgress(lessonId, false);
+                });
+            });
+        });
+    </script>
 }

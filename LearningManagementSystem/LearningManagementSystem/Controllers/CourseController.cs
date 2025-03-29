@@ -19,6 +19,7 @@ namespace LearningManagementSystem.Controllers
         private readonly ICommentRepository _commentRepository;
         private readonly IEnrollmentRepository _enrollmentRepository;
         private readonly ILessonRepository _lessonRepository;
+        private readonly IProgressRepository _progressRepository; // Thêm repository cho Progress
         private readonly ILogger<CourseController> _logger;
 
         public CourseController(
@@ -26,12 +27,14 @@ namespace LearningManagementSystem.Controllers
             ICommentRepository commentRepository,
             IEnrollmentRepository enrollmentRepository,
             ILessonRepository lessonRepository,
+            IProgressRepository progressRepository,
             ILogger<CourseController> logger)
         {
             _courseRepository = courseRepository;
             _commentRepository = commentRepository;
             _enrollmentRepository = enrollmentRepository;
             _lessonRepository = lessonRepository;
+            _progressRepository = progressRepository;
             _logger = logger;
         }
 
@@ -40,7 +43,7 @@ namespace LearningManagementSystem.Controllers
         {
             _logger.LogInformation("Index called to display list of courses.");
 
-            var userName = User.Identity.IsAuthenticated ? User.FindFirst(ClaimTypes.NameIdentifier)?.Value : null;
+            var userName = User.Identity.IsAuthenticated ? User.FindFirst(ClaimTypes.Name)?.Value : null;
             var courses = _courseRepository.GetAll()
                 .Select(c => new CourseListViewModel
                 {
@@ -72,8 +75,6 @@ namespace LearningManagementSystem.Controllers
 
             // Lấy danh sách bài học
             var lessons = _lessonRepository.GetLessonsByCourse(id).ToList();
-
-            // Gán danh sách bài học vào Course
             course.Lessons = lessons;
 
             // Lấy danh sách bình luận
@@ -82,17 +83,30 @@ namespace LearningManagementSystem.Controllers
                 .OrderByDescending(c => c.CreatedDate)
                 .ToList();
 
-            var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var isEnrolled = userName != null && _enrollmentRepository.GetAll()
+            var userName = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (string.IsNullOrEmpty(userName))
+            {
+                _logger.LogWarning("UserName could not be determined from claims.");
+                return Unauthorized("Bạn cần đăng nhập để xem chi tiết khóa học.");
+            }
+
+            var isEnrolled = _enrollmentRepository.GetAll()
                 .Any(e => e.UserName == userName && e.CourseId == id);
+
+            // Lấy danh sách tiến trình của user trong khóa học
+            var progresses = _progressRepository.GetAll()
+                .Where(p => p.UserName == userName && p.Lesson != null && p.Lesson.CourseId == id)
+                .ToList();
 
             var viewModel = new CourseDetailsViewModel
             {
                 Course = course,
                 Comments = comments,
-                IsEnrolled = isEnrolled
+                IsEnrolled = isEnrolled,
+                Progresses = progresses // Thêm Progresses vào ViewModel
             };
 
+            _logger.LogInformation($"Found {progresses.Count} progress records for user {userName} in course {id}");
             return View(viewModel);
         }
 
@@ -104,9 +118,14 @@ namespace LearningManagementSystem.Controllers
         {
             _logger.LogInformation($"Enroll called with CourseId: {id}");
 
-            var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var course = _courseRepository.GetById(id);
+            var userName = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (string.IsNullOrEmpty(userName))
+            {
+                _logger.LogWarning("UserName could not be determined from claims.");
+                return Unauthorized("Bạn cần đăng nhập để đăng ký khóa học.");
+            }
 
+            var course = _courseRepository.GetById(id);
             if (course == null)
             {
                 _logger.LogWarning($"Course with CourseId: {id} not found.");
@@ -130,7 +149,6 @@ namespace LearningManagementSystem.Controllers
             return RedirectToAction("CourseDetails", new { id });
         }
 
-        // GET: Course/ManageCourses
         [Authorize(Roles = "Admin")]
         public IActionResult ManageCourses()
         {

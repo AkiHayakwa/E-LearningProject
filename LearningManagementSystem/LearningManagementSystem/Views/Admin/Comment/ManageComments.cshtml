@@ -23,6 +23,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
+<div class="input-group mb-3 w-50">
+    <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm bình luận bằng tên người dùng..." />
+</div>
 
 @if (Model.Any())
 {
@@ -64,4 +67,29 @@ else
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+     document.addEventListener("DOMContentLoaded", function () {
+            // Kích hoạt tooltip
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Tìm kiếm khóa học
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function () {
+                const filter = searchInput.value.toLowerCase();
+                const rows = document.querySelectorAll('table tbody tr');
+
+                rows.forEach(row => {
+                    const courseName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    if (courseName.includes(filter)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 }

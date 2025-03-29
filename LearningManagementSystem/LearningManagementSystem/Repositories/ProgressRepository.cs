@@ -1,7 +1,6 @@
 ﻿using LearningManagementSystem.Data;
 using LearningManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace LearningManagementSystem.Repositories
 {
@@ -32,6 +31,12 @@ namespace LearningManagementSystem.Repositories
                 .FirstOrDefault(p => p.ProgressId == id);
         }
 
+        public Progress GetByUserAndLesson(string userName, string lessonId)
+        {
+            return _context.Progresses
+                .FirstOrDefault(p => p.UserName == userName && p.LessonId == lessonId);
+        }
+
         public void Add(Progress progress)
         {
             _context.Progresses.Add(progress);
@@ -51,9 +56,9 @@ namespace LearningManagementSystem.Repositories
             }
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

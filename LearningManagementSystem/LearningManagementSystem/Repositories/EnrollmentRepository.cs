@@ -101,14 +101,13 @@ namespace LearningManagementSystem.Repositories
 
         public bool Unenroll(string userName, string courseId)
         {
-            // Tìm bản ghi đăng ký
             var enrollment = GetEnrollment(userName, courseId);
             if (enrollment == null)
             {
-                return false; // Không tìm thấy bản ghi đăng ký
+                return false;
             }
 
-            // Xóa bản ghi đăng ký
+      
             Delete(enrollment.EnrollmentId);
             Save();
             return true;

@@ -6,9 +6,10 @@ namespace LearningManagementSystem.Repositories
     {
         IQueryable<Progress> GetAll();
         Progress GetById(string id);
+        Progress GetByUserAndLesson(string userName, string lessonId);
         void Add(Progress progress);
         void Update(Progress progress);
         void Delete(string id);
-        void Save();
+        Task SaveAsync();
     }
 }
