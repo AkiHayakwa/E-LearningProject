@@ -6,9 +6,11 @@ namespace LearningManagementSystem.Repositories
     {
         IQueryable<User> GetAll();
         User GetByUserName(string userName);
+
+        User GetByEmail(string email);
         void Add(User user);
         void Update(User user);
-        void Delete(string userName);
+        Task Delete(string userName);
         void Save();
     }
 }

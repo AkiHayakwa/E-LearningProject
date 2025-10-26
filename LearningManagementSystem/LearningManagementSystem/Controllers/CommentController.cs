@@ -14,10 +14,16 @@ public class CommentController : Controller
     }
 
     // GET: Comment/ManageComments
-    public IActionResult ManageComments()
+    public IActionResult ManageComments(int page = 1)
     {
-        var comments = _context.Comments.ToList();
-        return View(comments);
+        int pageSize = 10;
+        var allComments = _context.Comments.OrderByDescending(c => c.CreatedDate).ToList();
+        int totalComments = allComments.Count();
+        int totalPages = (int)Math.Ceiling((double)totalComments / pageSize);
+        var pagedComments = allComments.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        ViewBag.CurrentPage = page;
+        ViewBag.TotalPages = totalPages;
+        return View(pagedComments);
     }
 
     // GET: Comment/CreateComment

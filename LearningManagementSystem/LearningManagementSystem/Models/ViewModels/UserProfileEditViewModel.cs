@@ -1,32 +1,31 @@
-﻿namespace LearningManagementSystem.Models.ViewModels
+﻿using LearningManagementSystem.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace LearningManagementSystem.Models.ViewModels
 {
     public class UserProfileEditViewModel
     {
         public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Họ và tên là bắt buộc")]
         public string FullName { get; set; }
+
+        [Required(ErrorMessage = "Email là bắt buộc")]
+        [EmailAddress(ErrorMessage = "Email không đúng định dạng")]
         public string Email { get; set; }
-        public List<CommentViewModel> Comments { get; set; }
-        public List<CourseViewModel> EnrolledCourses { get; set; }
+
+        public string Bio { get; set; } 
+
+        public List<Course>? EnrolledCourses { get; set; }
+        public List<UserCommentViewModel>? Comments { get; set; }
     }
 
-    public class CommentViewModel
+    public class UserCommentViewModel
     {
-        public string CommentId { get; set; }
+        public string CourseTitle { get; set; }
         public string Content { get; set; }
         public DateTime CommentDate { get; set; }
-        public string CourseTitle { get; set; }
-    }
-
-    public class CourseViewModel
-    {
-        public string CourseId { get; set; }
-        public string Title { get; set; } // Đổi tên từ Title thành CourseName để đồng bộ với các ViewModel khác
-        public string CourseName { get; set; } // Thêm thuộc tính này (có thể dùng Title thay thế, nhưng tôi thêm để rõ ràng)
-        public string Description { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public string ImageUrl { get; set; }
-        public bool IsEnrolled { get; set; } // Thêm thuộc tính để kiểm tra trạng thái đăng ký
-        public List<Lesson> Lessons { get; set; }
-
     }
 }

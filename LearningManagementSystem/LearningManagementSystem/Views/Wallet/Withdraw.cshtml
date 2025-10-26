@@ -1,0 +1,84 @@
+@model LearningManagementSystem.Controllers.WithdrawRequestViewModel
+@{
+    ViewData["Title"] = "Rút tiền";
+    Layout = "~/Views/Shared/_InstructorLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-money-bill-wave"></i> Yêu cầu rút tiền
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <!-- Thông tin số dư -->
+                    <div class="alert alert-info">
+                        <h5><i class="fas fa-info-circle"></i> Số dư hiện tại: <strong>@Model.CurrentBalance.ToString("N0") VNĐ</strong></h5>
+                    </div>
+
+                    <form asp-action="Withdraw" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="form-group">
+                            <label asp-for="Amount" class="control-label">Số tiền muốn rút (VNĐ)</label>
+                            <input asp-for="Amount" class="form-control" placeholder="Nhập số tiền muốn rút" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                            <small class="form-text text-muted">Số tiền tối thiểu: 1,000 VNĐ</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="BankName" class="control-label">Tên ngân hàng</label>
+                            <input asp-for="BankName" class="form-control" placeholder="Ví dụ: Vietcombank, Techcombank, BIDV..." />
+                            <span asp-validation-for="BankName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="AccountNumber" class="control-label">Số tài khoản</label>
+                            <input asp-for="AccountNumber" class="form-control" placeholder="Nhập số tài khoản ngân hàng" />
+                            <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="AccountHolderName" class="control-label">Tên chủ tài khoản (tùy chọn)</label>
+                            <input asp-for="AccountHolderName" class="form-control" placeholder="Tên chủ tài khoản" />
+                            <span asp-validation-for="AccountHolderName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane"></i> Gửi yêu cầu rút tiền
+                            </button>
+                            <a href="@Url.Action("Index", "Wallet")" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-arrow-left"></i> Quay lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Thông tin quan trọng -->
+            <div class="card mt-4">
+                <div class="card-header bg-warning">
+                    <h5 class="card-title text-white">
+                        <i class="fas fa-exclamation-triangle"></i> Lưu ý quan trọng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> Yêu cầu rút tiền sẽ được xử lý trong vòng 1-2 ngày làm việc</li>
+                        <li><i class="fas fa-check text-success"></i> Phí chuyển khoản sẽ được trừ từ số tiền rút</li>
+                        <li><i class="fas fa-check text-success"></i> Vui lòng kiểm tra kỹ thông tin tài khoản trước khi gửi yêu cầu</li>
+                        <li><i class="fas fa-check text-success"></i> Liên hệ admin nếu có thắc mắc về quá trình rút tiền</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

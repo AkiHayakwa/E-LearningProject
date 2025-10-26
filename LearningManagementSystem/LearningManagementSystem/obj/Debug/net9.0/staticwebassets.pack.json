@@ -1,272 +1,928 @@
 {
   "Files": [
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\LearningManagementSystem.bundle.scp.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\LearningManagementSystem.bundle.scp.css",
       "PackagePath": "staticwebassets\\LearningManagementSystem.z1kqlplg5x.bundle.scp.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\site.css",
-      "PackagePath": "staticwebassets\\css\\site.css"
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\00834daf-3fc9-4694-9e49-8b95e9383dcb.webp",
+      "PackagePath": "staticwebassets\\avatars\\00834daf-3fc9-4694-9e49-8b95e9383dcb.webp"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\favicon.ico",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\0e7b059c-c847-430a-a599-a9d9864259ad.jpg",
+      "PackagePath": "staticwebassets\\avatars\\0e7b059c-c847-430a-a599-a9d9864259ad.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\103e4582-6e42-409d-9a8c-2ef9eeddef33.jpg",
+      "PackagePath": "staticwebassets\\avatars\\103e4582-6e42-409d-9a8c-2ef9eeddef33.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\15bb45e9-98c7-4679-b9eb-84808a17e119.jpg",
+      "PackagePath": "staticwebassets\\avatars\\15bb45e9-98c7-4679-b9eb-84808a17e119.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\16c4cf05-da0e-4d75-82bc-29e106c91262.jpg",
+      "PackagePath": "staticwebassets\\avatars\\16c4cf05-da0e-4d75-82bc-29e106c91262.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\224ec418-7ead-4106-b70c-0f06e52d174c.png",
+      "PackagePath": "staticwebassets\\avatars\\224ec418-7ead-4106-b70c-0f06e52d174c.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\30f28fc9-5b9a-49b1-9abc-61393f9c9b1f.png",
+      "PackagePath": "staticwebassets\\avatars\\30f28fc9-5b9a-49b1-9abc-61393f9c9b1f.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\3336f50f-43d0-48ee-be1b-2b0eae948602.jpg",
+      "PackagePath": "staticwebassets\\avatars\\3336f50f-43d0-48ee-be1b-2b0eae948602.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\42382af1-ec1d-469b-85bf-a7928bc2e385.png",
+      "PackagePath": "staticwebassets\\avatars\\42382af1-ec1d-469b-85bf-a7928bc2e385.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\44c370ac-a999-4afb-94e1-17dddf6acfd0.jpg",
+      "PackagePath": "staticwebassets\\avatars\\44c370ac-a999-4afb-94e1-17dddf6acfd0.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\461cf40a-786f-4485-9b03-fd3b71311202.jpg",
+      "PackagePath": "staticwebassets\\avatars\\461cf40a-786f-4485-9b03-fd3b71311202.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\47022181-3157-4a5e-948a-67b35d225871.jpg",
+      "PackagePath": "staticwebassets\\avatars\\47022181-3157-4a5e-948a-67b35d225871.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\52dddd35-9138-439b-9bf6-d088c929e259.png",
+      "PackagePath": "staticwebassets\\avatars\\52dddd35-9138-439b-9bf6-d088c929e259.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\58627f27-217d-4bd1-a0eb-2a858344d424.jpg",
+      "PackagePath": "staticwebassets\\avatars\\58627f27-217d-4bd1-a0eb-2a858344d424.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\7ef9f92f-15cf-435b-b1f1-ad49eb940317.png",
+      "PackagePath": "staticwebassets\\avatars\\7ef9f92f-15cf-435b-b1f1-ad49eb940317.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\8b1b7e4c-e5c2-40cb-9039-47218f5a9c06.jpg",
+      "PackagePath": "staticwebassets\\avatars\\8b1b7e4c-e5c2-40cb-9039-47218f5a9c06.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\8dcb4741-b411-482a-b47b-2948342b1dd3.jpg",
+      "PackagePath": "staticwebassets\\avatars\\8dcb4741-b411-482a-b47b-2948342b1dd3.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\922b1d46-59b2-491b-b6bb-dd66c3e329b0.jpg",
+      "PackagePath": "staticwebassets\\avatars\\922b1d46-59b2-491b-b6bb-dd66c3e329b0.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\95f7ba98-0472-4d68-9fe4-7ba8a76277d5.jpg",
+      "PackagePath": "staticwebassets\\avatars\\95f7ba98-0472-4d68-9fe4-7ba8a76277d5.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\a9c42402-d4de-4413-b03b-5cfda8cd341a.gif",
+      "PackagePath": "staticwebassets\\avatars\\a9c42402-d4de-4413-b03b-5cfda8cd341a.gif"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\b63c9845-be19-44c2-be10-574fa86d2593.jpg",
+      "PackagePath": "staticwebassets\\avatars\\b63c9845-be19-44c2-be10-574fa86d2593.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\bf54bdd7-dafb-47cc-b06a-97c44a9cf002.jpg",
+      "PackagePath": "staticwebassets\\avatars\\bf54bdd7-dafb-47cc-b06a-97c44a9cf002.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\e543bf65-7431-48a9-adba-b980fa89e525.jpg",
+      "PackagePath": "staticwebassets\\avatars\\e543bf65-7431-48a9-adba-b980fa89e525.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\e9f4731c-ce7a-4c54-bfcf-97119747f646.jpg",
+      "PackagePath": "staticwebassets\\avatars\\e9f4731c-ce7a-4c54-bfcf-97119747f646.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\eb446260-5045-4275-abf7-b5df40ca45a5.png",
+      "PackagePath": "staticwebassets\\avatars\\eb446260-5045-4275-abf7-b5df40ca45a5.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\avatars\\ee0c59a4-dc85-42b4-b1f2-0faf4ce53456.jpg",
+      "PackagePath": "staticwebassets\\avatars\\ee0c59a4-dc85-42b4-b1f2-0faf4ce53456.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Account\\AccessDenied.css",
+      "PackagePath": "staticwebassets\\css\\Account\\AccessDenied.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Account\\ChangePassword.css",
+      "PackagePath": "staticwebassets\\css\\Account\\ChangePassword.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Account\\ForgotPassword.css",
+      "PackagePath": "staticwebassets\\css\\Account\\ForgotPassword.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Account\\Login.css",
+      "PackagePath": "staticwebassets\\css\\Account\\Login.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Account\\MyLearning.css",
+      "PackagePath": "staticwebassets\\css\\Account\\MyLearning.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Account\\Register.css",
+      "PackagePath": "staticwebassets\\css\\Account\\Register.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Account\\ResetPassword.css",
+      "PackagePath": "staticwebassets\\css\\Account\\ResetPassword.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Account\\UpdateAvatar.css",
+      "PackagePath": "staticwebassets\\css\\Account\\UpdateAvatar.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Account\\UserProfileEdit.css",
+      "PackagePath": "staticwebassets\\css\\Account\\UserProfileEdit.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Account\\VerifyOtp.css",
+      "PackagePath": "staticwebassets\\css\\Account\\VerifyOtp.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Admin\\AdminDashboard.css",
+      "PackagePath": "staticwebassets\\css\\Admin\\AdminDashboard.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Admin\\CreateUser.css",
+      "PackagePath": "staticwebassets\\css\\Admin\\CreateUser.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Admin\\EditUser.css",
+      "PackagePath": "staticwebassets\\css\\Admin\\EditUser.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Admin\\ManageComments.css",
+      "PackagePath": "staticwebassets\\css\\Admin\\ManageComments.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Admin\\ManageUsers.css",
+      "PackagePath": "staticwebassets\\css\\Admin\\ManageUsers.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Admin\\SendNotification.css",
+      "PackagePath": "staticwebassets\\css\\Admin\\SendNotification.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Assignment\\CreateAssignment.css",
+      "PackagePath": "staticwebassets\\css\\Assignment\\CreateAssignment.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Assignment\\EditAssignment.css",
+      "PackagePath": "staticwebassets\\css\\Assignment\\EditAssignment.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Assignment\\ManageAssignments.css",
+      "PackagePath": "staticwebassets\\css\\Assignment\\ManageAssignments.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Cart\\Cart.css",
+      "PackagePath": "staticwebassets\\css\\Cart\\Cart.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Cart\\ConfirmPayment.css",
+      "PackagePath": "staticwebassets\\css\\Cart\\ConfirmPayment.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Cart\\PaymentSuccess.css",
+      "PackagePath": "staticwebassets\\css\\Cart\\PaymentSuccess.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Course\\AllTests.css",
+      "PackagePath": "staticwebassets\\css\\Course\\AllTests.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Course\\CourseDetails.css",
+      "PackagePath": "staticwebassets\\css\\Course\\CourseDetails.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Course\\CreateCourse.css",
+      "PackagePath": "staticwebassets\\css\\Course\\CreateCourse.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Course\\EditCourse.css",
+      "PackagePath": "staticwebassets\\css\\Course\\EditCourse.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Course\\ManageCourses.css",
+      "PackagePath": "staticwebassets\\css\\Course\\ManageCourses.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Course\\TakeTest.css",
+      "PackagePath": "staticwebassets\\css\\Course\\TakeTest.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Course\\TakeTestResult.css",
+      "PackagePath": "staticwebassets\\css\\Course\\TakeTestResult.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Enrollment\\ManageEnrollments.css",
+      "PackagePath": "staticwebassets\\css\\Enrollment\\ManageEnrollments.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Home\\Home.css",
+      "PackagePath": "staticwebassets\\css\\Home\\Home.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Instructor\\Grade.css",
+      "PackagePath": "staticwebassets\\css\\Instructor\\Grade.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Instructor\\GradeAssignment.css",
+      "PackagePath": "staticwebassets\\css\\Instructor\\GradeAssignment.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Instructor\\GradeExams.css",
+      "PackagePath": "staticwebassets\\css\\Instructor\\GradeExams.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Instructor\\InstructorDashboard.css",
+      "PackagePath": "staticwebassets\\css\\Instructor\\InstructorDashboard.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Instructor\\ManageProgress.css",
+      "PackagePath": "staticwebassets\\css\\Instructor\\ManageProgress.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Instructor\\SelectGradeType.css",
+      "PackagePath": "staticwebassets\\css\\Instructor\\SelectGradeType.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Lesson\\AddLesson.css",
+      "PackagePath": "staticwebassets\\css\\Lesson\\AddLesson.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Lesson\\ManageLessons.css",
+      "PackagePath": "staticwebassets\\css\\Lesson\\ManageLessons.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Notification\\Notifications.css",
+      "PackagePath": "staticwebassets\\css\\Notification\\Notifications.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Payment\\ManagePayments.css",
+      "PackagePath": "staticwebassets\\css\\Payment\\ManagePayments.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Payment\\PaymentDetail.css",
+      "PackagePath": "staticwebassets\\css\\Payment\\PaymentDetail.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Payment\\PaymentHistory.css",
+      "PackagePath": "staticwebassets\\css\\Payment\\PaymentHistory.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Search\\Search.css",
+      "PackagePath": "staticwebassets\\css\\Search\\Search.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Test\\CreateTest.css",
+      "PackagePath": "staticwebassets\\css\\Test\\CreateTest.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Test\\EditTest.css",
+      "PackagePath": "staticwebassets\\css\\Test\\EditTest.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\css\\Test\\ManageTest.css",
+      "PackagePath": "staticwebassets\\css\\Test\\ManageTest.css"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\f1df6b51-3b42-4eca-a391-d85edfed6eb3.jpg",
-      "PackagePath": "staticwebassets\\images\\f1df6b51-3b42-4eca-a391-d85edfed6eb3.jpg"
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\09ed99fe-c2ac-4755-90c6-a0920e38d7d4.jpg",
+      "PackagePath": "staticwebassets\\images\\09ed99fe-c2ac-4755-90c6-a0920e38d7d4.jpg"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\graphic-design_7.jpg",
-      "PackagePath": "staticwebassets\\images\\graphic-design_7.jpg"
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\21a556e0-1703-4e4c-9cf4-e539ec5afb71.png",
+      "PackagePath": "staticwebassets\\images\\21a556e0-1703-4e4c-9cf4-e539ec5afb71.png"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\student.jpg",
-      "PackagePath": "staticwebassets\\images\\student.jpg"
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\343fa6fa-e896-4b1c-bfe1-106530ce8e4c.jpg",
+      "PackagePath": "staticwebassets\\images\\343fa6fa-e896-4b1c-bfe1-106530ce8e4c.jpg"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\site.js",
-      "PackagePath": "staticwebassets\\js\\site.js"
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\4f004bf6-8fe9-4cfb-9791-26b4689236f9.jpg",
+      "PackagePath": "staticwebassets\\images\\4f004bf6-8fe9-4cfb-9791-26b4689236f9.jpg"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\50280772-b554-4673-ac55-b37cb704a6f4.jpg",
+      "PackagePath": "staticwebassets\\images\\50280772-b554-4673-ac55-b37cb704a6f4.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\51f9e72f-6f6f-48ca-b146-ca3f1e29042e.jpg",
+      "PackagePath": "staticwebassets\\images\\51f9e72f-6f6f-48ca-b146-ca3f1e29042e.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\5381fe9f-bb91-41b2-894a-745e6198e819.jpg",
+      "PackagePath": "staticwebassets\\images\\5381fe9f-bb91-41b2-894a-745e6198e819.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\5456a6f5-f9df-4057-8d02-566d476dacf8.webp",
+      "PackagePath": "staticwebassets\\images\\5456a6f5-f9df-4057-8d02-566d476dacf8.webp"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\57dc168f-b6a6-4124-9223-b0c8802ad9e2.jpg",
+      "PackagePath": "staticwebassets\\images\\57dc168f-b6a6-4124-9223-b0c8802ad9e2.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\5878da95-c217-458b-9710-2a390ea88f77.png",
+      "PackagePath": "staticwebassets\\images\\5878da95-c217-458b-9710-2a390ea88f77.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\681b66c0-2342-4c06-bc6b-0a3f5d71a4fc.png",
+      "PackagePath": "staticwebassets\\images\\681b66c0-2342-4c06-bc6b-0a3f5d71a4fc.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\6a434b56-bc7e-4db2-85a9-577cf6651ca1.png",
+      "PackagePath": "staticwebassets\\images\\6a434b56-bc7e-4db2-85a9-577cf6651ca1.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\79ab2066-99ac-4769-adea-ce11b04fce2c.png",
+      "PackagePath": "staticwebassets\\images\\79ab2066-99ac-4769-adea-ce11b04fce2c.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\88176352-cfcf-4c3a-beff-bfbc126991e5.jpg",
+      "PackagePath": "staticwebassets\\images\\88176352-cfcf-4c3a-beff-bfbc126991e5.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\9367289f-d115-4323-bae6-fa951e4da61d.jpg",
+      "PackagePath": "staticwebassets\\images\\9367289f-d115-4323-bae6-fa951e4da61d.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\9fae6b26-0bb1-4c40-af31-5a37e6170c08.png",
+      "PackagePath": "staticwebassets\\images\\9fae6b26-0bb1-4c40-af31-5a37e6170c08.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\Education.jpg",
+      "PackagePath": "staticwebassets\\images\\Education.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\a1fd1853-8524-4632-8863-641b7848b97e.png",
+      "PackagePath": "staticwebassets\\images\\a1fd1853-8524-4632-8863-641b7848b97e.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\a9fd8519-99c7-4eca-98d3-f904a5b81ce4.jpg",
+      "PackagePath": "staticwebassets\\images\\a9fd8519-99c7-4eca-98d3-f904a5b81ce4.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\agigen-404.gif",
+      "PackagePath": "staticwebassets\\images\\agigen-404.gif"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\b193346e-a6b8-408a-854e-907eeab19dd7.jpg",
+      "PackagePath": "staticwebassets\\images\\b193346e-a6b8-408a-854e-907eeab19dd7.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\b210989f-d85a-4043-8e6c-62c9dee808b3.jpg",
+      "PackagePath": "staticwebassets\\images\\b210989f-d85a-4043-8e6c-62c9dee808b3.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\b44a6814-f96f-46a2-a3c1-dc6b0a9ff681.jpg",
+      "PackagePath": "staticwebassets\\images\\b44a6814-f96f-46a2-a3c1-dc6b0a9ff681.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\b4b5f107-6750-491b-ae82-d864cf79319d.png",
+      "PackagePath": "staticwebassets\\images\\b4b5f107-6750-491b-ae82-d864cf79319d.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\cb34d3c4-a628-447e-ba8c-e6043bf72ec6.png",
+      "PackagePath": "staticwebassets\\images\\cb34d3c4-a628-447e-ba8c-e6043bf72ec6.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\cdbed970-42b7-40ba-9877-07a642a3669e.png",
+      "PackagePath": "staticwebassets\\images\\cdbed970-42b7-40ba-9877-07a642a3669e.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\de630d5f-75da-4c3e-afda-e766a8b6a4f1.jpg",
+      "PackagePath": "staticwebassets\\images\\de630d5f-75da-4c3e-afda-e766a8b6a4f1.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\defaultAvatar.png",
+      "PackagePath": "staticwebassets\\images\\defaultAvatar.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\e2f22b51-d565-4662-97d7-69ba89e6a90c.jpg",
+      "PackagePath": "staticwebassets\\images\\e2f22b51-d565-4662-97d7-69ba89e6a90c.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\e32ae618-d5cf-4188-919f-17da6675e676.jpg",
+      "PackagePath": "staticwebassets\\images\\e32ae618-d5cf-4188-919f-17da6675e676.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\e6628d54-35c0-4b5b-bc35-1bf21ddee58c.jpg",
+      "PackagePath": "staticwebassets\\images\\e6628d54-35c0-4b5b-bc35-1bf21ddee58c.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\e76ff110-91e4-417b-ae9d-496ed85357d9.png",
+      "PackagePath": "staticwebassets\\images\\e76ff110-91e4-417b-ae9d-496ed85357d9.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\f405e796-405c-476d-8c25-5fc279922378.jpg",
+      "PackagePath": "staticwebassets\\images\\f405e796-405c-476d-8c25-5fc279922378.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\f46a8c1d-ff9c-494c-80c9-33ace5bcb445.jpg",
+      "PackagePath": "staticwebassets\\images\\f46a8c1d-ff9c-494c-80c9-33ace5bcb445.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\f930121e-f658-41bc-83fd-f1172d916d1f.png",
+      "PackagePath": "staticwebassets\\images\\f930121e-f658-41bc-83fd-f1172d916d1f.png"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\ltw.jpg",
+      "PackagePath": "staticwebassets\\images\\ltw.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\images\\refresh.jpg",
+      "PackagePath": "staticwebassets\\images\\refresh.jpg"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Account\\ChangePassword.js",
+      "PackagePath": "staticwebassets\\js\\Account\\ChangePassword.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Account\\ForgotPassword.js",
+      "PackagePath": "staticwebassets\\js\\Account\\ForgotPassword.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Account\\Login.js",
+      "PackagePath": "staticwebassets\\js\\Account\\Login.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Account\\Register.js",
+      "PackagePath": "staticwebassets\\js\\Account\\Register.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Account\\ResetPassword.js",
+      "PackagePath": "staticwebassets\\js\\Account\\ResetPassword.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Account\\UpdateAvatar.js",
+      "PackagePath": "staticwebassets\\js\\Account\\UpdateAvatar.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Account\\UserProfileEdit.js",
+      "PackagePath": "staticwebassets\\js\\Account\\UserProfileEdit.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Account\\VerifyOtp.js",
+      "PackagePath": "staticwebassets\\js\\Account\\VerifyOtp.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Admin\\AdminDashboard.js",
+      "PackagePath": "staticwebassets\\js\\Admin\\AdminDashboard.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Admin\\CreateUser.js",
+      "PackagePath": "staticwebassets\\js\\Admin\\CreateUser.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Admin\\EditUser.js",
+      "PackagePath": "staticwebassets\\js\\Admin\\EditUser.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Admin\\ManageComments.js",
+      "PackagePath": "staticwebassets\\js\\Admin\\ManageComments.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Admin\\ManageUsers.js",
+      "PackagePath": "staticwebassets\\js\\Admin\\ManageUsers.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Admin\\SendNotification.js",
+      "PackagePath": "staticwebassets\\js\\Admin\\SendNotification.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Assignment\\CreateAssignment.js",
+      "PackagePath": "staticwebassets\\js\\Assignment\\CreateAssignment.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Assignment\\EditAssignment.js",
+      "PackagePath": "staticwebassets\\js\\Assignment\\EditAssignment.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Assignment\\ManageAssignments.js",
+      "PackagePath": "staticwebassets\\js\\Assignment\\ManageAssignments.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Cart\\Cart.js",
+      "PackagePath": "staticwebassets\\js\\Cart\\Cart.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Course\\AllTests.js",
+      "PackagePath": "staticwebassets\\js\\Course\\AllTests.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Course\\CourseDetails.js",
+      "PackagePath": "staticwebassets\\js\\Course\\CourseDetails.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Course\\CreateCourse.js",
+      "PackagePath": "staticwebassets\\js\\Course\\CreateCourse.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Course\\EditCourse.js",
+      "PackagePath": "staticwebassets\\js\\Course\\EditCourse.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Course\\ManageCourses.js",
+      "PackagePath": "staticwebassets\\js\\Course\\ManageCourses.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Course\\TakeTest.js",
+      "PackagePath": "staticwebassets\\js\\Course\\TakeTest.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Enrollment\\CreateEnrollment.js",
+      "PackagePath": "staticwebassets\\js\\Enrollment\\CreateEnrollment.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Enrollment\\EditEnrollment.js",
+      "PackagePath": "staticwebassets\\js\\Enrollment\\EditEnrollment.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Enrollment\\ManageEnrollments.js",
+      "PackagePath": "staticwebassets\\js\\Enrollment\\ManageEnrollments.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Home\\Home.js",
+      "PackagePath": "staticwebassets\\js\\Home\\Home.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Instructor\\Grade.js",
+      "PackagePath": "staticwebassets\\js\\Instructor\\Grade.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Instructor\\GradeAssignment.js",
+      "PackagePath": "staticwebassets\\js\\Instructor\\GradeAssignment.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Instructor\\GradeExams.js",
+      "PackagePath": "staticwebassets\\js\\Instructor\\GradeExams.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Instructor\\ManageProgress.js",
+      "PackagePath": "staticwebassets\\js\\Instructor\\ManageProgress.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Instructor\\SelectGradeType.js",
+      "PackagePath": "staticwebassets\\js\\Instructor\\SelectGradeType.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Lesson\\AddLesson.js",
+      "PackagePath": "staticwebassets\\js\\Lesson\\AddLesson.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Lesson\\EditLesson.js",
+      "PackagePath": "staticwebassets\\js\\Lesson\\EditLesson.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Lesson\\ManageLessons.js",
+      "PackagePath": "staticwebassets\\js\\Lesson\\ManageLessons.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Notification\\Notifications.js",
+      "PackagePath": "staticwebassets\\js\\Notification\\Notifications.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Search\\Search.js",
+      "PackagePath": "staticwebassets\\js\\Search\\Search.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Test\\CreateTest.js",
+      "PackagePath": "staticwebassets\\js\\Test\\CreateTest.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Test\\EditTest.js",
+      "PackagePath": "staticwebassets\\js\\Test\\EditTest.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\js\\Test\\ManageTest.js",
+      "PackagePath": "staticwebassets\\js\\Test\\ManageTest.js"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\LICENSE",
       "PackagePath": "staticwebassets\\lib\\bootstrap"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.min.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\dist\\jquery.validate.unobtrusive.min.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\LICENSE.txt",
       "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.slim.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.slim.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.js",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.js",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.js"
     },
     {
-      "Id": "D:\\doan\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.map",
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\lib\\jquery\\dist\\jquery.slim.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.slim.min.map"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\01ed7660-08d9-4fb8-971e-a7da9239b24f.mp4",
+      "PackagePath": "staticwebassets\\videos\\01ed7660-08d9-4fb8-971e-a7da9239b24f.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\030c662a-feeb-45ec-b54c-ed71a4d23aa7.mp4",
+      "PackagePath": "staticwebassets\\videos\\030c662a-feeb-45ec-b54c-ed71a4d23aa7.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\0c8e8bcf-8604-4e37-9e5e-be67b6ba893c.mp4",
+      "PackagePath": "staticwebassets\\videos\\0c8e8bcf-8604-4e37-9e5e-be67b6ba893c.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\3bcf77d3-3fc4-4af3-90a0-db07bfd77a13.mp4",
+      "PackagePath": "staticwebassets\\videos\\3bcf77d3-3fc4-4af3-90a0-db07bfd77a13.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\52ad9b95-b062-49ac-a325-cc54d36c1cee.mp4",
+      "PackagePath": "staticwebassets\\videos\\52ad9b95-b062-49ac-a325-cc54d36c1cee.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\5b128218-a98a-4036-8d20-941a35d1c082.mp4",
+      "PackagePath": "staticwebassets\\videos\\5b128218-a98a-4036-8d20-941a35d1c082.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\61ae7c28-da5b-488b-ac13-2db20918880e.mp4",
+      "PackagePath": "staticwebassets\\videos\\61ae7c28-da5b-488b-ac13-2db20918880e.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\63a08427-a3db-4c8c-b2d0-71148f4ba18d.mp4",
+      "PackagePath": "staticwebassets\\videos\\63a08427-a3db-4c8c-b2d0-71148f4ba18d.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\6d033124-c676-4f5c-862e-417a9ef6892c.mp4",
+      "PackagePath": "staticwebassets\\videos\\6d033124-c676-4f5c-862e-417a9ef6892c.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\7c9df76c-98bb-4dc4-aec3-9824896d0915.mp4",
+      "PackagePath": "staticwebassets\\videos\\7c9df76c-98bb-4dc4-aec3-9824896d0915.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\7ea26282-8a8e-4759-adf1-e5472384faae.mp4",
+      "PackagePath": "staticwebassets\\videos\\7ea26282-8a8e-4759-adf1-e5472384faae.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\9babde90-87f1-4073-85f3-76d87ca7ae18.mp4",
+      "PackagePath": "staticwebassets\\videos\\9babde90-87f1-4073-85f3-76d87ca7ae18.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\ae432384-e2c7-42df-90ee-18048133f15b.mp4",
+      "PackagePath": "staticwebassets\\videos\\ae432384-e2c7-42df-90ee-18048133f15b.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\b8228b53-1eae-46a0-86bf-e87ccc15cba6.mp4",
+      "PackagePath": "staticwebassets\\videos\\b8228b53-1eae-46a0-86bf-e87ccc15cba6.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\bb7db7f0-6888-4484-b323-aa740bb20a63.mp4",
+      "PackagePath": "staticwebassets\\videos\\bb7db7f0-6888-4484-b323-aa740bb20a63.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\cf7cc9d3-34df-4aa7-bd4a-bf267a23f959.mp4",
+      "PackagePath": "staticwebassets\\videos\\cf7cc9d3-34df-4aa7-bd4a-bf267a23f959.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\e669a025-a9b2-4248-8937-4e23a3447ff6.mp4",
+      "PackagePath": "staticwebassets\\videos\\e669a025-a9b2-4248-8937-4e23a3447ff6.mp4"
+    },
+    {
+      "Id": "D:\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\E-LearningProject\\LearningManagementSystem\\LearningManagementSystem\\wwwroot\\videos\\f678a36f-88fe-4881-a707-50ae280c327e.mp4",
+      "PackagePath": "staticwebassets\\videos\\f678a36f-88fe-4881-a707-50ae280c327e.mp4"
     },
     {
       "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.LearningManagementSystem.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

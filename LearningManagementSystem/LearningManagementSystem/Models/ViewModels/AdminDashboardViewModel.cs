@@ -8,5 +8,9 @@
         public int TotalComments { get; set; }
         public int TotalEnrollments { get; set; }
         public int TotalProgresses { get; set; }
+
+        public decimal TotalPayments { get; set; }
+
+        public Dictionary<string, decimal> MonthlyPayments { get; set; }
     }
 }

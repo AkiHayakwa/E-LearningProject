@@ -20,6 +20,11 @@ namespace LearningManagementSystem.Repositories
             return _context.Roles.ToList();
         }
 
+        public Role GetByName(string name)
+        {
+            return _context.Roles.FirstOrDefault(r => r.RoleName == name);
+        }
+
         public Role GetById(string id)
         {
             return _context.Roles.FirstOrDefault(r => r.RoleId == id);

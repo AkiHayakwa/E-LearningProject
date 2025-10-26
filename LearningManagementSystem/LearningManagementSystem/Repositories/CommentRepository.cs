@@ -46,6 +46,7 @@ namespace LearningManagementSystem.Repositories
             if (comment != null)
             {
                 _context.Comments.Remove(comment);
+                _context.SaveChanges();
             }
         }
 

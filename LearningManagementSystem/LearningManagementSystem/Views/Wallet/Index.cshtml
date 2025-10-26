@@ -1,0 +1,148 @@
+@model LearningManagementSystem.Controllers.WalletViewModel
+@{
+    ViewData["Title"] = "Ví của tôi";
+    Layout = "~/Views/Shared/_InstructorLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-wallet"></i> Ví của tôi
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <!-- Thông tin số dư -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="info-box bg-success">
+                                <span class="info-box-icon"><i class="fas fa-coins"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Số dư hiện tại</span>
+                                    <span class="info-box-number">@Model.User.WalletBalance.ToString("N0") VNĐ</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-box bg-info">
+                                <span class="info-box-icon"><i class="fas fa-chart-line"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Tổng thu nhập</span>
+                                    <span class="info-box-number">@Model.RevenueShares.Sum(rs => rs.Amount).ToString("N0") VNĐ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nút rút tiền -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <a href="@Url.Action("Withdraw", "Wallet")" class="btn btn-primary btn-lg">
+                                <i class="fas fa-money-bill-wave"></i> Rút tiền
+                            </a>
+                            <a href="@Url.Action("RevenueHistory", "Wallet")" class="btn btn-success btn-lg">
+                                <i class="fas fa-history"></i> Lịch sử thu nhập
+                            </a>
+                            <a href="@Url.Action("WithdrawalHistory", "Wallet")" class="btn btn-warning btn-lg">
+                                <i class="fas fa-exchange-alt"></i> Lịch sử rút tiền
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Lịch sử gần đây -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Thu nhập gần đây</h3>
+                                </div>
+                                <div class="card-body">
+                                    @if (Model.RevenueShares.Any())
+                                    {
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Khóa học</th>
+                                                        <th>Số tiền</th>
+                                                        <th>Ngày</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var revenue in Model.RevenueShares.Take(5))
+                                                    {
+                                                        <tr>
+                                                            <td>@revenue.Course?.CourseName</td>
+                                                            <td class="text-success">+@revenue.Amount.ToString("N0") VNĐ</td>
+                                                            <td>@revenue.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-muted">Chưa có thu nhập nào.</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Yêu cầu rút tiền gần đây</h3>
+                                </div>
+                                <div class="card-body">
+                                    @if (Model.WithdrawalRequests.Any())
+                                    {
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Số tiền</th>
+                                                        <th>Trạng thái</th>
+                                                        <th>Ngày</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var request in Model.WithdrawalRequests.Take(5))
+                                                    {
+                                                        <tr>
+                                                            <td>@request.Amount.ToString("N0") VNĐ</td>
+                                                            <td>
+                                                                @switch (request.Status)
+                                                                {
+                                                                    case "Pending":
+                                                                        <span class="badge badge-warning">Chờ duyệt</span>
+                                                                        break;
+                                                                    case "Approved":
+                                                                        <span class="badge badge-success">Đã duyệt</span>
+                                                                        break;
+                                                                    case "Rejected":
+                                                                        <span class="badge badge-danger">Từ chối</span>
+                                                                        break;
+                                                                }
+                                                            </td>
+                                                            <td>@request.RequestDate.ToString("dd/MM/yyyy")</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-muted">Chưa có yêu cầu rút tiền nào.</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+@model IEnumerable<LearningManagementSystem.Models.RevenueShare>
+@{
+    ViewData["Title"] = "Lịch sử thu nhập";
+    Layout = "~/Views/Shared/_InstructorLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-line"></i> Lịch sử thu nhập
+                    </h3>
+                    <div class="card-tools">
+                        <a href="@Url.Action("Index", "Wallet")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Quay lại
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Khóa học</th>
+                                        <th>Số tiền</th>
+                                        <th>Tỷ lệ (%)</th>
+                                        <th>Loại</th>
+                                        <th>Ngày nhận</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var revenue in Model.OrderByDescending(r => r.CreatedDate))
+                                    {
+                                        <tr>
+                                            <td>
+                                                <strong>@revenue.Course?.CourseName</strong>
+                                                <br>
+                                                <small class="text-muted">Payment ID: @revenue.PaymentId</small>
+                                            </td>
+                                            <td class="text-success font-weight-bold">
+                                                +@revenue.Amount.ToString("N0") VNĐ
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-info">@revenue.Percentage.ToString("F1")%</span>
+                                            </td>
+                                            <td>
+                                                @if (revenue.ShareType == "Instructor")
+                                                {
+                                                    <span class="badge badge-success">Giảng viên</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-warning">Admin</span>
+                                                }
+                                            </td>
+                                            <td>@revenue.CreatedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>
+                                                <span class="badge badge-success">Đã nhận</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot class="thead-light">
+                                    <tr>
+                                        <th colspan="1">Tổng cộng:</th>
+                                        <th class="text-success">@Model.Sum(r => r.Amount).ToString("N0") VNĐ</th>
+                                        <th colspan="4"></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Chưa có thu nhập nào</h5>
+                            <p class="text-muted">Thu nhập sẽ xuất hiện ở đây khi học viên mua khóa học của bạn.</p>
+                            <a href="@Url.Action("Index", "Wallet")" class="btn btn-primary">
+                                <i class="fas fa-arrow-left"></i> Quay lại ví
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

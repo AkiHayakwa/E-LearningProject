@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Security.Claims;
+using System.Linq;
 
 namespace LearningManagementSystem.Controllers.Admin
 {
@@ -22,8 +24,13 @@ namespace LearningManagementSystem.Controllers.Admin
         private readonly IUserRepository _userRepository;
         private readonly ILessonRepository _lessonRepository;
         private readonly LMSContext _context;
+        private readonly INotificationRepository _notificationRepository;
+        private readonly IAssignmentRepository _assignmentRepository;
+        private readonly IAssignmentQuestionRepository _questionRepository;
+        private readonly IAssignmentQuestionOptionRepository _optionRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly ILogger<AdminController> _logger;
+        private readonly IWithdrawalRequestRepository _withdrawalRequestRepository;
 
         public AdminController(
             ICourseRepository courseRepository,
@@ -32,33 +39,80 @@ namespace LearningManagementSystem.Controllers.Admin
             IUserRepository userRepository,
             ILessonRepository lessonRepository,
             LMSContext context,
+            INotificationRepository notificationRepository,
+            IAssignmentRepository assignmentRepository,
+            IAssignmentQuestionRepository questionRepository,
+            IAssignmentQuestionOptionRepository optionRepository,
             IPasswordHasher<User> passwordHasher,
-            ILogger<AdminController> logger)
+            ILogger<AdminController> logger,
+            IWithdrawalRequestRepository withdrawalRequestRepository)
         {
             _courseRepository = courseRepository;
             _commentRepository = commentRepository;
             _enrollmentRepository = enrollmentRepository;
             _userRepository = userRepository;
+            _assignmentRepository = assignmentRepository;
+            _notificationRepository = notificationRepository;
+            _questionRepository = questionRepository;
+            _optionRepository = optionRepository;
             _lessonRepository = lessonRepository;
             _context = context;
             _passwordHasher = passwordHasher;
             _logger = logger;
+            _withdrawalRequestRepository = withdrawalRequestRepository;
         }
 
         #region Dashboard
 
         // GET: Admin/Dashboard
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
             try
             {
+                // Lấy năm hiện tại
+                int currentYear = DateTime.Now.Year;
+
+                // Tính tổng số tiền theo tháng
+                var monthlyPayments = await _context.Payments
+                    .Where(p => p.PaymentStatus == "Completed" && p.PaymentDate.Year == currentYear)
+                    .GroupBy(p => p.PaymentDate.Month)
+                    .Select(g => new
+                    {
+                        Month = g.Key,
+                        Total = g.Sum(p => p.Amount)
+                    })
+                    .ToDictionaryAsync(
+                        x => $"Tháng {x.Month}",
+                        x => x.Total
+                    );
+
+                // Tạo view model
                 var viewModel = new AdminDashboardViewModel
                 {
                     TotalUsers = _userRepository.GetAll().Count(),
                     TotalCourses = _courseRepository.GetAll().Count(),
                     TotalComments = _commentRepository.GetAll().Count(),
-                    TotalEnrollments = _enrollmentRepository.GetAll().Count()
+                    TotalEnrollments = _enrollmentRepository.GetAll().Count(),
+                    TotalPayments = await _context.Payments
+                        .Where(p => p.PaymentStatus == "Completed")
+                        .SumAsync(p => p.Amount),
+                    MonthlyPayments = monthlyPayments
                 };
+
+                // Khởi tạo dữ liệu cho tất cả các tháng (1-12) nếu không có giao dịch
+                for (int i = 1; i <= 12; i++)
+                {
+                    string monthKey = $"Tháng {i}";
+                    if (!viewModel.MonthlyPayments.ContainsKey(monthKey))
+                    {
+                        viewModel.MonthlyPayments[monthKey] = 0;
+                    }
+                }
+
+                // Sắp xếp theo thứ tự tháng
+                viewModel.MonthlyPayments = viewModel.MonthlyPayments
+                    .OrderBy(x => int.Parse(x.Key.Split(' ')[1]))
+                    .ToDictionary(x => x.Key, x => x.Value);
 
                 return View("~/Views/Admin/Dashboard.cshtml", viewModel);
             }
@@ -72,420 +126,19 @@ namespace LearningManagementSystem.Controllers.Admin
 
         #endregion
 
-        #region Quản lý khóa học (Course Management)
-
-        // GET: Admin/ManageCourses
-        public IActionResult ManageCourses()
-        {
-            _logger.LogInformation("ManageCourses called.");
-            var courses = _courseRepository.GetAll().ToList();
-            return View("~/Views/Admin/Course/ManageCourses.cshtml", courses);
-        }
-
-        // GET: Admin/CreateCourse
-        public IActionResult CreateCourse()
-        {
-            _logger.LogInformation("CreateCourse GET called.");
-            return View("~/Views/Admin/Course/CreateCourse.cshtml");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCourse(Course model, IFormFile imageFile)
-        {
-            _logger.LogInformation("CreateCourse POST called.");
-
-            // Gán các giá trị trước khi kiểm tra ModelState
-            model.CourseId = Guid.NewGuid().ToString();
-            model.CreatedDate = DateTime.Now;
-
-            // Xử lý upload hình ảnh trước khi kiểm tra ModelState
-            if (imageFile != null && imageFile.Length > 0)
-            {
-                var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                if (!Directory.Exists(imageDirectory))
-                {
-                    Directory.CreateDirectory(imageDirectory);
-                }
-
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-                var filePath = Path.Combine(imageDirectory, fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await imageFile.CopyToAsync(stream);
-                }
-                model.ImageUrl = $"/images/{fileName}";
-            }
-            else
-            {
-                model.ImageUrl = null; // Đảm bảo ImageUrl là null nếu không có hình ảnh
-            }
-
-            // Xóa ModelState cũ và tái xác thực
-            ModelState.Clear();
-            TryValidateModel(model);
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _courseRepository.Add(model);
-                    _courseRepository.Save();
-                    TempData["Success"] = "Thêm khóa học thành công. Bạn có thể thêm bài học ngay bây giờ.";
-                    _logger.LogInformation($"Course {model.CourseId} created successfully.");
-
-                    return RedirectToAction("EditCourse", new { id = model.CourseId });
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Error creating course: {model.CourseName}");
-                    ModelState.AddModelError("", $"Đã xảy ra lỗi khi thêm khóa học: {ex.Message}");
-                }
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                _logger.LogWarning("ModelState is invalid in CreateCourse. Errors: {0}", string.Join(", ", errors));
-            }
-
-            return View("~/Views/Admin/Course/CreateCourse.cshtml", model);
-        }
-
-        // GET: Admin/EditCourse/{id}
-        public IActionResult EditCourse(string id)
-        {
-            _logger.LogInformation($"EditCourse GET called with CourseId: {id}");
-
-            var course = _courseRepository.GetById(id);
-            if (course == null)
-            {
-                _logger.LogWarning($"Course with CourseId: {id} not found.");
-                return NotFound();
-            }
-
-            // Lấy danh sách bài học của khóa học
-            course.Lessons = _lessonRepository.GetLessonsByCourse(id).ToList();
-            return View("~/Views/Admin/Course/EditCourse.cshtml", course);
-        }
-
-        // POST: Admin/EditCourse/{id}
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCourse(string id, Course model, IFormFile imageFile)
-        {
-            _logger.LogInformation($"EditCourse POST called with CourseId: {id}");
-
-            if (id != model.CourseId)
-            {
-                _logger.LogWarning($"CourseId mismatch: {id} != {model.CourseId}");
-                return NotFound();
-            }
-
-            var course = _courseRepository.GetById(id);
-            if (course == null)
-            {
-                _logger.LogWarning($"Course with CourseId: {id} not found.");
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    course.CourseName = model.CourseName;
-                    course.Description = model.Description;
-
-                    // Xử lý upload hình ảnh mới (nếu có)
-                    if (imageFile != null && imageFile.Length > 0)
-                    {
-                        // Xóa hình ảnh cũ (nếu có)
-                        if (!string.IsNullOrEmpty(course.ImageUrl))
-                        {
-                            var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", course.ImageUrl.TrimStart('/'));
-                            if (System.IO.File.Exists(oldImagePath))
-                            {
-                                System.IO.File.Delete(oldImagePath);
-                            }
-                        }
-
-                        // Upload hình ảnh mới
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await imageFile.CopyToAsync(stream);
-                        }
-                        course.ImageUrl = $"/images/{fileName}";
-                    }
-
-                    _courseRepository.Update(course);
-                    TempData["Success"] = "Chỉnh sửa khóa học thành công.";
-                    _logger.LogInformation($"Course {course.CourseId} updated successfully.");
-                    return RedirectToAction("ManageCourses");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Error updating course: {course.CourseId}");
-                    ModelState.AddModelError("", "Đã xảy ra lỗi khi chỉnh sửa khóa học. Vui lòng thử lại.");
-                }
-            }
-
-            // Nếu có lỗi, cần tải lại danh sách bài học
-            course.Lessons = _lessonRepository.GetLessonsByCourse(id).ToList();
-            return View("~/Views/Admin/Course/EditCourse.cshtml", model);
-        }
-
-        // POST: Admin/DeleteCourse/{id}
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteCourse(string id)
-        {
-            _logger.LogInformation($"DeleteCourse called with CourseId: {id}");
-
-            var course = _courseRepository.GetById(id);
-            if (course == null)
-            {
-                _logger.LogWarning($"Course with CourseId: {id} not found.");
-                TempData["Error"] = "Khóa học không tồn tại.";
-                return RedirectToAction("ManageCourses");
-            }
-
-            try
-            {
-                // Xóa các bài học liên quan
-                var lessons = _lessonRepository.GetLessonsByCourse(id).ToList();
-                foreach (var lesson in lessons)
-                {
-                    _lessonRepository.Delete(lesson.LessonId);
-                }
-                _lessonRepository.Save();
-
-                // Xóa các bình luận liên quan
-                var comments = _commentRepository.GetAll().Where(c => c.CourseId == id).ToList();
-                foreach (var comment in comments)
-                {
-                    _commentRepository.Delete(comment.CommentId);
-                }
-                _commentRepository.Save();
-
-                // Xóa các ghi danh liên quan
-                var enrollments = _enrollmentRepository.GetAll().Where(e => e.CourseId == id).ToList();
-                foreach (var enrollment in enrollments)
-                {
-                    _enrollmentRepository.Delete(enrollment.EnrollmentId);
-                }
-
-                // Xóa hình ảnh (nếu có)
-                if (!string.IsNullOrEmpty(course.ImageUrl))
-                {
-                    var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", course.ImageUrl.TrimStart('/'));
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(imagePath);
-                    }
-                }
-
-                _courseRepository.Delete(id);
-                TempData["Success"] = "Xóa khóa học thành công.";
-                _logger.LogInformation($"Course {id} deleted successfully.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error deleting course: {id}");
-                TempData["Error"] = "Đã xảy ra lỗi khi xóa khóa học. Vui lòng thử lại.";
-            }
-
-            return RedirectToAction("ManageCourses");
-        }
-
-        #region Quản lý bài học trong EditCourse
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddLessonInEditCourse(string courseId, Lesson lesson)
-        {
-            _logger.LogInformation($"AddLessonInEditCourse POST called for CourseId: {courseId}");
-
-            // Gán các giá trị trước khi kiểm tra ModelState
-            lesson.LessonId = Guid.NewGuid().ToString();
-            lesson.CourseId = courseId;
-
-            // Gán OrderNumber (nếu không được gửi từ form)
-            if (lesson.OrderNumber == 0)
-            {
-                lesson.OrderNumber = _lessonRepository.GetLessonsByCourse(courseId).Count() + 1;
-            }
-
-            // Khởi tạo Progresses (danh sách rỗng) để tránh lỗi
-            lesson.Progresses = lesson.Progresses ?? new List<Progress>();
-
-            // Xóa ModelState cũ và tái xác thực
-            ModelState.Clear();
-            TryValidateModel(lesson);
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _lessonRepository.Add(lesson);
-                    _lessonRepository.Save();
-                    TempData["Success"] = "Thêm bài học thành công.";
-                    _logger.LogInformation($"Lesson {lesson.LessonId} added successfully to Course {courseId}.");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Error adding lesson to course: {courseId}");
-                    ModelState.AddModelError("", $"Đã xảy ra lỗi khi thêm bài học: {ex.Message}");
-                }
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                _logger.LogWarning("ModelState is invalid in AddLessonInEditCourse. Errors: {0}", string.Join(", ", errors));
-            }
-
-            // Tải lại dữ liệu khóa học để hiển thị trong view
-            var course = _courseRepository.GetById(courseId);
-            if (course == null)
-            {
-                _logger.LogWarning($"Course with CourseId: {courseId} not found.");
-                return NotFound();
-            }
-            course.Lessons = _lessonRepository.GetLessonsByCourse(courseId).ToList();
-
-            // Truyền dữ liệu bài học đã nhập vào TempData để giữ lại khi có lỗi
-            if (!ModelState.IsValid)
-            {
-                TempData["LessonTitle"] = lesson.LessonTitle;
-                TempData["Content"] = lesson.Content;
-                TempData["LinkYoutube"] = lesson.LinkYoutube;
-                TempData["OrderNumber"] = lesson.OrderNumber.ToString();
-            }
-
-            return View("~/Views/Admin/Course/EditCourse.cshtml", course);
-        }
-
-        // POST: Admin/EditLessonInEditCourse/{lessonId}
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult EditLessonInEditCourse(string lessonId, Lesson model)
-        {
-            _logger.LogInformation($"EditLessonInEditCourse POST called for LessonId: {lessonId}");
-
-            var lesson = _lessonRepository.GetById(lessonId);
-            if (lesson == null)
-            {
-                _logger.LogWarning($"Lesson with LessonId: {lessonId} not found.");
-                TempData["Error"] = "Bài học không tồn tại.";
-                return RedirectToAction("ManageCourses");
-            }
-
-            // Cập nhật các giá trị từ model
-            lesson.LessonTitle = model.LessonTitle;
-            lesson.Content = model.Content;
-            lesson.LinkYoutube = model.LinkYoutube;
-            lesson.OrderNumber = model.OrderNumber;
-
-            // Đảm bảo CourseId không bị thay đổi
-            lesson.CourseId = lesson.CourseId; 
-
-            // Khởi tạo Progresses (danh sách rỗng) nếu cần
-            lesson.Progresses = lesson.Progresses ?? new List<Progress>();
-
-            // Xóa ModelState cũ và tái xác thực
-            ModelState.Clear();
-            TryValidateModel(lesson);
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _lessonRepository.Update(lesson);
-                    _lessonRepository.Save();
-                    TempData["Success"] = "Chỉnh sửa bài học thành công.";
-                    _logger.LogInformation($"Lesson {lesson.LessonId} updated successfully.");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Error updating lesson: {lessonId}");
-                    ModelState.AddModelError("", $"Đã xảy ra lỗi khi chỉnh sửa bài học: {ex.Message}");
-                }
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                _logger.LogWarning("ModelState is invalid in EditLessonInEditCourse. Errors: {0}", string.Join(", ", errors));
-            }
-
-            // Tải lại dữ liệu khóa học để hiển thị trong view
-            var course = _courseRepository.GetById(lesson.CourseId);
-            if (course == null)
-            {
-                _logger.LogWarning($"Course with CourseId: {lesson.CourseId} not found.");
-                return NotFound();
-            }
-            course.Lessons = _lessonRepository.GetLessonsByCourse(lesson.CourseId).ToList();
-
-            // Truyền dữ liệu bài học đã nhập vào TempData để giữ lại khi có lỗi
-            if (!ModelState.IsValid)
-            {
-                TempData["LessonTitle"] = lesson.LessonTitle;
-                TempData["Content"] = lesson.Content;
-                TempData["LinkYoutube"] = lesson.LinkYoutube;
-                TempData["OrderNumber"] = lesson.OrderNumber.ToString();
-            }
-
-            return View("~/Views/Admin/Course/EditCourse.cshtml", course);
-        }
-
-        // POST: Admin/DeleteLessonInEditCourse/{lessonId}
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteLessonInEditCourse(string lessonId)
-        {
-            var lesson = _lessonRepository.GetById(lessonId);
-            if (lesson == null)
-            {
-                TempData["Error"] = "Bài học không tồn tại.";
-                return RedirectToAction("ManageCourses");
-            }
-
-            try
-            {
-                var courseId = lesson.CourseId;
-                _lessonRepository.Delete(lessonId);
-                _lessonRepository.Save();
-
-                // Cập nhật lại OrderNumber của các bài học còn lại
-                var remainingLessons = _lessonRepository.GetLessonsByCourse(courseId).ToList();
-                for (int i = 0; i < remainingLessons.Count; i++)
-                {
-                    remainingLessons[i].OrderNumber = i + 1;
-                    _lessonRepository.Update(remainingLessons[i]);
-                }
-                _lessonRepository.Save();
-
-                TempData["Success"] = "Xóa bài học thành công.";
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error deleting lesson: {lessonId}");
-                TempData["Error"] = "Đã xảy ra lỗi khi xóa bài học. Vui lòng thử lại.";
-            }
-            return RedirectToAction("EditCourse", new { id = lesson.CourseId });
-        }
-
-        #endregion
-
-        #endregion
-
         #region Quản lý bình luận (Comment Management)
 
-        public IActionResult ManageComments()
+        public IActionResult ManageComments(int page = 1)
         {
             _logger.LogInformation("ManageComments called.");
-            var comments = _commentRepository.GetAll().ToList();
-            return View("~/Views/Admin/Comment/ManageComments.cshtml", comments);
+            int pageSize = 10;
+            var allComments = _commentRepository.GetAll().OrderByDescending(c => c.CreatedDate).ToList();
+            int totalComments = allComments.Count();
+            int totalPages = (int)Math.Ceiling((double)totalComments / pageSize);
+            var pagedComments = allComments.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            return View("~/Views/Admin/Comment/ManageComments.cshtml", pagedComments);
         }
 
         // POST: Admin/DeleteComment/{id}
@@ -524,21 +177,19 @@ namespace LearningManagementSystem.Controllers.Admin
         #region Quản lý người dùng (User Management)
 
         // GET: Admin/ManageUsers
-        public IActionResult ManageUsers()
+        public IActionResult ManageUsers(int page = 1)
         {
-            try
-            {
-                var users = _userRepository.GetAll().ToList();
-                return View("~/Views/Admin/User/ManageUsers.cshtml", users);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving users in ManageUsers.");
-                TempData["Error"] = "Đã xảy ra lỗi khi lấy danh sách người dùng. Vui lòng thử lại.";
-                return RedirectToAction("ManageCourses");
-            }
+            int pageSize = 10;
+            var allUsers = _userRepository.GetAll().OrderBy(u => u.UserName).ToList();
+            int totalUsers = allUsers.Count();
+            int totalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            var pagedUsers = allUsers.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            return View("~/Views/Admin/User/ManageUsers.cshtml", pagedUsers);
         }
 
+        // GET: Admin/CreateUser
         // GET: Admin/CreateUser
         public IActionResult CreateUser()
         {
@@ -558,15 +209,19 @@ namespace LearningManagementSystem.Controllers.Admin
         // POST: Admin/CreateUser
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateUser(User model, string password)
+        public async Task<IActionResult> CreateUser(User model, string password, IFormFile AvatarFile)
         {
             // Gán giá trị tạm thời cho Password để vượt qua kiểm tra ModelState
             model.Password = password ?? string.Empty;
+
+            // Tắt validation cho các trường không cần kiểm tra
+            ModelState.Remove("AvatarFile"); // Vì đây là IFormFile, không cần validate qua ModelState
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Kiểm tra xem UserName đã tồn tại chưa
                     var existingUser = _userRepository.GetByUserName(model.UserName);
                     if (existingUser != null)
                     {
@@ -575,9 +230,19 @@ namespace LearningManagementSystem.Controllers.Admin
                         return View("~/Views/Admin/User/CreateUser.cshtml", model);
                     }
 
+                    // Kiểm tra email đã tồn tại chưa
+                    var existingEmail = _userRepository.GetByEmail(model.Email);
+                    if (existingEmail != null)
+                    {
+                        ModelState.AddModelError("Email", "Email đã được sử dụng.");
+                        ViewBag.Roles = _context.Roles.ToList();
+                        return View("~/Views/Admin/User/CreateUser.cshtml", model);
+                    }
+
+                    // Kiểm tra mật khẩu
                     if (string.IsNullOrEmpty(password))
                     {
-                        ModelState.AddModelError("Password", "Mật khẩu không được để trống.");
+                        ModelState.AddModelError("password", "Mật khẩu không được để trống.");
                         ViewBag.Roles = _context.Roles.ToList();
                         return View("~/Views/Admin/User/CreateUser.cshtml", model);
                     }
@@ -591,9 +256,30 @@ namespace LearningManagementSystem.Controllers.Admin
                         return View("~/Views/Admin/User/CreateUser.cshtml", model);
                     }
 
+                    // Xử lý upload avatar
+                    if (AvatarFile != null && AvatarFile.Length > 0)
+                    {
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(AvatarFile.FileName);
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/avatars", fileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await AvatarFile.CopyToAsync(stream);
+                        }
+                        model.Avatar = "/avatars/" + fileName;
+                    }
+                    else
+                    {
+                        // Nếu không có avatar được tải lên, gán avatar mặc định
+                        model.Avatar = "/images/defaultAvatar.png";
+                    }
+
+                    // Băm mật khẩu
                     model.HashPassword(_passwordHasher, password);
+
+                    // Thêm người dùng
                     _userRepository.Add(model);
                     _userRepository.Save();
+
                     TempData["Success"] = "Thêm người dùng thành công.";
                     return RedirectToAction("ManageUsers");
                 }
@@ -609,10 +295,12 @@ namespace LearningManagementSystem.Controllers.Admin
                 var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
                 _logger.LogWarning("ModelState is invalid in CreateUser. Errors: {0}", string.Join(", ", errors));
             }
+
             ViewBag.Roles = _context.Roles.ToList();
             return View("~/Views/Admin/User/CreateUser.cshtml", model);
         }
 
+        // GET: Admin/EditUser/{userName}
         // GET: Admin/EditUser/{userName}
         public IActionResult EditUser(string userName)
         {
@@ -644,7 +332,7 @@ namespace LearningManagementSystem.Controllers.Admin
         // POST: Admin/EditUser/{userName}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditUser(string userName, User model, string password)
+        public async Task<IActionResult> EditUser(string userName, User model, string password, IFormFile AvatarFile)
         {
             if (string.IsNullOrEmpty(userName) || userName != model.UserName)
             {
@@ -661,8 +349,56 @@ namespace LearningManagementSystem.Controllers.Admin
                     return NotFound();
                 }
 
-                // Gán giá trị tạm thời cho Password để vượt qua kiểm tra ModelState
-                model.Password = user.Password; // Giữ nguyên mật khẩu cũ nếu không thay đổi
+                // Cập nhật các thuộc tính từ model
+                user.FullName = model.FullName;
+                user.Email = model.Email;
+                user.RoleId = model.RoleId;
+                user.Bio = model.Bio;
+
+                // Kiểm tra email trùng (nếu email thay đổi)
+                if (user.Email != model.Email)
+                {
+                    var existingEmail = _userRepository.GetByEmail(model.Email);
+                    if (existingEmail != null)
+                    {
+                        ModelState.AddModelError("Email", "Email đã được sử dụng.");
+                        ViewBag.Roles = _context.Roles.ToList();
+                        return View("~/Views/Admin/User/EditUser.cshtml", user);
+                    }
+                }
+
+                // Xử lý upload avatar
+                if (AvatarFile != null && AvatarFile.Length > 0)
+                {
+                    // Xóa avatar cũ nếu có
+                    if (!string.IsNullOrEmpty(user.Avatar))
+                    {
+                        var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", user.Avatar.TrimStart('/'));
+                        if (System.IO.File.Exists(oldFilePath))
+                        {
+                            System.IO.File.Delete(oldFilePath);
+                        }
+                    }
+
+                    // Lưu avatar mới
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(AvatarFile.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/avatars", fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await AvatarFile.CopyToAsync(stream);
+                    }
+                    user.Avatar = "/avatars/" + fileName;
+                }
+
+                // Nếu có mật khẩu mới, băm và cập nhật
+                if (!string.IsNullOrEmpty(password))
+                {
+                    user.HashPassword(_passwordHasher, password);
+                }
+
+                // Xóa ModelState cũ và tái xác thực
+                ModelState.Clear();
+                TryValidateModel(user);
 
                 if (ModelState.IsValid)
                 {
@@ -672,54 +408,45 @@ namespace LearningManagementSystem.Controllers.Admin
                         var role = _context.Roles.FirstOrDefault(r => r.RoleId == model.RoleId);
                         if (role == null)
                         {
-                            ModelState.AddModelError("RoleId", "Vai trò không hợp lệ.");
+                            _logger.LogWarning($"Invalid RoleId: {model.RoleId}");
+                            TempData["Error"] = "Vai trò không hợp lệ.";
                             ViewBag.Roles = _context.Roles.ToList();
-                            return View("~/Views/Admin/User/EditUser.cshtml", model);
-                        }
-
-                        // Cập nhật thông tin người dùng
-                        user.FullName = model.FullName;
-                        user.Email = model.Email;
-                        user.RoleId = model.RoleId;
-
-                        // Nếu có mật khẩu mới, băm và cập nhật
-                        if (!string.IsNullOrEmpty(password))
-                        {
-                            user.HashPassword(_passwordHasher, password);
+                            return View("~/Views/Admin/User/EditUser.cshtml", user);
                         }
 
                         _userRepository.Update(user);
                         _userRepository.Save();
                         TempData["Success"] = "Chỉnh sửa người dùng thành công.";
+                        _logger.LogInformation($"User {user.UserName} updated successfully.");
                         return RedirectToAction("ManageUsers");
                     }
                     catch (Exception ex)
                     {
                         _logger.LogError(ex, $"Error updating user: {userName}");
-                        ModelState.AddModelError("", "Đã xảy ra lỗi khi chỉnh sửa người dùng. Vui lòng thử lại.");
+                        TempData["Error"] = "Đã xảy ra lỗi khi chỉnh sửa người dùng: " + ex.Message;
                     }
                 }
                 else
                 {
-                    // Ghi log các lỗi trong ModelState
                     var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
                     _logger.LogWarning("ModelState is invalid in EditUser. Errors: {0}", string.Join(", ", errors));
+                    TempData["Error"] = "Vui lòng kiểm tra lại thông tin: " + string.Join(", ", errors);
                 }
+
                 ViewBag.Roles = _context.Roles.ToList();
-                return View("~/Views/Admin/User/EditUser.cshtml", model);
+                return View("~/Views/Admin/User/EditUser.cshtml", user);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error retrieving user for edit: {userName}");
-                TempData["Error"] = "Đã xảy ra lỗi khi lấy thông tin người dùng. Vui lòng thử lại.";
+                TempData["Error"] = "Đã xảy ra lỗi khi lấy thông tin người dùng: " + ex.Message;
                 return RedirectToAction("ManageUsers");
             }
         }
 
-        // POST: Admin/DeleteUser/{userName}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteUser(string userName)
+        public async Task<IActionResult> DeleteUser(string userName)
         {
             if (string.IsNullOrEmpty(userName))
             {
@@ -730,36 +457,240 @@ namespace LearningManagementSystem.Controllers.Admin
 
             try
             {
-                var user = _userRepository.GetByUserName(userName);
-                if (user == null)
+                var currentUserName = User.FindFirst(ClaimTypes.Name)?.Value;
+                if (string.Equals(userName, currentUserName, StringComparison.OrdinalIgnoreCase))
                 {
-                    _logger.LogWarning($"User with UserName: {userName} not found.");
-                    TempData["Error"] = "Người dùng không tồn tại.";
+                    _logger.LogWarning($"User {userName} attempted to delete themselves.");
+                    TempData["Error"] = "Bạn không thể xóa chính tài khoản của mình.";
                     return RedirectToAction("ManageUsers");
                 }
 
-                try
+                // Lấy thông tin người dùng để kiểm tra AvatarUrl
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName.Trim().ToLower() == userName.Trim().ToLower());
+                if (user == null)
                 {
-                    _userRepository.Delete(userName);
-                    _userRepository.Save(); // Thêm dòng này để lưu thay đổi vào cơ sở dữ liệu
-                    TempData["Success"] = "Xóa người dùng thành công.";
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Error deleting user: {userName}");
-                    TempData["Error"] = "Đã xảy ra lỗi khi xóa người dùng. Vui lòng thử lại.";
+                    _logger.LogWarning($"User {userName} not found.");
+                    TempData["Error"] = $"Người dùng {userName} không tồn tại.";
+                    return RedirectToAction("ManageUsers");
                 }
 
-                return RedirectToAction("ManageUsers");
+                // Xóa ảnh đại diện (nếu có và không phải ảnh mặc định)
+                if (!string.IsNullOrEmpty(user.Avatar) && user.Avatar != "/avatars/default-avatar.jpg")
+                {
+                    var avatarPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "avatars", user.Avatar.TrimStart('/').Replace("avatars/", ""));
+                    _logger.LogInformation($"Attempting to delete avatar at path: {avatarPath}");
+
+                    if (System.IO.File.Exists(avatarPath))
+                    {
+                        System.IO.File.Delete(avatarPath);
+                        _logger.LogInformation($"Avatar deleted successfully: {avatarPath}");
+                    }
+                    else
+                    {
+                        _logger.LogWarning($"Avatar file not found: {avatarPath}");
+                    }
+                }
+                else if (user.Avatar == "/avatars/default-avatar.jpg")
+                {
+                    _logger.LogInformation($"Skipping deletion of default avatar: {user.Avatar}");
+                }
+
+                // Gọi phương thức Delete trong repository
+                await _userRepository.Delete(userName);
+
+                _logger.LogInformation($"User {userName} deleted successfully.");
+                TempData["Success"] = $"Xóa người dùng {userName} thành công.";
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex.Message);
+                TempData["Error"] = ex.Message;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error retrieving user for delete: {userName}");
-                TempData["Error"] = "Đã xảy ra lỗi khi lấy thông tin người dùng. Vui lòng thử lại.";
-                return RedirectToAction("ManageUsers");
+                _logger.LogError(ex, $"Error deleting user {userName}. Inner exception: {ex.InnerException?.Message}");
+                var errorMessage = ex.Message.Contains("ràng buộc khóa ngoại") || ex.InnerException?.Message.Contains("REFERENCE constraint") == true
+                    ? "Không thể xóa người dùng do còn dữ liệu liên quan trong hệ thống."
+                    : $"Đã xảy ra lỗi khi xóa người dùng: {ex.Message}";
+                TempData["Error"] = errorMessage;
             }
+
+            return RedirectToAction("ManageUsers");
         }
 
         #endregion
+
+        #region Quản lý yêu cầu rút tiền (Withdrawal Request Management)
+
+        // GET: Admin/ManageWithdrawalRequests
+        public async Task<IActionResult> ManageWithdrawalRequests(int page = 1)
+        {
+            int pageSize = 10;
+            var allRequests = await _withdrawalRequestRepository.GetAllAsync();
+            int totalRequests = allRequests.Count();
+            int totalPages = (int)Math.Ceiling((double)totalRequests / pageSize);
+            var pagedRequests = allRequests.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            
+            return View("~/Views/Admin/WithdrawalRequest/ManageWithdrawalRequests.cshtml", pagedRequests);
+        }
+
+        // GET: Admin/WithdrawalRequestDetail/{id}
+        public async Task<IActionResult> WithdrawalRequestDetail(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            var request = await _withdrawalRequestRepository.GetByIdAsync(id);
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            return View("~/Views/Admin/WithdrawalRequest/WithdrawalRequestDetail.cshtml", request);
+        }
+
+        // POST: Admin/ApproveWithdrawalRequest/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveWithdrawalRequest(string id, string adminNote = "")
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                TempData["Error"] = "ID yêu cầu không hợp lệ.";
+                return RedirectToAction("ManageWithdrawalRequests");
+            }
+
+            try
+            {
+                var request = await _withdrawalRequestRepository.GetByIdAsync(id);
+                if (request == null)
+                {
+                    TempData["Error"] = "Yêu cầu rút tiền không tồn tại.";
+                    return RedirectToAction("ManageWithdrawalRequests");
+                }
+
+                if (request.Status != "Pending")
+                {
+                    TempData["Error"] = "Yêu cầu này đã được xử lý.";
+                    return RedirectToAction("ManageWithdrawalRequests");
+                }
+
+                // Kiểm tra số dư của user
+                var user = _userRepository.GetByUserName(request.UserName);
+                if (user == null)
+                {
+                    TempData["Error"] = "Người dùng không tồn tại.";
+                    return RedirectToAction("ManageWithdrawalRequests");
+                }
+
+                if (user.WalletBalance < request.Amount)
+                {
+                    TempData["Error"] = "Số dư của người dùng không đủ để thực hiện giao dịch.";
+                    return RedirectToAction("ManageWithdrawalRequests");
+                }
+
+                // Cập nhật trạng thái yêu cầu
+                request.Status = "Approved";
+                request.AdminNote = adminNote;
+                request.ProcessedDate = DateTime.Now;
+                request.ProcessedBy = User.Identity.Name;
+
+                await _withdrawalRequestRepository.UpdateAsync(request);
+
+                // Trừ tiền từ ví người dùng
+                user.WalletBalance -= request.Amount;
+                _userRepository.Update(user);
+
+                // Tạo thông báo cho người dùng
+                var notification = new Notification
+                {
+                    NotificationId = Guid.NewGuid().ToString(),
+                    UserName = request.UserName,
+                    Title = "Yêu cầu rút tiền đã được duyệt",
+                    Content = $"Yêu cầu rút tiền {request.Amount:N0} VNĐ của bạn đã được duyệt. Tiền sẽ được chuyển vào tài khoản {request.AccountNumber} trong vòng 1-2 ngày làm việc.",
+                    CreatedDate = DateTime.Now,
+                    IsRead = false
+                };
+
+                await _notificationRepository.AddAsync(notification);
+
+                TempData["Success"] = "Duyệt yêu cầu rút tiền thành công!";
+                _logger.LogInformation($"Withdrawal request {id} approved by {User.Identity.Name}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error approving withdrawal request: {id}");
+                TempData["Error"] = "Đã xảy ra lỗi khi duyệt yêu cầu rút tiền. Vui lòng thử lại.";
+            }
+
+            return RedirectToAction("ManageWithdrawalRequests");
+        }
+
+        // POST: Admin/RejectWithdrawalRequest/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RejectWithdrawalRequest(string id, string adminNote = "")
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                TempData["Error"] = "ID yêu cầu không hợp lệ.";
+                return RedirectToAction("ManageWithdrawalRequests");
+            }
+
+            try
+            {
+                var request = await _withdrawalRequestRepository.GetByIdAsync(id);
+                if (request == null)
+                {
+                    TempData["Error"] = "Yêu cầu rút tiền không tồn tại.";
+                    return RedirectToAction("ManageWithdrawalRequests");
+                }
+
+                if (request.Status != "Pending")
+                {
+                    TempData["Error"] = "Yêu cầu này đã được xử lý.";
+                    return RedirectToAction("ManageWithdrawalRequests");
+                }
+
+                // Cập nhật trạng thái yêu cầu
+                request.Status = "Rejected";
+                request.AdminNote = adminNote;
+                request.ProcessedDate = DateTime.Now;
+                request.ProcessedBy = User.Identity.Name;
+
+                await _withdrawalRequestRepository.UpdateAsync(request);
+
+                // Tạo thông báo cho người dùng
+                var notification = new Notification
+                {
+                    NotificationId = Guid.NewGuid().ToString(),
+                    UserName = request.UserName,
+                    Title = "Yêu cầu rút tiền bị từ chối",
+                    Content = $"Yêu cầu rút tiền {request.Amount:N0} VNĐ của bạn đã bị từ chối. Lý do: {adminNote}",
+                    CreatedDate = DateTime.Now,
+                    IsRead = false
+                };
+
+                await _notificationRepository.AddAsync(notification);
+
+                TempData["Success"] = "Từ chối yêu cầu rút tiền thành công!";
+                _logger.LogInformation($"Withdrawal request {id} rejected by {User.Identity.Name}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error rejecting withdrawal request: {id}");
+                TempData["Error"] = "Đã xảy ra lỗi khi từ chối yêu cầu rút tiền. Vui lòng thử lại.";
+            }
+
+            return RedirectToAction("ManageWithdrawalRequests");
+        }
+
+        #endregion
+
     }
 }

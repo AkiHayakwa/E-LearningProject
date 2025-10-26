@@ -17,7 +17,7 @@ namespace LearningManagementSystem.Models
         public DateTime EnrollmentDate { get; set; }
 
         // Navigation properties
-        public User User { get; set; }
-        public Course Course { get; set; }
+        public User? User { get; set; }
+        public Course? Course { get; set; }
     }
 }

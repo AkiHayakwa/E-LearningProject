@@ -2,15 +2,12 @@
 {
     public class CourseDetailsViewModel
     {
-        public Course Course { get; set; }
+        public CourseListViewModel Course { get; set; }
         public bool IsEnrolled { get; set; }
+        public List<Progress> Progresses { get; set; }
         public List<Comment> Comments { get; set; }
-        public List<Progress> Progresses { get; set; } // Thêm danh sách Progress
-
-        public CourseDetailsViewModel()
-        {
-            Comments = new List<Comment>();
-            Progresses = new List<Progress>();
-        }
+        public Dictionary<string, (string SelectedOptionText, string SelectedOptionLabel, bool? IsCorrect, double? Score)> PreviousSubmissions { get; set; }
+        public string NewCommentContent { get; set; }
+        public int NewCommentRating { get; set; }
     }
 }

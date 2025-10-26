@@ -50,11 +50,16 @@ namespace LearningManagementSystem.Repositories
             _context.Enrollments.Add(enrollment);
         }
 
-        public void Update(Enrollment enrollment)
+        public void Update(Enrollment updatedEnrollment)
         {
-            _context.Enrollments.Update(enrollment);
+          
+            var enrollment = _context.Enrollments.FirstOrDefault(e => e.EnrollmentId == updatedEnrollment.EnrollmentId);
+            if (enrollment == null)
+            {
+                throw new Exception("Enrollment not found.");
+            }
+            _context.Entry(enrollment).CurrentValues.SetValues(updatedEnrollment);
         }
-
         public void Delete(string enrollmentId)
         {
             var enrollment = GetById(enrollmentId);
