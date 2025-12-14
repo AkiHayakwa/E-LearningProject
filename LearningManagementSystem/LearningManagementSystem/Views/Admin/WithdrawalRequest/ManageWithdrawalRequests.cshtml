@@ -1,0 +1,125 @@
+﻿@model IEnumerable<LearningManagementSystem.Models.WithdrawalRequest>
+
+@{
+    ViewData["Title"] = "Duyệt yêu cầu rút tiền";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow border-0" style="border-radius: 12px;">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold text-primary">
+                <i class="bi bi-cash-stack me-2"></i> Duyệt yêu cầu rút tiền
+            </h5>
+        </div>
+
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                    <p class="mt-3 text-muted">Không có yêu cầu rút tiền nào đang chờ duyệt.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Giảng viên</th>
+                                <th>Số tiền</th>
+                                <th>Ngân hàng</th>
+                                <th>Số TK</th>
+                                <th>Chủ TK</th>
+                                <th>Ngày yêu cầu</th>
+                                <th class="text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var r in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@r.User?.FullName</strong><br />
+                                        <small class="text-muted">@r.UserName</small>
+                                    </td>
+                                    <td class="fw-bold text-success">@r.Amount:N0 ₫</td>
+                                    <td>@r.BankName</td>
+                                    <td><code>@r.AccountNumber</code></td>
+                                    <td>@(r.AccountHolderName ?? "-")</td>
+                                    <td>@r.RequestDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-success me-1" data-bs-toggle="modal" data-bs-target="#approveModal_@r.WithdrawalRequestId">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal_@r.WithdrawalRequestId">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Modal Duyệt -->
+                                <div class="modal fade" id="approveModal_@r.WithdrawalRequestId" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <form asp-action="ApproveWithdrawalRequest" asp-route-id="@r.WithdrawalRequestId" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-success text-white">
+                                                    <h5 class="modal-title">Xác nhận duyệt</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Duyệt yêu cầu rút <strong>@r.Amount:N0 ₫</strong> cho:</p>
+                                                    <ul class="list-unstyled mb-0">
+                                                        <li><strong>@r.User?.FullName (@r.UserName)</strong></li>
+                                                        <li>Ngân hàng: <strong>@r.BankName</strong></li>
+                                                        <li>Số TK: <strong>@r.AccountNumber</strong></li>
+                                                    </ul>
+                                                    <div class="mb-3 mt-3">
+                                                        <label class="form-label">Ghi chú (tùy chọn)</label>
+                                                        <textarea class="form-control" name="adminNote" rows="2" placeholder="VD: Đã chuyển khoản..."></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                    <button type="submit" class="btn btn-success">Duyệt ngay</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Modal Từ chối -->
+                                <div class="modal fade" id="rejectModal_@r.WithdrawalRequestId" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <form asp-action="RejectWithdrawalRequest" asp-route-id="@r.WithdrawalRequestId" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h5 class="modal-title">Xác nhận từ chối</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Bạn có chắc muốn <strong>từ chối</strong> yêu cầu rút <strong>@r.Amount:N0 ₫</strong>?</p>
+                                                    <div class="mb-3">
+                                                        <label class="form-label text-danger">Lý do từ chối <span class="text-danger">*</span></label>
+                                                        <textarea class="form-control" name="adminNote" rows="2" required placeholder="VD: Thông tin tài khoản sai..."></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                    <button type="submit" class="btn btn-danger">Từ chối</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

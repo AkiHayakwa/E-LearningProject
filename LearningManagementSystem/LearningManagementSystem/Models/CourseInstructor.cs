@@ -1,4 +1,5 @@
 ﻿    using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
     namespace LearningManagementSystem.Models
     {
@@ -12,8 +13,10 @@
             [StringLength(50)]
             public string UserName { get; set; }
 
-            // Navigation properties
-            public Course Course { get; set; }
-            public User User { get; set; }
+        // Navigation properties
+        [ValidateNever]
+        public Course Course { get; set; }
+        [ValidateNever]
+        public User User { get; set; }
         }
     }

@@ -401,6 +401,88 @@ body {
         background-color: #d32f2f;
     }
 
+/* === Dark theme overrides === */
+body.dark-theme .tests-container {
+    background-color: #020617;
+}
+
+body.dark-theme .tests-card,
+body.dark-theme .course-section,
+body.dark-theme .test-card,
+body.dark-theme .modal-content {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    border-color: #1f2a44;
+    box-shadow: 0 16px 35px rgba(2, 6, 23, 0.7);
+}
+
+body.dark-theme .course-header {
+    background-color: #1b2540;
+    border-color: #253251;
+}
+
+body.dark-theme .test-list,
+body.dark-theme .test-content {
+    background-color: transparent;
+    color: #f8fafc;
+}
+
+body.dark-theme .section-title,
+body.dark-theme .test-title,
+body.dark-theme .modal-content h3 {
+    color: #e2e8f0;
+}
+
+body.dark-theme .test-meta .meta-item,
+body.dark-theme .modal-content p,
+body.dark-theme .empty-state p {
+    color: #cbd5e1;
+}
+
+body.dark-theme .btn-back {
+    border-color: #6a11cb;
+    color: #cbd5e1;
+}
+
+body.dark-theme .btn-back:hover {
+    background-color: rgba(106, 17, 203, 0.2);
+}
+
+body.dark-theme .btn-start,
+body.dark-theme .btn-result {
+    background-color: #1d2750;
+    border-color: #3b4a82;
+    color: #f8fafc;
+}
+
+body.dark-theme .btn-start:hover,
+body.dark-theme .btn-result:hover {
+    background-color: #4c1d95;
+    border-color: #4c1d95;
+}
+
+body.dark-theme .status-icon.completed {
+    background-color: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+}
+
+body.dark-theme .status-icon.pending {
+    background-color: rgba(248, 113, 113, 0.2);
+    color: #f87171;
+}
+
+body.dark-theme .status-text.completed {
+    color: #22c55e;
+}
+
+body.dark-theme .status-text.pending {
+    color: #f87171;
+}
+
+body.dark-theme .empty-state h3 {
+    color: #e2e8f0;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .test-content {

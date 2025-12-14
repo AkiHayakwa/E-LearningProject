@@ -1,4 +1,6 @@
-﻿@model List<CourseListViewModel>
+﻿@using System
+@using System.Linq
+@model List<CourseListViewModel>
 
 @{
     ViewData["Title"] = "Khám Phá Khóa Học";
@@ -9,14 +11,20 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 pe-lg-5">
-                <h1 class="display-5 fw-bold text-gradient mb-3 animate__animated animate__fadeInUp">Khám Phá Kiến Thức <br>Nâng Cao Kỹ Năng</h1>
-                <p class="lead text-dark-gray mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+                <h1 class="display-5 fw-bold text-gradient mb-3 animate__animated animate__fadeInUp">
+                    <span data-i18n-vi="Khám Phá Kiến Thức" data-i18n-en="Discover Knowledge">Khám Phá Kiến Thức</span><br />
+                    <span data-i18n-vi="Nâng Cao Kỹ Năng" data-i18n-en="Upgrade Your Skills">Nâng Cao Kỹ Năng</span>
+                </h1>
+                <p class="lead text-dark-gray mb-4 animate__animated animate__fadeInUp animate__delay-1s"
+                   data-i18n-vi="Hàng ngàn khóa học chất lượng cao từ các chuyên gia hàng đầu đang chờ đón bạn"
+                   data-i18n-en="Thousands of high-quality courses from top experts are waiting for you">
                     Hàng ngàn khóa học chất lượng cao từ các chuyên gia hàng đầu đang chờ đón bạn
                 </p>
                 <div class="search-box position-relative animate__animated animate__fadeInUp animate__delay-2s">
                     <form action="/Search/Index" method="get" class="d-flex">
                         <input type="text" name="query" value="@ViewBag.Query" class="form-control form-control-lg shadow-sm rounded-pill ps-4 pe-5"
-                               placeholder="Tìm kiếm khóa học..." aria-label="Search">
+                               placeholder="Tìm kiếm khóa học..." aria-label="Search"
+                               data-i18n-placeholder-vi="Tìm kiếm khóa học..." data-i18n-placeholder-en="Search for courses...">
                         <button type="submit" class="btn search-button">
                             <i class="bi bi-search"></i>
                         </button>
@@ -37,115 +45,250 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-dark mb-0 animate__animated animate__fadeInLeft">
-                <i class="bi bi-collection me-2 text-primary"></i>Khóa Học Nổi Bật
+                <i class="bi bi-collection me-2 text-primary"></i><span data-i18n-vi="Khóa Học Nổi Bật" data-i18n-en="Featured Courses">Khóa Học Nổi Bật</span>
             </h2>
             <div class="dropdown animate__animated animate__fadeInRight">
                 <button class="btn btn-outline-secondary rounded-pill dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-sort-down me-1"></i>Sắp xếp
+                    <i class="bi bi-sort-down me-1"></i><span data-i18n-vi="Sắp xếp" data-i18n-en="Sort">Sắp xếp</span>
                 </button>
                 <ul class="dropdown-menu shadow border-0" aria-labelledby="sortDropdown">
                     <li>
                         <a class="dropdown-item @(ViewBag.Sort == "name-asc" ? "active" : "")" href="@Url.Action("Index", "Search", new { query = ViewBag.Query, sort = "name-asc" })">
-                            <i class="bi bi-sort-alpha-down me-2"></i>Tên A-Z
+                            <i class="bi bi-sort-alpha-down me-2"></i><span data-i18n-vi="Tên A-Z" data-i18n-en="Name A-Z">Tên A-Z</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item @(ViewBag.Sort == "rating-desc" ? "active" : "")" href="@Url.Action("Index", "Search", new { query = ViewBag.Query, sort = "rating-desc" })">
-                            <i class="bi bi-star-fill me-2 text-warning"></i>Đánh giá cao
+                            <i class="bi bi-star-fill me-2 text-warning"></i><span data-i18n-vi="Đánh giá cao" data-i18n-en="Top rated">Đánh giá cao</span>
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <!-- Course Grid -->
-        <div class="row g-4" id="course-list">
-            @if (Model != null && Model.Any())
-            {
-                @foreach (var course in Model)
-                {
-                    <div class="col-xl-3 col-lg-4 col-md-6 mb-2 course-item">
-                        <div class="course-card h-100 animate__animated animate__fadeInUp">
-                            <div class="course-image-wrapper">
-                                @if (!string.IsNullOrEmpty(course.ImageUrl))
-                                {
-                                    <img src="@course.ImageUrl" class="course-image" alt="@course.Title">
-                                }
-                                else
-                                {
-                                    <img src="/images/default-course-image.jpg" class="course-image" alt="Default Image">
-                                }
-                                <div class="course-overlay">
-                                    <a href="/Course/Details/@course.CourseId" class="btn btn-light btn-sm rounded-pill">
-                                        <i class="bi bi-eye me-1"></i>Xem chi tiết
-                                    </a>
+        <div class="row g-4">
+            <div class="col-lg-3">
+                <form method="get" class="card shadow-sm border-0 sticky-top filter-sidebar" style="top: 5.5rem; z-index: 999;">
+                    <input type="hidden" name="query" value="@ViewBag.Query" />
+                    <input type="hidden" name="sort" value="@ViewBag.Sort" />
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">
+                            <i class="bi bi-funnel me-2"></i>
+                            <span data-i18n-vi="Bộ lọc" data-i18n-en="Filters">Bộ lọc</span>
+                        </h5>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                <span data-i18n-vi="Cấp độ" data-i18n-en="Level">Cấp độ</span>
+                            </label>
+                            @{
+                                var selectedLevels = (string[])ViewBag.SelectedLevels ?? Array.Empty<string>();
+                                string[] levelOptions = new[] { "Beginner", "Intermediate", "Advanced" };
+                            }
+                            @foreach (var level in levelOptions)
+                            {
+                                var isChecked = selectedLevels.Contains(level);
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="levels" value="@level" id="level-@level" @(isChecked ? "checked" : "") />
+                                    <label class="form-check-label" for="level-@level">@level</label>
                                 </div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                <span data-i18n-vi="Thời lượng (phút)" data-i18n-en="Duration (minutes)">Thời lượng (phút)</span>
+                            </label>
+                            <div class="d-flex gap-2">
+                                <input class="form-control" type="number" name="minDuration" value="@(ViewBag.MinDuration ?? "")" placeholder="Tối thiểu" min="0"
+                                       data-i18n-placeholder-vi="Tối thiểu" data-i18n-placeholder-en="Min" />
+                                <input class="form-control" type="number" name="maxDuration" value="@(ViewBag.MaxDuration ?? "")" placeholder="Tối đa" min="0"
+                                       data-i18n-placeholder-vi="Tối đa" data-i18n-placeholder-en="Max" />
                             </div>
-                            <div class="card-body d-flex flex-column p-3">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <div class="course-rating">
-                                        @for (int i = 1; i <= 5; i++)
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                <span data-i18n-vi="Tag" data-i18n-en="Tags">Tag</span>
+                            </label>
+                            @{
+                                var selectedTags = (string[])ViewBag.SelectedTags ?? Array.Empty<string>();
+                                var availableTags = ViewBag.AvailableTags as IEnumerable<LearningManagementSystem.Models.Tag>;
+                                var groupedTags = availableTags?
+                                    .GroupBy(t => t.Category)
+                                    .OrderBy(g => g.Key);
+                            }
+                            @if (groupedTags != null)
+                            {
+                                foreach (var group in groupedTags)
+                                {
+                                    <div class="mb-2">
+                                        <div class="text-muted text-uppercase small fw-semibold">@group.Key</div>
+                                        @foreach (var tag in group)
                                         {
-                                            <i class="bi bi-star-fill text-warning" style="@(i <= Math.Ceiling(course.AverageRating ?? 0) ? "" : "color: #e9ecef;")"></i>
+                                            var check = selectedTags.Contains(tag.TagId);
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="tagIds" value="@tag.TagId" id="filter-@tag.TagId" @(check ? "checked" : "") />
+                                                <label class="form-check-label small" for="filter-@tag.TagId">@tag.Name</label>
+                                            </div>
                                         }
-                                        <span class="ms-2">@(course.AverageRating.HasValue ? course.AverageRating.Value.ToString("F1") : "Chưa có đánh giá")</span>
                                     </div>
-                                </div>
-                                <h5 class="card-title mb-2">@course.Title</h5>
-                                <p class="card-text text-muted description-text">@course.Description</p>
-                                <div class="mt-auto pt-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="course-lessons">
-                                            <i class="bi bi-collection me-1"></i>
-                                            <span>@(course.Lessons?.Count ?? 0) bài học</span>
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-muted small mb-0" data-i18n-vi="Chưa có tag nào." data-i18n-en="No tags available.">Chưa có tag nào.</p>
+                            }
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check2-circle me-1"></i>
+                                <span data-i18n-vi="Áp dụng" data-i18n-en="Apply">Áp dụng</span>
+                            </button>
+                            <a href="@Url.Action("Index","Search")" class="btn btn-light text-muted">
+                                <span data-i18n-vi="Đặt lại" data-i18n-en="Reset">Đặt lại</span>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-9">
+                <div class="row g-4" id="course-list">
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var course in Model)
+                        {
+                            <div class="col-xl-4 col-md-6 mb-2 course-item">
+                                <div class="course-card h-100 animate__animated animate__fadeInUp" 
+                                     data-bs-toggle="popover" 
+                                     data-bs-trigger="hover"
+                                     data-bs-placement="auto"
+                                     data-bs-html="true"
+                                     data-course-id="@course.CourseId"
+                                     data-course-description="@(course.Description ?? "")"
+                                     data-course-instructor="@(course.InstructorName ?? "")"
+                                     data-course-lessons="@(course.Lessons?.Count ?? 0)"
+                                     data-bs-content="">
+                                    <div class="course-image-wrapper">
+                                        @if (!string.IsNullOrEmpty(course.ImageUrl))
+                                        {
+                                            <img src="@course.ImageUrl" class="course-image" alt="@course.Title">
+                                        }
+                                        else
+                                        {
+                                            <img src="/images/default-course-image.jpg" class="course-image" alt="Default Image">
+                                        }
+                                        <div class="course-overlay">
+                                            <a href="/Course/Details/@course.CourseId" class="btn btn-light btn-sm rounded-pill">
+                                                <i class="bi bi-eye me-1"></i><span data-i18n-vi="Xem chi tiết" data-i18n-en="View details">Xem chi tiết</span>
+                                            </a>
                                         </div>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="course-price fw-bold text-primary">
-                                            @(course.Price.HasValue ? $"{course.Price.Value:N0}₫" : "Miễn phí")
+                                    <div class="card-body d-flex flex-column p-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="course-rating">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    <i class="bi bi-star-fill text-warning" style="@(i <= Math.Ceiling(course.AverageRating ?? 0) ? "" : "color: #e9ecef;")"></i>
+                                                }
+                                                <span class="ms-2">
+                                                    @if (course.AverageRating.HasValue)
+                                                    {
+                                                        @course.AverageRating.Value.ToString("F1")
+                                                    }
+                                                    else
+                                                    {
+                                                        <span data-i18n-vi="Chưa có đánh giá" data-i18n-en="No ratings yet">Chưa có đánh giá</span>
+                                                    }
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div>
-                                            @if (course.IsEnrolled)
+                                        <h5 class="card-title mb-2">@course.Title</h5>
+                                        <p class="card-text text-muted description-text">@course.Description</p>
+                                        <div class="d-flex flex-wrap gap-1 mb-2">
+                                            @if (!string.IsNullOrWhiteSpace(course.Level))
                                             {
-                                                <button class="btn btn-success btn-sm rounded-pill" disabled>
-                                                    <i class="bi bi-check-circle me-1"></i>Đã đăng ký
-                                                </button>
+                                                <span class="badge bg-light text-primary border">@course.Level</span>
+                                            }
+                                            @foreach (var tag in course.TagNames ?? new List<string>())
+                                            {
+                                                <span class="badge bg-secondary-subtle text-secondary">@tag</span>
+                                            }
+                                        </div>
+                                        <div class="text-muted small mb-2">
+                                            <i class="bi bi-clock me-1"></i>
+                                            @if (course.DurationMinutes.HasValue)
+                                            {
+                                                @($"{course.DurationMinutes} phút")
                                             }
                                             else
                                             {
-                                                <a href="/Course/Details/@course.CourseId" class="btn btn-primary btn-sm rounded-pill">
-                                                    <i class="bi bi-cart-plus me-1"></i>Đăng ký
-                                                </a>
+                                                <span data-i18n-vi="Thời lượng linh hoạt" data-i18n-en="Flexible duration">Thời lượng linh hoạt</span>
                                             }
+                                        </div>
+                                        <div class="mt-auto pt-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="course-lessons">
+                                                    <i class="bi bi-collection me-1"></i>
+                                                    <span>@(course.Lessons?.Count ?? 0) <span data-i18n-vi="bài học" data-i18n-en="lessons">bài học</span></span>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                            <div class="course-price fw-bold text-primary">
+                                                @if (course.Price.HasValue)
+                                                {
+                                                    @($"{course.Price.Value:N0}₫")
+                                                }
+                                                else
+                                                {
+                                                    <span data-i18n-vi="Miễn phí" data-i18n-en="Free">Miễn phí</span>
+                                                }
+                                            </div>
+                                                <div>
+                                                    @if (course.IsEnrolled)
+                                                    {
+                                                        <button class="btn btn-success btn-sm rounded-pill" disabled>
+                                                            <i class="bi bi-check-circle me-1"></i><span data-i18n-vi="Đã đăng ký" data-i18n-en="Enrolled">Đã đăng ký</span>
+                                                        </button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/Course/Details/@course.CourseId" class="btn btn-primary btn-sm rounded-pill">
+                                                            <i class="bi bi-cart-plus me-1"></i><span data-i18n-vi="Đăng ký" data-i18n-en="Enroll">Đăng ký</span>
+                                                        </a>
+                                                    }
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12 py-5">
+                            <div class="empty-state text-center animate__animated animate__fadeIn">
+                                <div class="empty-icon mb-4">
+                                    <i class="bi bi-search text-primary"></i>
+                                </div>
+                                <h3 class="fw-bold mb-3" data-i18n-vi="Không tìm thấy khóa học" data-i18n-en="No courses found">Không tìm thấy khóa học</h3>
+                                <p class="text-muted mb-4" data-i18n-vi="Hãy thử tìm với từ khóa khác hoặc quay lại trang chủ để khám phá thêm!" data-i18n-en="Try a different keyword or return to the homepage to explore more.">Hãy thử tìm với từ khóa khác hoặc quay lại trang chủ để khám phá thêm!</p>
+                                <div class="d-flex justify-content-center gap-3">
+                                    <a href="/" class="btn btn-primary rounded-pill px-4">
+                                        <i class="bi bi-house-door me-2"></i><span data-i18n-vi="Quay lại trang chủ" data-i18n-en="Back to homepage">Quay lại trang chủ</span>
+                                    </a>
+                                    <button class="btn btn-outline-primary rounded-pill px-4" onclick="history.back()">
+                                        <i class="bi bi-arrow-left me-2"></i><span data-i18n-vi="Quay lại" data-i18n-en="Go back">Quay lại</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="col-12 py-5">
-                    <div class="empty-state text-center animate__animated animate__fadeIn">
-                        <div class="empty-icon mb-4">
-                            <i class="bi bi-search text-primary"></i>
-                        </div>
-                        <h3 class="fw-bold mb-3">Không tìm thấy khóa học</h3>
-                        <p class="text-muted mb-4">Hãy thử tìm với từ khóa khác hoặc quay lại trang chủ để khám phá thêm!</p>
-                        <div class="d-flex justify-content-center gap-3">
-                            <a href="/" class="btn btn-primary rounded-pill px-4">
-                                <i class="bi bi-house-door me-2"></i>Quay lại trang chủ
-                            </a>
-                            <button class="btn btn-outline-primary rounded-pill px-4" onclick="history.back()">
-                                <i class="bi bi-arrow-left me-2"></i>Quay lại
-                            </button>
-                        </div>
-                    </div>
+                    }
                 </div>
-            }
+            </div>
         </div>
 
         <!-- Pagination -->
@@ -168,5 +311,78 @@
 @section Scripts {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <script src="~/js/Search/Search.js?v=2"></script>
+    <script>
+        // Initialize popovers for course cards
+        function initializePopovers() {
+            // Kiểm tra xem Bootstrap đã load chưa
+            if (typeof bootstrap === 'undefined') {
+                console.warn('Bootstrap chưa được load, đợi thêm...');
+                setTimeout(initializePopovers, 100);
+                return;
+            }
+
+            // Helper function to escape HTML
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+            
+            const courseCards = document.querySelectorAll('.course-card[data-bs-toggle="popover"]');
+            courseCards.forEach(function (card) {
+                // Kiểm tra xem popover đã được khởi tạo chưa
+                const existingPopover = bootstrap.Popover.getInstance(card);
+                if (existingPopover) {
+                    existingPopover.dispose();
+                }
+
+                const description = card.getAttribute('data-course-description') || '';
+                const instructor = (card.getAttribute('data-course-instructor') || '').trim();
+                const lessons = card.getAttribute('data-course-lessons') || '0';
+                
+                // Hiển thị đầy đủ mô tả trong popover
+                let descText = description;
+                
+                // Escape HTML to prevent XSS
+                const safeDesc = escapeHtml(descText);
+                const safeInstructor = instructor ? escapeHtml(instructor) : 'Chưa có';
+                
+                const popoverContent = `
+                    <div class="course-popover-content" style="max-width: 350px; max-height: 400px; overflow-y: auto;">
+                        <p class="mb-2 small"><strong>Mô tả:</strong> ${safeDesc}</p>
+                        <p class="mb-2 small"><strong>Giảng viên:</strong> ${safeInstructor}</p>
+                        <p class="mb-0 small"><strong>Số bài học:</strong> ${lessons} bài</p>
+                    </div>
+                `;
+                
+                card.setAttribute('data-bs-content', popoverContent);
+                
+                try {
+                    const popover = new bootstrap.Popover(card, {
+                        trigger: 'hover focus',
+                        placement: 'auto',
+                        html: true,
+                        container: 'body',
+                        delay: { show: 300, hide: 100 },
+                        fallbackPlacements: ['top', 'bottom', 'left', 'right']
+                    });
+                } catch (error) {
+                    console.error('Lỗi khi khởi tạo popover:', error);
+                }
+            });
+        }
+
+        // Khởi tạo khi DOM ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePopovers);
+        } else {
+            // DOM đã sẵn sàng
+            initializePopovers();
+        }
+
+        // Khởi tạo lại khi có thay đổi nội dung (pagination, filter, etc.)
+        document.addEventListener('popover:reinit', initializePopovers);
+    </script>
     <script src="~/js/Search/Search.js"></script>
 }

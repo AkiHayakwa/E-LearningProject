@@ -12,15 +12,18 @@
         <div class="col-lg-8">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h2 class="text-dark fw-bold mb-1">Giỏ hàng của bạn</h2>
-                    <p class="text-muted">@Model.Count() khóa học trong giỏ hàng</p>
+                    <h2 class="text-dark fw-bold mb-1" data-i18n-vi="Giỏ hàng của bạn" data-i18n-en="Your cart">Giỏ hàng của bạn</h2>
+                    <p class="text-muted">
+                        @Model.Count() <span data-i18n-vi="khóa học trong giỏ hàng" data-i18n-en="courses in cart">khóa học trong giỏ hàng</span>
+                    </p>
                 </div>
                 <div class="d-flex align-items-center">
                     @if (Model.Any())
                     {
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="selectAllCourses" checked>
-                            <label class="form-check-label text-primary fw-medium" for="selectAllCourses">
+                            <label class="form-check-label text-primary fw-medium" for="selectAllCourses"
+                                   data-i18n-vi="Chọn tất cả" data-i18n-en="Select all">
                                 Chọn tất cả
                             </label>
                         </div>
@@ -66,7 +69,16 @@
                                                     {
                                                         <span class="star @(i <= Math.Ceiling(item.Course.AverageRating ?? 0) ? "filled" : "")">★</span>
                                                     }
-                                                    <span class="text-muted small ms-1">@(item.Course.AverageRating != null ? item.Course.AverageRating.Value.ToString("F1") : "Chưa có đánh giá")</span>
+                                            <span class="text-muted small ms-1">
+                                                @if (item.Course.AverageRating != null)
+                                                {
+                                                    @item.Course.AverageRating.Value.ToString("F1")
+                                                }
+                                                else
+                                                {
+                                                    <span data-i18n-vi="Chưa có đánh giá" data-i18n-en="No reviews yet">Chưa có đánh giá</span>
+                                                }
+                                            </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -77,7 +89,7 @@
                                             <form asp-action="RemoveFromCart" asp-controller="Cart" asp-route-cartItemId="@item.CartItem.CartItemId" method="post">
                                                 @Html.AntiForgeryToken()
                                                 <button type="submit" class="btn-remove text-danger">
-                                                    <i class="bi bi-trash me-1"></i>Xóa
+                                                    <i class="bi bi-trash me-1"></i><span data-i18n-vi="Xóa" data-i18n-en="Remove">Xóa</span>
                                                 </button>
                                             </form>
                                         </div>
@@ -96,10 +108,10 @@
                             <div class="empty-cart-icon">
                                 <i class="bi bi-cart-x"></i>
                             </div>
-                            <h3 class="mt-4 fw-bold">Giỏ hàng của bạn đang trống</h3>
-                            <p class="text-muted mb-4 empty-cart-message">Hãy thêm một vài khóa học vào giỏ hàng và quay lại đây</p>
+                            <h3 class="mt-4 fw-bold" data-i18n-vi="Giỏ hàng của bạn đang trống" data-i18n-en="Your cart is empty">Giỏ hàng của bạn đang trống</h3>
+                            <p class="text-muted mb-4 empty-cart-message" data-i18n-vi="Hãy thêm một vài khóa học vào giỏ hàng và quay lại đây" data-i18n-en="Add some courses to your cart and come back.">Hãy thêm một vài khóa học vào giỏ hàng và quay lại đây</p>
                             <a href="@Url.Action("Index", "Search")" class="btn btn-primary btn-lg px-4">
-                                <i class="bi bi-search me-2"></i>Khám phá khóa học
+                                <i class="bi bi-search me-2"></i><span data-i18n-vi="Khám phá khóa học" data-i18n-en="Discover courses">Khám phá khóa học</span>
                             </a>
                         </div>
                     </div>
@@ -113,28 +125,28 @@
             <div class="col-lg-4">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4">
-                        <h4 class="card-title border-bottom pb-3 mb-3">Tóm tắt đơn hàng</h4>
+                        <h4 class="card-title border-bottom pb-3 mb-3" data-i18n-vi="Tóm tắt đơn hàng" data-i18n-en="Order summary">Tóm tắt đơn hàng</h4>
                         <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted">Khóa học đã chọn:</span>
+                            <span class="text-muted" data-i18n-vi="Khóa học đã chọn:" data-i18n-en="Selected courses:">Khóa học đã chọn:</span>
                             <span class="fw-medium selected-courses-count">@Model.Count()</span>
                         </div>
                         <div class="d-flex justify-content-between mb-4">
-                            <span class="text-muted">Tổng tiền:</span>
+                            <span class="text-muted" data-i18n-vi="Tổng tiền:" data-i18n-en="Total:">Tổng tiền:</span>
                             <span class="fw-bold fs-5 text-primary total-price">₫@totalPrice.ToString("N0")</span>
                         </div>
                         <div class="mb-4">
                             <div class="checkout-features">
                                 <div class="feature-item">
                                     <i class="bi bi-infinity text-primary"></i>
-                                    <span>Truy cập trọn đời</span>
+                                    <span data-i18n-vi="Truy cập trọn đời" data-i18n-en="Lifetime access">Truy cập trọn đời</span>
                                 </div>
                                 <div class="feature-item">
                                     <i class="bi bi-patch-check text-primary"></i>
-                                    <span>Chứng chỉ hoàn thành</span>
+                                    <span data-i18n-vi="Chứng chỉ hoàn thành" data-i18n-en="Completion certificate">Chứng chỉ hoàn thành</span>
                                 </div>
                                 <div class="feature-item">
                                     <i class="bi bi-phone text-primary"></i>
-                                    <span>Học trên mọi thiết bị</span>
+                                    <span data-i18n-vi="Học trên mọi thiết bị" data-i18n-en="Learn on any device">Học trên mọi thiết bị</span>
                                 </div>
                             </div>
                         </div>
@@ -142,12 +154,12 @@
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="selectedCartItemIds" id="selectedCartItemIds" value="" />
                             <button type="submit" class="btn btn-primary w-100 py-3 checkout-btn" id="checkoutButton">
-                                <i class="bi bi-credit-card me-2"></i>Thanh toán ngay
+                                <i class="bi bi-credit-card me-2"></i><span data-i18n-vi="Thanh toán ngay" data-i18n-en="Checkout now">Thanh toán ngay</span>
                             </button>
                         </form>
                         <p class="text-center text-muted small mt-3">
                             <i class="bi bi-shield-lock me-1"></i>
-                            Thanh toán an toàn & bảo mật
+                            <span data-i18n-vi="Thanh toán an toàn & bảo mật" data-i18n-en="Secure & protected payment">Thanh toán an toàn & bảo mật</span>
                         </p>
                     </div>
                 </div>
@@ -159,33 +171,33 @@
             <div class="col-lg-4">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4">
-                        <h4 class="card-title border-bottom pb-3 mb-3">Thông tin hữu ích</h4>
+                        <h4 class="card-title border-bottom pb-3 mb-3" data-i18n-vi="Thông tin hữu ích" data-i18n-en="Helpful information">Thông tin hữu ích</h4>
                         <div class="empty-cart-tips mb-4">
                             <div class="tip-item">
                                 <div class="tip-icon mb-2">
                                     <i class="bi bi-lightbulb text-warning"></i>
                                 </div>
-                                <h5 class="tip-title">Tìm kiếm khóa học phù hợp</h5>
-                                <p class="text-muted small">Sử dụng bộ lọc để tìm các khóa học phù hợp với mục tiêu học tập của bạn.</p>
+                                <h5 class="tip-title" data-i18n-vi="Tìm kiếm khóa học phù hợp" data-i18n-en="Find suitable courses">Tìm kiếm khóa học phù hợp</h5>
+                                <p class="text-muted small" data-i18n-vi="Sử dụng bộ lọc để tìm các khóa học phù hợp với mục tiêu học tập của bạn." data-i18n-en="Use filters to find courses that match your goals.">Sử dụng bộ lọc để tìm các khóa học phù hợp với mục tiêu học tập của bạn.</p>
                             </div>
                             <div class="tip-item">
                                 <div class="tip-icon mb-2">
                                     <i class="bi bi-star text-warning"></i>
                                 </div>
-                                <h5 class="tip-title">Đọc đánh giá từ học viên</h5>
-                                <p class="text-muted small">Kiểm tra đánh giá của học viên trước khi quyết định mua khóa học.</p>
+                                <h5 class="tip-title" data-i18n-vi="Đọc đánh giá từ học viên" data-i18n-en="Read learner reviews">Đọc đánh giá từ học viên</h5>
+                                <p class="text-muted small" data-i18n-vi="Kiểm tra đánh giá của học viên trước khi quyết định mua khóa học." data-i18n-en="Check student reviews before purchasing.">Kiểm tra đánh giá của học viên trước khi quyết định mua khóa học.</p>
                             </div>
                             <div class="tip-item">
                                 <div class="tip-icon mb-2">
                                     <i class="bi bi-tags text-warning"></i>
                                 </div>
-                                <h5 class="tip-title">Chú ý đến ưu đãi</h5>
-                                <p class="text-muted small">Thường xuyên kiểm tra các chương trình khuyến mãi để mua khóa học với giá tốt nhất.</p>
+                                <h5 class="tip-title" data-i18n-vi="Chú ý đến ưu đãi" data-i18n-en="Watch for promotions">Chú ý đến ưu đãi</h5>
+                                <p class="text-muted small" data-i18n-vi="Thường xuyên kiểm tra các chương trình khuyến mãi để mua khóa học với giá tốt nhất." data-i18n-en="Check promotions often to get the best price.">Thường xuyên kiểm tra các chương trình khuyến mãi để mua khóa học với giá tốt nhất.</p>
                             </div>
                         </div>
                         <div class="text-center">
                             <a href="@Url.Action("Index", "Search")" class="btn btn-outline-primary w-100">
-                                <i class="bi bi-arrow-right me-2"></i>Xem tất cả khóa học
+                                <i class="bi bi-arrow-right me-2"></i><span data-i18n-vi="Xem tất cả khóa học" data-i18n-en="View all courses">Xem tất cả khóa học</span>
                             </a>
                         </div>
                     </div>

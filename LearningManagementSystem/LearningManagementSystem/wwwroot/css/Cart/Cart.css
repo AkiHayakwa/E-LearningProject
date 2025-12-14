@@ -466,3 +466,63 @@ h4 {
         margin-bottom: 0.75rem;
     }
 }
+
+/* === Dark theme overrides === */
+body.dark-theme .cart-items .card,
+body.dark-theme .cart-items .card .row,
+body.dark-theme .card.border-0.shadow-sm {
+    background-color: #111c2e;
+    color: #e2e8f0;
+    border-color: #1f2a44;
+    box-shadow: 0 12px 30px rgba(2, 6, 23, 0.7);
+}
+
+body.dark-theme .cart-items .card-title,
+body.dark-theme .cart-items .card-text,
+body.dark-theme .cart-items .text-muted,
+body.dark-theme .cart-items .rating,
+body.dark-theme .checkout-features span,
+body.dark-theme .tip-title,
+body.dark-theme .tip-item p {
+    color: #e2e8f0 !important;
+}
+
+body.dark-theme .checkout-features,
+body.dark-theme .empty-cart .card {
+    background-color: rgba(79, 70, 229, 0.1);
+    border: 1px solid #303b57;
+}
+
+body.dark-theme .btn-outline-primary {
+    color: #cbd5e1;
+    border-color: #475569;
+}
+
+body.dark-theme .btn-outline-primary:hover {
+    background-color: #4c1d95;
+    color: #fff;
+    border-color: #4c1d95;
+}
+
+body.dark-theme .btn-outline-secondary {
+    color: #cbd5e1;
+    border-color: #374151;
+}
+
+body.dark-theme .btn-outline-secondary:hover {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+body.dark-theme .empty-cart-icon {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-theme .form-check-input {
+    background-color: #0f172a;
+    border-color: #6366f1;
+}
+
+body.dark-theme .form-check-input:checked {
+    background-color: #6366f1;
+}

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using LearningManagementSystem.Data;
 using LearningManagementSystem.Models;
 using LearningManagementSystem.Models.ViewModels;
@@ -18,16 +19,63 @@ public class SearchController : Controller
         _enrollmentRepository = enrollmentRepository;
     }
 
-    public IActionResult Index(string query, string sort = "name-asc")
+    public IActionResult Index(string query, string sort = "name-asc", string[] tagIds = null, string[] levels = null, int? minDuration = null, int? maxDuration = null)
     {
         // Sử dụng User.Identity.Name để lấy username của người dùng đã đăng nhập
         var userName = User.Identity.IsAuthenticated ? User.Identity.Name : null;
 
-        var coursesQuery = _context.Courses
+        var normalizedTagIds = tagIds?.Where(t => !string.IsNullOrWhiteSpace(t)).Select(t => t.Trim()).ToArray() ?? Array.Empty<string>();
+        var normalizedLevels = levels?.Where(l => !string.IsNullOrWhiteSpace(l)).Select(l => l.Trim()).ToArray() ?? Array.Empty<string>();
+
+        var baseQuery = _context.Courses
             .Include(c => c.Lessons)
             .Include(c => c.Comments)
-            .Where(c => string.IsNullOrEmpty(query) || c.CourseName.Contains(query))
-            .Select(c => new CourseListViewModel
+            .Include(c => c.CourseTags)
+                .ThenInclude(ct => ct.Tag)
+            .Include(c => c.CourseInstructors)
+                .ThenInclude(ci => ci.User)
+                    .ThenInclude(u => u.Role)
+            .Where(c => string.IsNullOrEmpty(query) || c.CourseName.Contains(query));
+
+        if (normalizedLevels.Any())
+        {
+            baseQuery = baseQuery.Where(c => c.Level != null && normalizedLevels.Contains(c.Level));
+        }
+
+        if (normalizedTagIds.Any())
+        {
+            baseQuery = baseQuery.Where(c => c.CourseTags.Any(ct => normalizedTagIds.Contains(ct.TagId)));
+        }
+
+        if (minDuration.HasValue)
+        {
+            baseQuery = baseQuery.Where(c => c.DurationMinutes >= minDuration.Value);
+        }
+
+        if (maxDuration.HasValue)
+        {
+            baseQuery = baseQuery.Where(c => !c.DurationMinutes.HasValue || c.DurationMinutes <= maxDuration.Value);
+        }
+
+        // Materialize courses trước để có thể map InstructorName
+        var coursesList = baseQuery.ToList();
+
+        // Map sang CourseListViewModel với InstructorName
+        var coursesQuery = coursesList.Select(c =>
+        {
+            // Lấy tên giảng viên
+            string instructorName = "Chưa có giảng viên";
+            if (c.CourseInstructors?.Any() == true)
+            {
+                var instructor = c.CourseInstructors
+                    .FirstOrDefault(ci => ci.User?.Role?.RoleName == "Instructor")?.User;
+                if (instructor != null)
+                {
+                    instructorName = instructor.FullName ?? instructor.UserName ?? "Chưa có giảng viên";
+                }
+            }
+
+            return new CourseListViewModel
             {
                 CourseId = c.CourseId,
                 CourseName = c.CourseName,
@@ -39,8 +87,16 @@ public class SearchController : Controller
                 IsEnrolled = userName != null && _enrollmentRepository.GetAll()
                     .Any(e => e.UserName == userName && e.CourseId == c.CourseId),
                 Price = c.Price,
-                AverageRating = c.Comments.Any() ? c.Comments.Average(cm => cm.Rating) : null
-            });
+                AverageRating = c.Comments.Any() ? c.Comments.Average(cm => cm.Rating) : null,
+                Level = c.Level,
+                DurationMinutes = c.DurationMinutes,
+                InstructorName = instructorName,
+                TagNames = c.CourseTags
+                    .Select(ct => ct.Tag != null ? ct.Tag.Name : string.Empty)
+                    .Where(name => !string.IsNullOrWhiteSpace(name))
+                    .ToList()
+            };
+        });
 
         // Sắp xếp danh sách khóa học dựa trên tham số sort
         List<CourseListViewModel> courses;
@@ -61,6 +117,15 @@ public class SearchController : Controller
 
         ViewBag.Query = query;
         ViewBag.Sort = sort; // Truyền giá trị sort để view biết tiêu chí hiện tại
+        ViewBag.AvailableTags = _context.Tags
+            .Where(t => t.IsActive)
+            .OrderBy(t => t.Category)
+            .ThenBy(t => t.Name)
+            .ToList();
+        ViewBag.SelectedTags = normalizedTagIds;
+        ViewBag.SelectedLevels = normalizedLevels;
+        ViewBag.MinDuration = minDuration;
+        ViewBag.MaxDuration = maxDuration;
         return View(courses);
     }
 

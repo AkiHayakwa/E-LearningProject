@@ -13,13 +13,13 @@
     <div class="result-card">
         <div class="header-section">
             <h1 class="section-title">@Model.AssignmentTitle</h1>
-            <div class="section-subtitle">Kết quả bài kiểm tra</div>
+            <div class="section-subtitle" data-i18n-vi="Kết quả bài kiểm tra" data-i18n-en="Test results">Kết quả bài kiểm tra</div>
         </div>
 
         @if (Model.Questions == null || !Model.Questions.Any())
         {
             <div class="info-message">
-                <i class="fas fa-info-circle"></i> Không có câu hỏi nào để hiển thị kết quả.
+                <i class="fas fa-info-circle"></i> <span data-i18n-vi="Không có câu hỏi nào để hiển thị kết quả." data-i18n-en="No questions available to display results.">Không có câu hỏi nào để hiển thị kết quả.</span>
             </div>
         }
         else
@@ -65,31 +65,31 @@
                     <div class="score-text">@Math.Round(scorePercentage)%</div>
                 </div>
                 <div class="score-details">
-                    <div class="score-title">Điểm số</div>
+                    <div class="score-title" data-i18n-vi="Điểm số" data-i18n-en="Score">Điểm số</div>
                     <div class="score-value">@totalScore / @maxTotalScore</div>
                     <div class="score-status @scoreClass">
                         @if (scorePercentage >= 80)
                         {
-                            <span>Xuất sắc</span>
+                            <span data-i18n-vi="Xuất sắc" data-i18n-en="Excellent">Xuất sắc</span>
                         }
                         else if (scorePercentage >= 60)
                         {
-                            <span>Tốt</span>
+                            <span data-i18n-vi="Tốt" data-i18n-en="Good">Tốt</span>
                         }
                         else if (scorePercentage >= 40)
                         {
-                            <span>Trung bình</span>
+                            <span data-i18n-vi="Trung bình" data-i18n-en="Average">Trung bình</span>
                         }
                         else
                         {
-                            <span>Cần cải thiện</span>
+                            <span data-i18n-vi="Cần cải thiện" data-i18n-en="Needs improvement">Cần cải thiện</span>
                         }
                     </div>
                 </div>
             </div>
 
             <div class="questions-section">
-                <h2 class="questions-title">Chi tiết câu trả lời</h2>
+                <h2 class="questions-title" data-i18n-vi="Chi tiết câu trả lời" data-i18n-en="Answer details">Chi tiết câu trả lời</h2>
 
                 @for (int i = 0; i < Model.Questions.Count; i++)
                 {
@@ -105,15 +105,17 @@
 
                     <div class="question-card @(isCorrect ? "correct" : "incorrect")">
                         <div class="question-header">
-                            <div class="question-number">Câu @(i + 1)</div>
+                            <div class="question-number">
+                                <span data-i18n-vi="Câu" data-i18n-en="Question">Câu</span> @(i + 1)
+                            </div>
                             <div class="question-type">
                                 @if (question.QuestionType == "MultipleChoice")
                                 {
-                                    <span class="tag multiple-choice">Trắc nghiệm</span>
+                                    <span class="tag multiple-choice" data-i18n-vi="Trắc nghiệm" data-i18n-en="Multiple choice">Trắc nghiệm</span>
                                 }
                                 else if (question.QuestionType == "Essay")
                                 {
-                                    <span class="tag essay">Tự luận</span>
+                                    <span class="tag essay" data-i18n-vi="Tự luận" data-i18n-en="Essay">Tự luận</span>
                                 }
                             </div>
                         </div>
@@ -160,7 +162,7 @@
                             else if (question.QuestionType == "Essay")
                             {
                                 <div class="essay-answer">
-                                    <div class="essay-header">Trả lời của bạn</div>
+                                    <div class="essay-header" data-i18n-vi="Trả lời của bạn" data-i18n-en="Your answer">Trả lời của bạn</div>
                                     <div class="essay-content">
                                         @if (!string.IsNullOrEmpty(submission?.SelectedOptionText))
                                         {
@@ -168,14 +170,14 @@
                                         }
                                         else
                                         {
-                                            <span class="no-answer">Chưa có câu trả lời</span>
+                                            <span class="no-answer" data-i18n-vi="Chưa có câu trả lời" data-i18n-en="No answer">Chưa có câu trả lời</span>
                                         }
                                     </div>
 
                                     @if (!string.IsNullOrEmpty(submission?.Feedback))
                                     {
                                         <div class="essay-feedback">
-                                            <div class="feedback-header">Nhận xét của giảng viên</div>
+                                            <div class="feedback-header" data-i18n-vi="Nhận xét của giảng viên" data-i18n-en="Instructor feedback">Nhận xét của giảng viên</div>
                                             <div class="feedback-content">@submission.Feedback</div>
                                         </div>
                                     }
@@ -192,7 +194,7 @@
                                         {
                                             <div class="pending-score">
                                                 <i class="fas fa-clock"></i>
-                                                <span>Đang chờ chấm</span>
+                                                <span data-i18n-vi="Đang chờ chấm" data-i18n-en="Pending grading">Đang chờ chấm</span>
                                             </div>
                                         }
                                     </div>
@@ -206,7 +208,7 @@
             <div class="action-section">
                 <a href="@Url.Action("AllTests", "Course", new { id = Model.CourseId })" class="btn-back">
                     <i class="fas fa-arrow-left"></i>
-                    <span>Quay lại danh sách bài kiểm tra</span>
+                    <span data-i18n-vi="Quay lại danh sách bài kiểm tra" data-i18n-en="Back to test list">Quay lại danh sách bài kiểm tra</span>
                 </a>
             </div>
         }

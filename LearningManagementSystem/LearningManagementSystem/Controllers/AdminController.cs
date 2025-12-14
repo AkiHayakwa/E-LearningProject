@@ -31,6 +31,8 @@ namespace LearningManagementSystem.Controllers.Admin
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly ILogger<AdminController> _logger;
         private readonly IWithdrawalRequestRepository _withdrawalRequestRepository;
+        private readonly IRevenueShareRepository _revenueShareRepository;
+        private readonly IReportRepository _reportRepository;
 
         public AdminController(
             ICourseRepository courseRepository,
@@ -45,7 +47,9 @@ namespace LearningManagementSystem.Controllers.Admin
             IAssignmentQuestionOptionRepository optionRepository,
             IPasswordHasher<User> passwordHasher,
             ILogger<AdminController> logger,
-            IWithdrawalRequestRepository withdrawalRequestRepository)
+            IWithdrawalRequestRepository withdrawalRequestRepository,
+            IRevenueShareRepository revenueShareRepository,
+            IReportRepository reportRepository)
         {
             _courseRepository = courseRepository;
             _commentRepository = commentRepository;
@@ -60,6 +64,9 @@ namespace LearningManagementSystem.Controllers.Admin
             _passwordHasher = passwordHasher;
             _logger = logger;
             _withdrawalRequestRepository = withdrawalRequestRepository;
+            _revenueShareRepository = revenueShareRepository;
+            _reportRepository = reportRepository;
+
         }
 
         #region Dashboard
@@ -521,19 +528,18 @@ namespace LearningManagementSystem.Controllers.Admin
         #endregion
 
         #region Quản lý yêu cầu rút tiền (Withdrawal Request Management)
-
         // GET: Admin/ManageWithdrawalRequests
         public async Task<IActionResult> ManageWithdrawalRequests(int page = 1)
         {
             int pageSize = 10;
-            var allRequests = await _withdrawalRequestRepository.GetAllAsync();
+            var allRequests = await _withdrawalRequestRepository.GetAllPendingAsync(); // SỬA: Chỉ lấy Pending
             int totalRequests = allRequests.Count();
             int totalPages = (int)Math.Ceiling((double)totalRequests / pageSize);
             var pagedRequests = allRequests.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            
+
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;
-            
+
             return View("~/Views/Admin/WithdrawalRequest/ManageWithdrawalRequests.cshtml", pagedRequests);
         }
 
@@ -580,58 +586,60 @@ namespace LearningManagementSystem.Controllers.Admin
                     return RedirectToAction("ManageWithdrawalRequests");
                 }
 
-                // Kiểm tra số dư của user
-                var user = _userRepository.GetByUserName(request.UserName);
-                if (user == null)
+                // TÍNH LẠI SỐ DƯ THỰC TẾ
+                var revenueShares = await _revenueShareRepository.GetByUserNameAsync(request.UserName);
+                var approvedWithdrawals = await _withdrawalRequestRepository.GetApprovedByUserNameAsync(request.UserName);
+                var totalRevenue = revenueShares.Sum(r => r.Amount);
+                var totalWithdrawn = approvedWithdrawals.Sum(w => w.Amount);
+                var actualBalance = totalRevenue - totalWithdrawn;
+
+                if (request.Amount > actualBalance)
                 {
-                    TempData["Error"] = "Người dùng không tồn tại.";
+                    TempData["Error"] = $"Số dư thực tế không đủ: {actualBalance:N0} ₫ (yêu cầu: {request.Amount:N0} ₫)";
                     return RedirectToAction("ManageWithdrawalRequests");
                 }
 
-                if (user.WalletBalance < request.Amount)
-                {
-                    TempData["Error"] = "Số dư của người dùng không đủ để thực hiện giao dịch.";
-                    return RedirectToAction("ManageWithdrawalRequests");
-                }
-
-                // Cập nhật trạng thái yêu cầu
+                // CẬP NHẬT TRẠNG THÁI
                 request.Status = "Approved";
-                request.AdminNote = adminNote;
+                request.AdminNote = string.IsNullOrWhiteSpace(adminNote) ? "Đã duyệt" : adminNote.Trim();
                 request.ProcessedDate = DateTime.Now;
-                request.ProcessedBy = User.Identity.Name;
+                request.ProcessedBy = User.Identity?.Name;
 
                 await _withdrawalRequestRepository.UpdateAsync(request);
 
-                // Trừ tiền từ ví người dùng
-                user.WalletBalance -= request.Amount;
-                _userRepository.Update(user);
+                // CẬP NHẬT SỐ DƯ VÍ
+                var instructor = _userRepository.GetByUserName(request.UserName);
+                if (instructor != null)
+                {
+                    instructor.WalletBalance = actualBalance - request.Amount;
+                    _userRepository.Update(instructor);
+                    await _userRepository.SaveAsync(); // BẮT BUỘC CÓ SaveAsync
+                }
 
-                // Tạo thông báo cho người dùng
+                // GỬI THÔNG BÁO
                 var notification = new Notification
                 {
                     NotificationId = Guid.NewGuid().ToString(),
                     UserName = request.UserName,
-                    Title = "Yêu cầu rút tiền đã được duyệt",
-                    Content = $"Yêu cầu rút tiền {request.Amount:N0} VNĐ của bạn đã được duyệt. Tiền sẽ được chuyển vào tài khoản {request.AccountNumber} trong vòng 1-2 ngày làm việc.",
+                    Title = "Rút tiền thành công",
+                    Content = $"Yêu cầu rút {request.Amount:N0} ₫ đã được duyệt. Tiền sẽ được chuyển vào tài khoản {request.BankName} - {request.AccountNumber} trong 1-2 ngày làm việc.",
                     CreatedDate = DateTime.Now,
                     IsRead = false
                 };
-
                 await _notificationRepository.AddAsync(notification);
 
-                TempData["Success"] = "Duyệt yêu cầu rút tiền thành công!";
-                _logger.LogInformation($"Withdrawal request {id} approved by {User.Identity.Name}");
+                TempData["Success"] = $"Đã duyệt yêu cầu rút {request.Amount:N0} ₫ cho {instructor?.FullName ?? request.UserName}";
+                _logger.LogInformation($"[APPROVED] Withdrawal {id} by {User.Identity?.Name}");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error approving withdrawal request: {id}");
-                TempData["Error"] = "Đã xảy ra lỗi khi duyệt yêu cầu rút tiền. Vui lòng thử lại.";
+                _logger.LogError(ex, $"[ERROR] Approve withdrawal {id}");
+                TempData["Error"] = "Lỗi hệ thống khi duyệt yêu cầu.";
             }
 
             return RedirectToAction("ManageWithdrawalRequests");
         }
 
-        // POST: Admin/RejectWithdrawalRequest/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RejectWithdrawalRequest(string id, string adminNote = "")
@@ -657,34 +665,35 @@ namespace LearningManagementSystem.Controllers.Admin
                     return RedirectToAction("ManageWithdrawalRequests");
                 }
 
-                // Cập nhật trạng thái yêu cầu
+                // CẬP NHẬT TRẠNG THÁI
                 request.Status = "Rejected";
-                request.AdminNote = adminNote;
+                request.AdminNote = string.IsNullOrWhiteSpace(adminNote)
+                    ? "Bị từ chối"
+                    : adminNote.Trim();
                 request.ProcessedDate = DateTime.Now;
-                request.ProcessedBy = User.Identity.Name;
+                request.ProcessedBy = User.Identity?.Name;
 
                 await _withdrawalRequestRepository.UpdateAsync(request);
 
-                // Tạo thông báo cho người dùng
+                // GỬI THÔNG BÁO
                 var notification = new Notification
                 {
                     NotificationId = Guid.NewGuid().ToString(),
                     UserName = request.UserName,
                     Title = "Yêu cầu rút tiền bị từ chối",
-                    Content = $"Yêu cầu rút tiền {request.Amount:N0} VNĐ của bạn đã bị từ chối. Lý do: {adminNote}",
+                    Content = $"Yêu cầu rút {request.Amount:N0} ₫ bị từ chối. Lý do: {request.AdminNote}",
                     CreatedDate = DateTime.Now,
                     IsRead = false
                 };
-
                 await _notificationRepository.AddAsync(notification);
 
-                TempData["Success"] = "Từ chối yêu cầu rút tiền thành công!";
-                _logger.LogInformation($"Withdrawal request {id} rejected by {User.Identity.Name}");
+                TempData["Success"] = $"Đã từ chối yêu cầu rút {request.Amount:N0} ₫";
+                _logger.LogInformation($"[REJECTED] Withdrawal {id} by {User.Identity?.Name}");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error rejecting withdrawal request: {id}");
-                TempData["Error"] = "Đã xảy ra lỗi khi từ chối yêu cầu rút tiền. Vui lòng thử lại.";
+                _logger.LogError(ex, $"[ERROR] Reject withdrawal {id}");
+                TempData["Error"] = "Lỗi hệ thống khi từ chối yêu cầu.";
             }
 
             return RedirectToAction("ManageWithdrawalRequests");
@@ -692,5 +701,127 @@ namespace LearningManagementSystem.Controllers.Admin
 
         #endregion
 
+        #region Forum Reports Management
+
+        // GET: Admin/ManageForumReports
+        public async Task<IActionResult> ManageForumReports(string status = "Pending", int page = 1)
+        {
+            int pageSize = 10;
+            var reportsQuery = _reportRepository.GetAll();
+
+            if (!string.IsNullOrEmpty(status) && status != "All")
+            {
+                reportsQuery = reportsQuery.Where(r => r.Status == status);
+            }
+
+            var totalReports = await reportsQuery.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalReports / pageSize);
+
+            var reports = await reportsQuery
+                .OrderByDescending(r => r.CreatedDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            ViewBag.Status = status;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.TotalReports = totalReports;
+
+            return View(reports);
+        }
+
+        // GET: Admin/ForumReportDetail
+        public async Task<IActionResult> ForumReportDetail(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            var report = _reportRepository.GetById(id);
+            if (report == null)
+            {
+                return NotFound();
+            }
+
+            return View(report);
+        }
+
+        // POST: Admin/ResolveReport
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResolveReport(string id, string action, string adminNote = "")
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                TempData["Error"] = "ID báo cáo không hợp lệ.";
+                return RedirectToAction("ManageForumReports");
+            }
+
+            try
+            {
+                var report = _reportRepository.GetById(id);
+                if (report == null)
+                {
+                    TempData["Error"] = "Báo cáo không tồn tại.";
+                    return RedirectToAction("ManageForumReports");
+                }
+
+                var userName = User.FindFirst(ClaimTypes.Name)?.Value;
+
+                if (action == "Resolve")
+                {
+                    report.Status = "Resolved";
+                    report.ResolvedBy = userName;
+                    report.ResolvedDate = DateTime.UtcNow;
+
+                    // Xóa post/topic nếu cần
+                    if (report.PostId != null)
+                    {
+                        var post = await _context.Posts.FindAsync(report.PostId);
+                        if (post != null)
+                        {
+                            post.IsActive = false;
+                            _context.Posts.Update(post);
+                        }
+                    }
+                    else if (report.TopicId != null)
+                    {
+                        var topic = await _context.Topics.FindAsync(report.TopicId);
+                        if (topic != null)
+                        {
+                            topic.IsActive = false;
+                            _context.Topics.Update(topic);
+                        }
+                    }
+                }
+                else if (action == "Reject")
+                {
+                    report.Status = "Rejected";
+                    report.ResolvedBy = userName;
+                    report.ResolvedDate = DateTime.UtcNow;
+                }
+
+                if (!string.IsNullOrEmpty(adminNote))
+                {
+                    // Có thể lưu adminNote vào Description hoặc tạo field mới
+                }
+
+                _reportRepository.Update(report);
+                _reportRepository.Save();
+
+                TempData["Success"] = $"Đã {(action == "Resolve" ? "xử lý" : "từ chối")} báo cáo.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error resolving report {id}");
+                TempData["Error"] = "Lỗi hệ thống khi xử lý báo cáo.";
+            }
+
+            return RedirectToAction("ManageForumReports");
+        }
+
+        #endregion
     }
 }

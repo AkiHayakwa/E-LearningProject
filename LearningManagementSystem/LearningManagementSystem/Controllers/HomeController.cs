@@ -1,5 +1,6 @@
 ﻿using LearningManagementSystem.Data;
 using LearningManagementSystem.Models;
+using System.Collections.Generic;
 using LearningManagementSystem.Models.ViewModels;
 using LearningManagementSystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +64,11 @@ namespace LearningManagementSystem.Controllers
                         .ThenInclude(a => a.Questions)
                             .ThenInclude(q => q.Options)
                     .Include(c => c.Comments)
+                    .Include(c => c.CourseTags)
+                        .ThenInclude(ct => ct.Tag)
+                    .Include(c => c.CourseInstructors)
+                        .ThenInclude(ci => ci.User)
+                            .ThenInclude(u => u.Role)
                     .ToListAsync();
 
                 var enrollments = userName != null
@@ -90,21 +96,43 @@ namespace LearningManagementSystem.Controllers
                 var viewModel = new HomeViewModel
                 {
                     User = user, // Đảm bảo User chứa Avatar nếu đã có trong database
-                    Courses = courses.Select(c => new CourseListViewModel
+                    Courses = courses.Select(c => 
                     {
-                        CourseId = c.CourseId,
-                        CourseName = c.CourseName,
-                        Title = c.CourseName,
-                        Description = c.Description,
-                        CreatedDate = c.CreatedDate,
-                        ImageUrl = c.ImageUrl,
-                        Price = c.Price,
-                        IsEnrolled = enrollments.Any(e => e.CourseId == c.CourseId),
-                        Lessons = c.Lessons,
-                        Assignments = c.Assignments,
-                        AverageRating = c.Comments.Any()
-                            ? c.Comments.Average(com => com.Rating ?? 0)
-                            : (double?)null
+                        // Lấy tên giảng viên
+                        string instructorName = "Chưa có giảng viên";
+                        if (c.CourseInstructors?.Any() == true)
+                        {
+                            var instructor = c.CourseInstructors
+                                .FirstOrDefault(ci => ci.User?.Role?.RoleName == "Instructor")?.User;
+                            if (instructor != null)
+                            {
+                                instructorName = instructor.FullName ?? instructor.UserName ?? "Chưa có giảng viên";
+                            }
+                        }
+
+                        return new CourseListViewModel
+                        {
+                            CourseId = c.CourseId,
+                            CourseName = c.CourseName,
+                            Title = c.CourseName,
+                            Description = c.Description,
+                            CreatedDate = c.CreatedDate,
+                            ImageUrl = c.ImageUrl,
+                            Price = c.Price,
+                            IsEnrolled = enrollments.Any(e => e.CourseId == c.CourseId),
+                            Lessons = c.Lessons,
+                            Assignments = c.Assignments,
+                            AverageRating = c.Comments.Any()
+                                ? c.Comments.Average(com => com.Rating ?? 0)
+                                : (double?)null,
+                            Level = c.Level,
+                            DurationMinutes = c.DurationMinutes,
+                            InstructorName = instructorName,
+                            TagNames = c.CourseTags?
+                                .Select(ct => ct.Tag != null ? ct.Tag.Name : string.Empty)
+                                .Where(name => !string.IsNullOrWhiteSpace(name))
+                                .ToList() ?? new List<string>()
+                        };
                     }).ToList(),
                     Enrollments = enrollments,
                     CartCourseIds = cartCourseIds
@@ -115,9 +143,8 @@ namespace LearningManagementSystem.Controllers
                 {
                     try
                     {
-                        var notifications = await _notificationRepository.GetByUserNameAsync(userName);
-                        ViewBag.UnreadCount = notifications?.Count(n => !n.IsRead) ?? 0;
-                        ViewBag.Notifications = notifications?.OrderByDescending(n => n.CreatedDate).Take(3).ToList() ?? new List<Notification>();
+                        ViewBag.UnreadCount = await _notificationRepository.GetUnreadCountAsync(userName);
+                        ViewBag.Notifications = await _notificationRepository.GetRecentNotificationsAsync(userName, 3);
                     }
                     catch (Exception ex)
                     {

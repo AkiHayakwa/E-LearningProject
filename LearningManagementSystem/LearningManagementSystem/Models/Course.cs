@@ -1,4 +1,5 @@
 ﻿    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Collections.Generic;
 
     namespace LearningManagementSystem.Models
@@ -27,6 +28,12 @@
             [Range(0, double.MaxValue)]
             public decimal? Price { get; set; } // Giá tiền, có thể NULL (miễn phí)
 
+            [StringLength(50)]
+            public string? Level { get; set; }  // Beginner, Intermediate, Advanced
+
+            [Range(0, int.MaxValue)]
+            public int? DurationMinutes { get; set; }
+
             // Navigation properties
             public List<Lesson>? Lessons { get; set; }
             public List<Enrollment>? Enrollments { get; set; }
@@ -36,7 +43,13 @@
             public List<CourseInstructor>? CourseInstructors { get; set; }
             public List<CartItem>? CartItems { get; set; }
 
-        public List<OrderDetail>? OrderDetails { get; set; }
+            public ICollection<AIPractice> AIPractices { get; set; } = new List<AIPractice>();
+            public ICollection<StudySession> StudySessions { get; set; } = new List<StudySession>();
+            public List<OrderDetail>? OrderDetails { get; set; }
 
-    }
+            public ICollection<CourseTag>? CourseTags { get; set; } = new List<CourseTag>();
+
+            [NotMapped]
+            public List<string>? SelectedTagIds { get; set; } = new();
+        }
     }

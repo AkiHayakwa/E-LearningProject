@@ -133,6 +133,11 @@ namespace LearningManagementSystem.Repositories
             }
         }
 
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
         public void Save()
         {
             _context.SaveChanges();

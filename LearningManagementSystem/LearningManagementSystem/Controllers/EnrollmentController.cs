@@ -39,6 +39,7 @@ namespace LearningManagementSystem.Controllers
         // POST: Enrollment/Enroll
         [Authorize(Roles = "Student")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Enroll(string courseId)
         {
             _logger.LogInformation($"Enroll called with CourseId: {courseId}");
@@ -77,10 +78,31 @@ namespace LearningManagementSystem.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                // Đăng ký khóa học
-                var success = _enrollmentRepository.Enroll(userName, courseId);
-                if (success)
+                // Business Rule: Kiểm tra user đã đăng ký khóa học này chưa
+                var existingEnrollment = await _context.Enrollments
+                    .FirstOrDefaultAsync(e => e.UserName == userName && e.CourseId == courseId);
+                
+                if (existingEnrollment != null)
                 {
+                    _logger.LogWarning($"User {userName} has already enrolled in CourseId: {courseId}.");
+                    TempData["Error"] = "Bạn đã đăng ký khóa học này rồi.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Sử dụng transaction để đảm bảo data consistency
+                using var transaction = await _context.Database.BeginTransactionAsync();
+                try
+                {
+                    // Đăng ký khóa học
+                    var enrollment = new Enrollment
+                    {
+                        EnrollmentId = Guid.NewGuid().ToString(),
+                        UserName = userName,
+                        CourseId = courseId,
+                        EnrollmentDate = DateTime.Now
+                    };
+                    _context.Enrollments.Add(enrollment);
+
                     // Tạo thông báo
                     var notification = new Notification
                     {
@@ -91,19 +113,13 @@ namespace LearningManagementSystem.Controllers
                         CreatedDate = DateTime.Now,
                         IsRead = false
                     };
-                    await _notificationRepository.AddAsync(notification);
+                    _context.Notifications.Add(notification);
 
-                    // Lưu tất cả thay đổi (đăng ký và thông báo)
-                    try
-                    {
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, $"Error saving changes for User {userName} after enrolling in CourseId: {courseId}. InnerException: {ex.InnerException?.Message}");
-                        TempData["Error"] = "Đăng ký thành công nhưng lỗi khi lưu thông tin. Vui lòng kiểm tra lại.";
-                        return RedirectToAction("Index", "Home");
-                    }
+                    // Lưu tất cả thay đổi trong transaction
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    
+                    var success = true;
 
                     // Cập nhật ViewBag để hiển thị thông báo trong dropdown chuông
                     try
@@ -122,10 +138,12 @@ namespace LearningManagementSystem.Controllers
                     _logger.LogInformation($"User {userName} successfully enrolled in CourseId: {courseId}.");
                     TempData["Success"] = $"Đăng ký khóa học '{course.CourseName}' thành công!{(course.Price > 0 ? "" : " Khóa học này miễn phí.")}";
                 }
-                else
+                catch (Exception ex)
                 {
-                    _logger.LogWarning($"User {userName} has already enrolled in CourseId: {courseId} or enrollment failed.");
-                    TempData["Error"] = "Bạn đã đăng ký khóa học này rồi hoặc đăng ký thất bại.";
+                    await transaction.RollbackAsync();
+                    _logger.LogError(ex, $"Error enrolling User {userName} in CourseId: {courseId}. InnerException: {ex.InnerException?.Message}");
+                    TempData["Error"] = "Đã có lỗi xảy ra khi đăng ký. Vui lòng thử lại.";
+                    return RedirectToAction("Index", "Home");
                 }
 
                 return RedirectToAction("Index", "Home");
@@ -140,6 +158,7 @@ namespace LearningManagementSystem.Controllers
 
         // POST: Enrollment/Unenroll
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Unenroll(string courseId)
         {
             _logger.LogInformation($"Unenroll called with CourseId: {courseId}");

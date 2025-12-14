@@ -60,10 +60,10 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminRole", policy =>
         policy.RequireRole("Admin"));
-    
+
     options.AddPolicy("RequireInstructorRole", policy =>
         policy.RequireRole("Instructor"));
-    
+
     options.AddPolicy("RequireStudentRole", policy =>
         policy.RequireRole("Student"));
 });
@@ -84,6 +84,10 @@ builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IRevenueShareRepository, RevenueShareRepository>();
 builder.Services.AddScoped<IWithdrawalRequestRepository, WithdrawalRequestRepository>();
+builder.Services.AddScoped<IForumRepository, ForumRepository>();
+builder.Services.AddScoped<ITopicRepository, TopicRepository>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 builder.Services.AddSingleton<EmailService>();
 

@@ -12,5 +12,6 @@ namespace LearningManagementSystem.Repositories
         void Update(User user);
         Task Delete(string userName);
         void Save();
+        Task SaveAsync();
     }
 }

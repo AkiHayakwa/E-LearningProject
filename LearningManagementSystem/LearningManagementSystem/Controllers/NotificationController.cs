@@ -12,14 +12,16 @@ namespace LearningManagementSystem.Controllers
     public class NotificationController : Controller
     {
         private readonly INotificationRepository _notificationRepository;
+        private readonly IUserRepository _userRepository;
 
-        public NotificationController(INotificationRepository notificationRepository)
+        public NotificationController(INotificationRepository notificationRepository, IUserRepository userRepository)
         {
             _notificationRepository = notificationRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
             var userName = User.Identity.Name;
             if (string.IsNullOrEmpty(userName))
@@ -27,8 +29,28 @@ namespace LearningManagementSystem.Controllers
                 return Unauthorized("Bạn cần đăng nhập để xem thông báo.");
             }
 
-            var notifications = await _notificationRepository.GetByUserNameAsync(userName);
-            return View(notifications.OrderByDescending(n => n.CreatedDate));
+            int pageSize = 10; // Giảm từ 20 xuống 10 để hiển thị gọn hơn
+            page = page < 1 ? 1 : page;
+
+            // Tối ưu: chỉ query một lần để lấy count
+            var allNotifications = await _notificationRepository.GetByUserNameAsync(userName);
+            var totalCount = allNotifications.Count;
+            var totalPages = totalCount > 0 ? (int)Math.Ceiling((double)totalCount / pageSize) : 1;
+
+            // Đảm bảo page không vượt quá totalPages
+            if (page > totalPages && totalPages > 0)
+            {
+                page = totalPages;
+            }
+
+            var notifications = await _notificationRepository.GetByUserNameAsync(userName, page, pageSize);
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.UnreadCount = await _notificationRepository.GetUnreadCountAsync(userName);
+
+            return View(notifications);
         }
 
         [HttpPost]
@@ -69,49 +91,51 @@ namespace LearningManagementSystem.Controllers
             if (string.IsNullOrEmpty(userName))
                 return Unauthorized();
 
-            var notifications = await _notificationRepository.GetByUserNameAsync(userName);
-            var unread = notifications.Where(n => !n.IsRead).ToList();
-            foreach (var n in unread)
-                n.IsRead = true;
-            if (unread.Any())
-                await _notificationRepository.UpdateRangeAsync(unread);
+            await _notificationRepository.MarkAllAsReadAsync(userName);
+            TempData["Success"] = "Đã đánh dấu tất cả thông báo là đã đọc.";
             return RedirectToAction("Index");
         }
 
-        // Phương thức để lấy thông báo cho dropdown (dùng trong _Layout.cshtml)
-        [NonAction]
-        public async Task PrepareNotificationData()
+        // API endpoint để lấy thông báo cho dropdown (AJAX)
+        [HttpGet]
+        public async Task<IActionResult> GetNotifications(int count = 5)
         {
             var userName = User.Identity.Name;
-            if (!string.IsNullOrEmpty(userName))
+            if (string.IsNullOrEmpty(userName))
             {
-                var notifications = await _notificationRepository.GetByUserNameAsync(userName);
-                ViewBag.UnreadCount = notifications.Count(n => !n.IsRead);
-                ViewBag.Notifications = notifications.OrderByDescending(n => n.CreatedDate).Take(3).ToList();
+                return Json(new { unreadCount = 0, notifications = new List<object>() });
             }
-            else
+
+            var unreadCount = await _notificationRepository.GetUnreadCountAsync(userName);
+            var notifications = await _notificationRepository.GetRecentNotificationsAsync(userName, count);
+
+            var result = notifications.Select(n => new
             {
-                ViewBag.UnreadCount = 0;
-                ViewBag.Notifications = new List<Notification>();
-            }
+                id = n.NotificationId,
+                title = n.Title,
+                content = n.Content,
+                createdDate = n.CreatedDate.ToString("dd/MM/yyyy HH:mm"),
+                isRead = n.IsRead
+            }).ToList();
+
+            return Json(new { unreadCount, notifications = result });
         }
 
         #region Quản lý Thông báo
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SendNotification(int page = 1)
         {
             // Lấy danh sách user không phải Admin
-            var userRepo = HttpContext.RequestServices.GetService(typeof(LearningManagementSystem.Repositories.IUserRepository)) as LearningManagementSystem.Repositories.IUserRepository;
-            var users = userRepo.GetAll().Where(u => u.Role != null && u.Role.RoleName != "Admin").ToList();
+            var users = _userRepository.GetAll().Where(u => u.Role != null && u.Role.RoleName != "Admin").ToList();
             ViewBag.UserNames = users.Select(u => u.UserName).ToList();
 
             // Lấy thông báo cho user hiện tại (dành cho layout hoặc header)
             if (User.Identity.IsAuthenticated)
             {
                 var userName = User.Identity.Name;
-                var notifications = await _notificationRepository.GetByUserNameAsync(userName);
-                ViewBag.UnreadCount = notifications.Count(n => !n.IsRead);
-                ViewBag.Notifications = notifications.OrderByDescending(n => n.CreatedDate).Take(3).ToList();
+                ViewBag.UnreadCount = await _notificationRepository.GetUnreadCountAsync(userName);
+                ViewBag.Notifications = await _notificationRepository.GetRecentNotificationsAsync(userName, 3);
             }
             else
             {
@@ -137,6 +161,7 @@ namespace LearningManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> SendNotification(string title, string content, string userName, bool sendToAll)
         {
             if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(content))
@@ -150,15 +175,14 @@ namespace LearningManagementSystem.Controllers
                 if (sendToAll)
                 {
                     // Lấy tất cả user không phải Admin
-                    var userRepo = HttpContext.RequestServices.GetService(typeof(LearningManagementSystem.Repositories.IUserRepository)) as LearningManagementSystem.Repositories.IUserRepository;
-                    var users = userRepo.GetAll().Where(u => u.Role != null && u.Role.RoleName != "Admin").ToList();
+                    var users = _userRepository.GetAll().Where(u => u.Role != null && u.Role.RoleName != "Admin").ToList();
                     var notifications = users.Select(user => new Notification
                     {
                         NotificationId = Guid.NewGuid().ToString(),
                         UserName = user.UserName,
                         Title = title,
                         Content = content,
-                        CreatedDate = DateTime.Now,
+                        CreatedDate = DateTime.UtcNow,
                         IsRead = false
                     }).ToList();
 
@@ -173,8 +197,7 @@ namespace LearningManagementSystem.Controllers
                         return RedirectToAction("SendNotification");
                     }
                     // Kiểm tra user có phải Admin không
-                    var userRepo = HttpContext.RequestServices.GetService(typeof(LearningManagementSystem.Repositories.IUserRepository)) as LearningManagementSystem.Repositories.IUserRepository;
-                    var user = userRepo.GetByUserName(userName);
+                    var user = _userRepository.GetByUserName(userName);
                     if (user != null && user.Role != null && user.Role.RoleName == "Admin")
                     {
                         TempData["Error"] = "Không thể gửi thông báo cho tài khoản Admin.";
@@ -187,7 +210,7 @@ namespace LearningManagementSystem.Controllers
                         UserName = userName,
                         Title = title,
                         Content = content,
-                        CreatedDate = DateTime.Now,
+                        CreatedDate = DateTime.UtcNow,
                         IsRead = false
                     };
 

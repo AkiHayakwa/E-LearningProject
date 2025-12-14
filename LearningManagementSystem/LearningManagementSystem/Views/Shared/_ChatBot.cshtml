@@ -52,6 +52,15 @@
         </div>
 
         <div class="chat-footer">
+            <div class="mb-2">
+                <span class="small text-muted">Câu hỏi nhanh:</span>
+                <div class="mt-1 d-flex flex-wrap gap-1">
+                    <button type="button" class="btn btn-light btn-sm chat-quick" data-text="Gợi ý cho tôi vài khóa học phù hợp cho người mới bắt đầu lập trình.">Beginner</button>
+                    <button type="button" class="btn btn-light btn-sm chat-quick" data-text="Tư vấn giúp tôi lộ trình học lập trình web từ cơ bản đến nâng cao.">Lộ trình web</button>
+                    <button type="button" class="btn btn-light btn-sm chat-quick" data-text="Tôi đang gặp vấn đề khi thanh toán khóa học, hãy hướng dẫn tôi.">Thanh toán</button>
+                    <button type="button" class="btn btn-light btn-sm chat-quick" data-text="Khóa học nào phù hợp để chuẩn bị phỏng vấn lập trình viên?">Phỏng vấn</button>
+                </div>
+            </div>
             <div class="d-flex justify-content-between mb-2">
                 <button id="clearHistoryBtn" class="btn btn-outline-danger btn-sm" type="button">
                     <i class="fas fa-trash"></i> Xóa lịch sử
@@ -60,7 +69,7 @@
             </div>
             <div class="chat-input-container">
                 <input type="text" id="userInput" class="chat-input"
-                       placeholder="Nhập câu hỏi về khóa học..." />
+                       placeholder="Ví dụ: khóa + tên khóa / khóa + miễn phí / khóa + giá tiền" />
                 <button id="sendBtn" class="chat-send-btn">
                     <i class="fas fa-paper-plane"></i>
                 </button>
@@ -378,6 +387,78 @@
     }
 
     }
+    /* Dark theme overrides */
+    body.dark-theme .chat-bot-modal {
+        background: #0f172a;
+        color: #e2e8f0;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+    }
+
+    body.dark-theme .chat-bot-modal .chat-header {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.85), rgba(14, 165, 233, 0.85));
+    }
+
+    body.dark-theme .chat-bot-modal .chat-body {
+        background: #111c2e;
+    }
+
+    body.dark-theme .chat-bot-modal .chat-footer {
+        background: #0f172a;
+        border-top: 1px solid #243347;
+    }
+
+    body.dark-theme .chat-bot-modal .chat-input {
+        background-color: #111c2e;
+        border-color: #243347;
+        color: #f1f5f9;
+    }
+
+    body.dark-theme .chat-bot-modal .chat-input::placeholder {
+        color: #94a3b8;
+    }
+
+    body.dark-theme .chat-bot-modal .bot-bubble,
+    body.dark-theme .chat-bot-modal .typing-dots {
+        background: #192239;
+        border-color: #2d3b55;
+        color: #f8fafc;
+    }
+
+    body.dark-theme .chat-bot-modal .bot-avatar-chat,
+    body.dark-theme .chat-bot-modal .bot-avatar-small {
+        background: #1e293b !important;
+        color: #93c5fd !important;
+        border-color: #3b82f6 !important;
+    }
+
+    body.dark-theme .chat-bot-modal .chat-quick {
+        background-color: #1e293b !important;
+        border-color: #334155 !important;
+        color: #cbd5e1 !important;
+    }
+
+    body.dark-theme .chat-bot-modal .chat-quick:hover {
+        background-color: #334155 !important;
+        border-color: #475569 !important;
+        color: #f1f5f9 !important;
+    }
+
+    body.dark-theme .chat-bot-modal .btn-outline-danger {
+        background-color: transparent !important;
+        border-color: #ef4444 !important;
+        color: #fca5a5 !important;
+    }
+
+    body.dark-theme .chat-bot-modal .btn-outline-danger:hover {
+        background-color: #dc2626 !important;
+        border-color: #dc2626 !important;
+        color: #fff !important;
+    }
+
+    body.dark-theme .chat-bot-modal .chat-send-btn {
+        background: linear-gradient(135deg, #6a11cb, #4c1d95);
+        color: #fff;
+    }
 </style>
 
 <script>
@@ -524,6 +605,14 @@
 
             document.getElementById('clearHistoryBtn').addEventListener('click', () => {
                 this.clearHistory();
+            });
+
+            document.querySelectorAll('.chat-quick').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const text = btn.getAttribute('data-text') || btn.textContent;
+                    document.getElementById('userInput').value = text;
+                    this.sendMessage();
+                });
             });
         }
 

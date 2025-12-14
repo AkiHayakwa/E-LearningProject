@@ -12,21 +12,33 @@ using System.Security.Claims;
 
 namespace LearningManagementSystem.Controllers
 {
+    public class AutoSaveTestRequest
+    {
+        public string AssignmentId { get; set; }
+        public Dictionary<string, string> SelectedAnswers { get; set; }
+    }
+
     public class AssignmentController : Controller
     {
         private readonly LMSContext _context;
         private readonly IAssignmentRepository _assignmentRepository;
         private readonly IAssignmentQuestionRepository _questionRepository;
         private readonly IAssignmentQuestionOptionRepository _optionRepository;
+        private readonly INotificationRepository _notificationRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
         private readonly ILogger<AssignmentController> _logger;
 
         public AssignmentController(LMSContext context, IAssignmentRepository assignmentRepository,
-             IAssignmentQuestionRepository questionRepository, IAssignmentQuestionOptionRepository optionRepository, ILogger<AssignmentController> logger)
+             IAssignmentQuestionRepository questionRepository, IAssignmentQuestionOptionRepository optionRepository, 
+             INotificationRepository notificationRepository, IEnrollmentRepository enrollmentRepository,
+             ILogger<AssignmentController> logger)
         {
             _context = context;
             _assignmentRepository = assignmentRepository;
             _questionRepository = questionRepository;
             _optionRepository = optionRepository;
+            _notificationRepository = notificationRepository;
+            _enrollmentRepository = enrollmentRepository;
             _logger = logger;
         }
 
@@ -235,6 +247,138 @@ namespace LearningManagementSystem.Controllers
 
         [HttpPost]
         [Authorize]
+        [IgnoreAntiforgeryToken] // Tạm thời ignore vì gọi từ beforeunload
+        public async Task<IActionResult> AutoSaveTest([FromBody] AutoSaveTestRequest request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.AssignmentId))
+            {
+                _logger.LogWarning("Request is null or AssignmentId is empty.");
+                return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
+            }
+
+            var assignmentId = request.AssignmentId;
+            var selectedAnswers = request.SelectedAnswers ?? new Dictionary<string, string>();
+
+            _logger.LogInformation($"AutoSaveTest called. AssignmentId: {assignmentId}, SelectedAnswers Count: {selectedAnswers?.Count ?? 0}");
+
+            if (string.IsNullOrEmpty(assignmentId))
+            {
+                _logger.LogWarning("AssignmentId is null or empty.");
+                return Json(new { success = false, message = "ID bài kiểm tra không hợp lệ." });
+            }
+
+            var userName = User.Identity.Name;
+            if (string.IsNullOrEmpty(userName))
+            {
+                _logger.LogWarning("UserName could not be determined from claims.");
+                return Json(new { success = false, message = "Bạn cần đăng nhập để lưu bài." });
+            }
+
+            var assignment = await _context.Assignments
+                .Include(a => a.Questions)
+                    .ThenInclude(q => q.Options)
+                .FirstOrDefaultAsync(a => a.AssignmentId == assignmentId);
+
+            if (assignment == null)
+            {
+                _logger.LogWarning($"Assignment with ID {assignmentId} not found.");
+                return Json(new { success = false, message = "Không tìm thấy bài kiểm tra." });
+            }
+
+            var questions = assignment.Questions.ToList();
+            if (!questions.Any())
+            {
+                _logger.LogWarning($"No questions found for assignment {assignmentId}.");
+                return Json(new { success = false, message = "Bài kiểm tra này không có câu hỏi nào." });
+            }
+
+            int submissionCount = 0;
+
+            // Lưu tất cả câu hỏi, kể cả câu trả lời trống
+            foreach (var question in questions)
+            {
+                var submittedAnswer = selectedAnswers?.ContainsKey(question.QuestionId) == true ? selectedAnswers[question.QuestionId] : null;
+
+                bool? isCorrect = null;
+                string selectedOptionText = null;
+                string selectedOptionLabel = null;
+                double? score = null;
+                string submissionContent = submittedAnswer;
+
+                if (question.QuestionType == "MultipleChoice")
+                {
+                    if (!string.IsNullOrWhiteSpace(submittedAnswer))
+                    {
+                        var selectedOption = question.Options?.FirstOrDefault(o => o.OptionId == submittedAnswer);
+                        if (selectedOption != null)
+                        {
+                            isCorrect = selectedOption.IsCorrect;
+                            selectedOptionLabel = selectedOption.OptionLabel;
+                            submissionContent = selectedOption.OptionId;
+                            double maxScore = question.MaxScore.HasValue ? Math.Round(question.MaxScore.Value, 1) : 0;
+                            score = isCorrect == true ? maxScore : 0;
+                        }
+                    }
+                    else
+                    {
+                        // Câu trả lời trống - lưu với score = 0
+                        score = 0;
+                        submissionContent = null;
+                    }
+                }
+                else if (question.QuestionType == "Essay")
+                {
+                    selectedOptionText = submittedAnswer ?? string.Empty; // Lưu cả chuỗi rỗng
+                    submissionContent = submittedAnswer ?? string.Empty;
+                }
+
+                var existingSubmission = await _context.AssignmentSubmissions
+                    .FirstOrDefaultAsync(s => s.AssignmentId == assignment.AssignmentId && s.QuestionId == question.QuestionId && s.UserName == userName);
+
+                if (existingSubmission == null)
+                {
+                    var submission = new AssignmentSubmission
+                    {
+                        SubmissionId = Guid.NewGuid().ToString(),
+                        AssignmentId = assignment.AssignmentId,
+                        QuestionId = question.QuestionId,
+                        UserName = userName,
+                        IsCorrect = isCorrect,
+                        SubmittedDate = DateTime.Now, // Đánh dấu đã submit
+                        SelectedOptionText = selectedOptionText,
+                        SelectedOptionLabel = selectedOptionLabel,
+                        Score = score,
+                        Feedback = null
+                    };
+                    _context.AssignmentSubmissions.Add(submission);
+                    submissionCount++;
+                }
+                else
+                {
+                    // Cập nhật submission hiện có
+                    existingSubmission.IsCorrect = isCorrect;
+                    existingSubmission.SubmittedDate = DateTime.Now; // Cập nhật thời gian submit
+                    existingSubmission.SelectedOptionText = selectedOptionText;
+                    existingSubmission.SelectedOptionLabel = selectedOptionLabel;
+                    existingSubmission.Score = score;
+                }
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Auto-saved {submissionCount} submissions for assignment {assignmentId}.");
+                return Json(new { success = true, message = "Đã tự động lưu bài làm của bạn." });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error auto-saving submissions.");
+                return Json(new { success = false, message = $"Có lỗi xảy ra khi lưu bài: {ex.Message}" });
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AutoSubmitTest(string assignmentId, Dictionary<string, string> SelectedAnswers)
         {
             _logger.LogInformation($"AutoSubmitTest called. AssignmentId: {assignmentId}, SelectedAnswers Count: {SelectedAnswers?.Count ?? 0}");
@@ -285,6 +429,7 @@ namespace LearningManagementSystem.Controllers
 
             int submissionCount = 0;
 
+            // Lưu tất cả câu hỏi, kể cả câu trả lời trống
             foreach (var question in questions)
             {
                 var submittedAnswer = SelectedAnswers?.ContainsKey(question.QuestionId) == true ? SelectedAnswers[question.QuestionId] : null;
@@ -305,7 +450,6 @@ namespace LearningManagementSystem.Controllers
                             isCorrect = selectedOption.IsCorrect;
                             selectedOptionLabel = selectedOption.OptionLabel;
                             submissionContent = selectedOption.OptionId;
-                            // Chuyển đổi MaxScore từ double? sang double bằng cách làm tròn
                             double maxScore = question.MaxScore.HasValue ? Math.Round(question.MaxScore.Value, 1) : 0;
                             score = isCorrect == true ? maxScore : 0;
                             _logger.LogInformation($"MultipleChoice Question {question.QuestionId}, SelectedOption: {selectedOption.OptionId}, IsCorrect: {isCorrect}, MaxScore: {maxScore}, Score: {score}");
@@ -314,19 +458,23 @@ namespace LearningManagementSystem.Controllers
                         {
                             _logger.LogWarning($"Option {submittedAnswer} not found for Question {question.QuestionId}. Setting as null.");
                             submissionContent = null;
+                            score = 0; // Lưu với score 0 nếu option không hợp lệ
                         }
                     }
                     else
                     {
+                        // Câu trả lời trống - lưu với score = 0
                         _logger.LogInformation($"No answer provided for MultipleChoice Question {question.QuestionId}. Score set to 0.");
                         score = 0;
+                        submissionContent = null;
                     }
                 }
                 else if (question.QuestionType == "Essay")
                 {
-                    selectedOptionText = submittedAnswer;
-                    submissionContent = submittedAnswer;
-                    _logger.LogInformation($"Essay Question {question.QuestionId}, Answer: {submittedAnswer ?? "null"}");
+                    // Lưu cả chuỗi rỗng nếu không có câu trả lời
+                    selectedOptionText = submittedAnswer ?? string.Empty;
+                    submissionContent = submittedAnswer ?? string.Empty;
+                    _logger.LogInformation($"Essay Question {question.QuestionId}, Answer: {submittedAnswer ?? "empty string"}");
                 }
                 else
                 {
@@ -346,7 +494,7 @@ namespace LearningManagementSystem.Controllers
                         QuestionId = question.QuestionId,
                         UserName = userName,
                         IsCorrect = isCorrect,
-                        SubmittedDate = DateTime.Now,
+                        SubmittedDate = DateTime.Now, // Đánh dấu đã submit
                         SelectedOptionText = selectedOptionText,
                         SelectedOptionLabel = selectedOptionLabel,
                         Score = score,
@@ -358,8 +506,9 @@ namespace LearningManagementSystem.Controllers
                 }
                 else
                 {
+                    // Cập nhật submission hiện có
                     existingSubmission.IsCorrect = isCorrect;
-                    existingSubmission.SubmittedDate = DateTime.Now;
+                    existingSubmission.SubmittedDate = DateTime.Now; // Cập nhật thời gian submit
                     existingSubmission.SelectedOptionText = selectedOptionText;
                     existingSubmission.SelectedOptionLabel = selectedOptionLabel;
                     existingSubmission.Score = score;
@@ -381,6 +530,7 @@ namespace LearningManagementSystem.Controllers
                 return RedirectToAction("AllTests", "Course", new { id = courseId });
             }
 
+            // Đánh dấu đã submit để không cho làm lại
             return RedirectToAction("AllTests", "Course", new { id = courseId });
         }
 
@@ -436,6 +586,7 @@ namespace LearningManagementSystem.Controllers
 
             int submissionCount = 0;
 
+            // Lưu tất cả câu hỏi, kể cả câu trả lời trống
             foreach (var question in questions)
             {
                 var submittedAnswer = SelectedAnswers?.ContainsKey(question.QuestionId) == true ? SelectedAnswers[question.QuestionId] : null;
@@ -456,7 +607,6 @@ namespace LearningManagementSystem.Controllers
                             isCorrect = selectedOption.IsCorrect;
                             selectedOptionLabel = selectedOption.OptionLabel;
                             submissionContent = selectedOption.OptionId;
-                            // Chuyển đổi MaxScore từ double? sang double bằng cách làm tròn
                             double maxScore = question.MaxScore.HasValue ? Math.Round(question.MaxScore.Value, 1) : 0;
                             score = isCorrect == true ? maxScore : 0;
                             _logger.LogInformation($"MultipleChoice Question {question.QuestionId}, SelectedOption: {selectedOption.OptionId}, IsCorrect: {isCorrect}, MaxScore: {maxScore}, Score: {score}");
@@ -465,21 +615,23 @@ namespace LearningManagementSystem.Controllers
                         {
                             _logger.LogWarning($"Option {submittedAnswer} not found for Question {question.QuestionId}. Setting as null.");
                             submissionContent = null;
+                            score = 0; // Lưu với score 0 nếu option không hợp lệ
                         }
                     }
                     else
                     {
+                        // Câu trả lời trống - lưu với score = 0
                         _logger.LogInformation($"No answer provided for MultipleChoice Question {question.QuestionId}. Score set to 0.");
                         score = 0;
+                        submissionContent = null;
                     }
                 }
                 else if (question.QuestionType == "Essay")
                 {
-                    isCorrect = null;
-                    selectedOptionText = submittedAnswer;
-                    selectedOptionLabel = null;
-                    submissionContent = submittedAnswer;
-                    _logger.LogInformation($"Essay Question {question.QuestionId}, Answer: {submittedAnswer ?? "null"}");
+                    // Lưu cả chuỗi rỗng nếu không có câu trả lời
+                    selectedOptionText = submittedAnswer ?? string.Empty;
+                    submissionContent = submittedAnswer ?? string.Empty;
+                    _logger.LogInformation($"Essay Question {question.QuestionId}, Answer: {submittedAnswer ?? "empty string"}");
                 }
                 else
                 {
@@ -637,7 +789,7 @@ namespace LearningManagementSystem.Controllers
         // POST: Assignment/CreateAssignment
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateAssignment(Assignment assignment)
+        public async Task<IActionResult> CreateAssignment(Assignment assignment)
         {
             ModelState.Remove("AssignmentId");
             ModelState.Remove("Course");
@@ -802,6 +954,20 @@ namespace LearningManagementSystem.Controllers
 
                 _questionRepository.Save();
                 _optionRepository.Save();
+
+                // Gửi thông báo cho học viên đã đăng ký
+                if (!string.IsNullOrEmpty(assignment.CourseId))
+                {
+                    var course = await _context.Courses.FindAsync(assignment.CourseId);
+                    if (course != null)
+                    {
+                        await NotifyEnrolledStudentsAsync(
+                            assignment.CourseId,
+                            $"Bài tập mới: {assignment.Title}",
+                            $"Khóa học '{course.CourseName}' đã có bài tập mới: {assignment.Title}. Hãy làm bài tập ngay nhé!"
+                        );
+                    }
+                }
 
                 TempData["Success"] = "Tạo bài tập thành công!";
                 return RedirectToAction("ManageAssignments", new { lessonId = assignment.LessonId });
@@ -1204,6 +1370,61 @@ namespace LearningManagementSystem.Controllers
                 }
             }
             question.Options = validOptions;
+        }
+
+        // Helper method để gửi thông báo cho học viên đã đăng ký
+        private async Task NotifyEnrolledStudentsAsync(string courseId, string title, string content)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(courseId))
+                {
+                    _logger.LogWarning("CourseId is null or empty when trying to notify students");
+                    return;
+                }
+
+                // Lấy danh sách học viên đã đăng ký khóa học
+                var enrollments = _enrollmentRepository.GetAll()
+                    .Where(e => e.CourseId == courseId)
+                    .Select(e => e.UserName)
+                    .Distinct()
+                    .ToList();
+
+                if (!enrollments.Any())
+                {
+                    _logger.LogInformation("No enrolled students found for course {CourseId}", courseId);
+                    return;
+                }
+
+                // Tạo thông báo cho từng học viên
+                var notifications = new List<Notification>();
+                foreach (var userName in enrollments)
+                {
+                    var notification = new Notification
+                    {
+                        NotificationId = Guid.NewGuid().ToString(),
+                        UserName = userName,
+                        Title = title,
+                        Content = content,
+                        CreatedDate = DateTime.Now,
+                        IsRead = false
+                    };
+                    notifications.Add(notification);
+                }
+
+                // Lưu tất cả thông báo
+                if (notifications.Any())
+                {
+                    await _notificationRepository.AddRangeAsync(notifications);
+                    _logger.LogInformation("Sent {Count} notifications to enrolled students for course {CourseId}", 
+                        notifications.Count, courseId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error sending notifications to enrolled students for course {CourseId}", courseId);
+                // Không throw exception để không ảnh hưởng đến quá trình tạo bài tập
+            }
         }
     }
 }

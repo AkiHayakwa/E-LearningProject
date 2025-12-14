@@ -1,0 +1,26 @@
+@model IDictionary<string, List<LearningManagementSystem.Models.Tag>>
+
+<div class="footer-columns-tags">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var group in Model)
+        {
+            <div>
+                <h6 class="text-white fw-semibold">@group.Key</h6>
+                <ul>
+                    @foreach (var tag in group.Value)
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", "Search", new { tagIds = tag.TagId })">@tag.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="text-muted">Chưa có tag.</div>
+    }
+</div>
+

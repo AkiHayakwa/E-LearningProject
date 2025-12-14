@@ -9,7 +9,7 @@
 <div class="container py-5">
     <div class="row">
         <div class="col-lg-8">
-            <h2 class="mb-4 text-dark fw-bold">Xác nhận thanh toán</h2>
+                <h2 class="mb-4 text-dark fw-bold" data-i18n-vi="Xác nhận thanh toán" data-i18n-en="Confirm payment">Xác nhận thanh toán</h2>
 
             @if (TempData["Error"] != null)
             {
@@ -39,10 +39,10 @@
     {
         <div class="empty-cart-container text-center py-5 my-4 bg-light rounded-4 shadow-sm">
             <i class="bi bi-cart-x text-muted" style="font-size: 4rem;"></i>
-            <h3 class="mt-4 mb-3">Giỏ hàng của bạn hiện đang trống</h3>
-            <p class="text-muted mb-4">Hãy thêm các khóa học yêu thích vào giỏ hàng</p>
+            <h3 class="mt-4 mb-3" data-i18n-vi="Giỏ hàng của bạn hiện đang trống" data-i18n-en="Your cart is currently empty">Giỏ hàng của bạn hiện đang trống</h3>
+            <p class="text-muted mb-4" data-i18n-vi="Hãy thêm các khóa học yêu thích vào giỏ hàng" data-i18n-en="Add your favorite courses to the cart.">Hãy thêm các khóa học yêu thích vào giỏ hàng</p>
             <a href="@Url.Action("Index", "Search")" class="btn btn-primary btn-lg px-4 py-2 rounded-pill">
-                <i class="bi bi-search me-2"></i>Khám phá khóa học ngay
+                <i class="bi bi-search me-2"></i><span data-i18n-vi="Khám phá khóa học ngay" data-i18n-en="Explore courses now">Khám phá khóa học ngay</span>
             </a>
         </div>
     }
@@ -50,13 +50,13 @@
     {
         <div class="row g-4">
             <div class="col-lg-8">
-                <div class="card border-0 rounded-4 shadow-sm mb-4">
+            <div class="card border-0 rounded-4 shadow-sm mb-4">
                     <div class="card-header bg-transparent border-0 pt-4 px-4">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">
-                                <i class="bi bi-collection me-2"></i>Danh sách khóa học
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-collection me-2"></i><span data-i18n-vi="Danh sách khóa học" data-i18n-en="Course list">Danh sách khóa học</span>
                             </h5>
-                            <span class="badge bg-primary rounded-pill">@Model.Count() khóa học</span>
+                        <span class="badge bg-primary rounded-pill">@Model.Count() <span data-i18n-vi="khóa học" data-i18n-en="courses">khóa học</span></span>
                         </div>
                     </div>
                     <div class="card-body p-4">
@@ -97,24 +97,24 @@
                 <div class="card border-0 rounded-4 shadow-sm">
                     <div class="card-header bg-transparent border-0 pt-4 px-4">
                         <h5 class="card-title mb-0">
-                            <i class="bi bi-receipt me-2"></i>Thông tin thanh toán
+                            <i class="bi bi-receipt me-2"></i><span data-i18n-vi="Thông tin thanh toán" data-i18n-en="Payment information">Thông tin thanh toán</span>
                         </h5>
                     </div>
                     <div class="card-body p-4">
                         <div class="summary-item d-flex justify-content-between mb-3">
-                            <span class="text-muted">Tổng tiền khóa học</span>
+                            <span class="text-muted" data-i18n-vi="Tổng tiền khóa học" data-i18n-en="Course total">Tổng tiền khóa học</span>
                             <span>₫@totalPrice.ToString("N0")</span>
                         </div>
 
                         <div class="summary-item d-flex justify-content-between mb-3">
-                            <span class="text-muted">Thuế</span>
+                            <span class="text-muted" data-i18n-vi="Thuế" data-i18n-en="Tax">Thuế</span>
                             <span>₫0</span>
                         </div>
 
                         <hr class="my-4">
 
                         <div class="summary-total d-flex justify-content-between align-items-center mb-4">
-                            <span class="fw-bold fs-5">Tổng thanh toán</span>
+                            <span class="fw-bold fs-5" data-i18n-vi="Tổng thanh toán" data-i18n-en="Total payment">Tổng thanh toán</span>
                             <span class="fw-bold fs-4 text-primary">₫@totalPrice.ToString("N0")</span>
                         </div>
 
@@ -124,14 +124,14 @@
                             <input type="hidden" name="selectedCartItemIds" value="@string.Join(",", Model.Select(item => item.CartItem.CartItemId))" />
                             <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill mb-3">
                                 <div class="d-flex align-items-center justify-content-center">
-                                    <span class="me-2">Thanh toán qua VNPay</span>
+                                    <span class="me-2" data-i18n-vi="Thanh toán qua VNPay" data-i18n-en="Pay via VNPay">Thanh toán qua VNPay</span>
                                     <i class="bi bi-credit-card-2-front"></i>
                                 </div>
                             </button>
                         </form>
 
                         <a href="@Url.Action("Index", "Cart")" class="btn btn-outline-secondary w-100 py-2 rounded-pill">
-                            <i class="bi bi-arrow-left me-2"></i>Quay lại giỏ hàng
+                            <i class="bi bi-arrow-left me-2"></i><span data-i18n-vi="Quay lại giỏ hàng" data-i18n-en="Back to cart">Quay lại giỏ hàng</span>
                         </a>
                     </div>
                 </div>

@@ -1,4 +1,5 @@
-﻿@model LearningManagementSystem.Models.Course
+﻿@using System.Linq
+@model LearningManagementSystem.Models.Course
 
 @{
     ViewData["Title"] = "Chỉnh sửa khóa học";
@@ -128,6 +129,61 @@
                                         }
                                     </div>
                                 }
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-1">
+                                    <select asp-for="Level" class="form-select custom-input" id="editCourseLevel">
+                                        <option value="">Chọn cấp độ</option>
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                    </select>
+                                    <label asp-for="Level" for="editCourseLevel">Cấp độ khóa học</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-1">
+                                    <input asp-for="DurationMinutes" class="form-control custom-input" type="number" min="0" id="editDuration" placeholder="60" />
+                                    <label asp-for="DurationMinutes" for="editDuration">Thời lượng (phút)</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold mb-2">Tag khóa học</label>
+                                <div class="tag-selector border rounded-3 p-3 bg-light-subtle">
+                                    <div class="row">
+                                        @{
+                                            var allTags = ViewBag.AllTags as IEnumerable<LearningManagementSystem.Models.Tag>;
+                                            var grouped = allTags?
+                                                .GroupBy(t => t.Category)
+                                                .OrderBy(g => g.Key);
+                                        }
+                                        @if (grouped != null)
+                                        {
+                                            foreach (var group in grouped)
+                                            {
+                                                <div class="col-md-6 mb-3">
+                                                    <h6 class="text-muted text-uppercase small fw-bold">@group.Key</h6>
+                                                    @foreach (var tag in group)
+                                                    {
+                                                        var isChecked = Model.SelectedTagIds?.Contains(tag.TagId) == true;
+                                                        <div class="form-check form-check-inline me-3">
+                                                            <input class="form-check-input" type="checkbox" name="selectedTagIds" value="@tag.TagId"
+                                                                   id="edit-tag-@tag.TagId" @(isChecked ? "checked" : "")>
+                                                            <label class="form-check-label" for="edit-tag-@tag.TagId">@tag.Name</label>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p class="text-muted mb-0">Chưa có tag nào được cấu hình.</p>
+                                        }
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Course Image -->

@@ -2,545 +2,787 @@
 @{
     ViewData["Title"] = Model?.Course != null ? "Chi tiết khóa học - " + Model.Course.CourseName : "Chi tiết khóa học";
     Layout = "_Layout";
+    var translationLanguages = new[]
+    {
+        new { Code = "en", Name = "English", Flag = "~/images/flags/en.svg" },
+        new { Code = "ja", Name = "日本語 (Japanese)", Flag = "~/images/flags/ja.svg" },
+        new { Code = "ko", Name = "한국어 (Korean)", Flag = "~/images/flags/ko.svg" },
+        new { Code = "fr", Name = "Français (French)", Flag = "~/images/flags/fr.svg" },
+        new { Code = "es", Name = "Español (Spanish)", Flag = "~/images/flags/es.svg" },
+        new { Code = "zh", Name = "中文 (Chinese)", Flag = "~/images/flags/zh.svg" },
+        new { Code = "vi", Name = "Tiếng Việt", Flag = "~/images/flags/vi.svg" }
+    };
 }
-
-<!-- Form ẩn để chứa token chống giả mạo -->
 <form id="hiddenForm" style="display: none;">
     @Html.AntiForgeryToken()
 </form>
 
-<div class="course-details-container" data-course-id="@Model.Course.CourseId">
-    <!-- Thông báo -->
+<div class="container-custom" data-course-id="@Model.Course.CourseId">
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i>
-            @TempData["Success"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert alert-success alert-dismissible fade show small mb-3" role="alert">
+            <i class="bi bi-check-circle-fill me-1"></i> @TempData["Success"]
+            <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert"></button>
         </div>
     }
     @if (TempData["Error"] != null)
     {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            @TempData["Error"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert alert-danger alert-dismissible fade show small mb-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-1"></i> @TempData["Error"]
+            <button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert"></button>
         </div>
     }
 
     @if (Model?.Course != null)
     {
-        <!-- Hero Section with Average Rating -->
-        <div class="course-hero">
-            <div class="course-hero-content">
-                <div class="course-hero-text">
-                    <h1 class="course-title">@Model.Course.CourseName</h1>
-                    <p class="course-description">@Model.Course.Description</p>
-                    <!-- Average Rating Display -->
-                    @if (Model.Course.AverageRating.HasValue)
-                    {
-                        <div class="course-rating mb-3">
-                            <span class="rating-value">@Model.Course.AverageRating.Value.ToString("F1")</span>
-                            <div class="star-rating d-inline-block ms-2">
-                                @for (int i = 1; i <= 5; i++)
+        <div class="row g-4 g-lg-5">
+
+            <div class="col-lg-9">
+
+                <div class="course-header-with-image rounded-3 p-4 mb-4">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-lg-4 text-center">
+                            <img src="@(string.IsNullOrEmpty(Model.Course.ImageUrl) ? "/images/default-course.jpg" : Model.Course.ImageUrl)"
+                                 alt="@Model.Course.CourseName"
+                                 class="img-fluid rounded-3"
+                                 style="max-height: 200px; object-fit: cover; width: 100%;">
+                        </div>
+                        <div class="col-lg-8">
+                            <h1 class="course-title mb-2"><i class="bi bi-book-fill me-2"></i>@Model.Course.CourseName</h1>
+                            <p class="course-desc text-muted mb-3">@Model.Course.Description</p>
+                            <div class="course-meta d-flex flex-wrap gap-3 text-muted small">
+                                <div><i class="bi bi-person-fill me-1"></i><strong>@Model.Course.InstructorName</strong></div>
+                                <div><i class="bi bi-calendar3 me-1"></i>@Model.Course.CreatedDate.ToString("dd/MM/yyyy")</div>
+                                @if (Model.Course.AverageRating.HasValue)
                                 {
-                                    <i class="bi @(i <= Model.Course.AverageRating.Value ? "bi-star-fill" : (i <= Model.Course.AverageRating.Value + 0.5 ? "bi-star-half" : "bi-star"))"></i>
+                                    <div>
+                                        <i class="bi bi-star-fill text-warning me-1"></i>
+                                        <strong>@Model.Course.AverageRating.Value.ToString("F1")</strong>
+                                        <small>(@Model.Comments?.Count ?? 0 đánh giá)</small>
+                                    </div>
+                                }
+                                <div><i class="bi bi-book me-1"></i>@(Model.Course.Lessons?.Count() ?? 0) bài</div>
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(Model.Course.Level) || Model.Course.DurationMinutes.HasValue || (Model.Course.TagNames?.Any() == true))
+                            {
+                                <div class="d-flex flex-wrap gap-2 mt-3">
+                                    @if (!string.IsNullOrWhiteSpace(Model.Course.Level))
+                                    {
+                                        <span class="badge bg-gradient bg-primary-subtle text-primary"><i class="bi bi-bar-chart-steps me-1"></i>@Model.Course.Level</span>
+                                    }
+                                    @if (Model.Course.DurationMinutes.HasValue)
+                                    {
+                                        <span class="badge bg-gradient bg-info-subtle text-info"><i class="bi bi-clock-history me-1"></i>@Model.Course.DurationMinutes.Value phút</span>
+                                    }
+                                    @foreach (var tag in Model.Course.TagNames ?? new List<string>())
+                                    {
+                                        <span class="badge bg-light text-secondary border"><i class="bi bi-tag me-1"></i>@tag</span>
+                                    }
+                                </div>
+                            }
+                            <div class="enroll-action mt-3">
+                                @if (Model.IsEnrolled)
+                                {
+                                    <button class="btn btn-success btn-sm" disabled><i class="bi bi-check-circle-fill me-1"></i>Đã đăng ký</button>
+                                }
+                                else if (User.Identity.IsAuthenticated)
+                                {
+                                    if (Model.Course.Price == 0 || Model.Course.Price == null)
+                                    {
+                                        <form asp-action="Enroll" asp-controller="Enrollment" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle-fill me-1"></i>Đăng ký miễn phí</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="AddToCart" asp-controller="Cart" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-warning btn-sm"><i class="bi bi-cart-fill me-1"></i>Thêm vào giỏ</button>
+                                        </form>
+                                    }
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Login", "Account")" class="btn btn-outline-primary btn-sm"><i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập</a>
                                 }
                             </div>
-                            <span class="rating-label ms-2">Đánh giá trung bình</span>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="course-rating mb-3">
-                            <span class="rating-label">Chưa có đánh giá</span>
-                        </div>
-                    }
-                    <div class="course-meta">
-                        <span class="meta-item">
-                            <i class="bi bi-person"></i>
-                            Giảng viên: <strong>@Model.Course.InstructorName</strong>
-                        </span>
-                        <span class="meta-item">
-                            <i class="bi bi-calendar3"></i>
-                            @Model.Course.CreatedDate.ToString("dd/MM/yyyy")
-                        </span>
-                        <span class="meta-item">
-                            <i class="bi bi-book"></i>
-                            @(Model.Course.Lessons?.Count() ?? 0) bài học
-                        </span>
-                    </div>
-                </div>
-                <div class="course-hero-image">
-                    <img src="@(string.IsNullOrEmpty(Model.Course.ImageUrl) ? "/images/default-course.jpg" : Model.Course.ImageUrl)"
-                         alt="@Model.Course.CourseName"
-                         class="course-image" />
-                    @if (Model.IsEnrolled)
-                    {
-                        <button class="btn btn-enrolled" disabled>
-                            <i class="bi bi-check-circle-fill me-2"></i>Đã đăng ký
-                        </button>
-                    }
-                    else
-                    {
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            if (Model.Course.Price == 0 || Model.Course.Price == null)
-                            {
-                                <form asp-action="Enroll" asp-controller="Enrollment" asp-route-courseId="@Model.Course.CourseId" method="post">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-enroll">
-                                        <i class="bi bi-plus-circle-fill me-2"></i>Đăng ký miễn phí
-                                    </button>
-                                </form>
-                            }
-                            else
-                            {
-                                <form asp-action="AddToCart" asp-controller="Cart" asp-route-courseId="@Model.Course.CourseId" method="post" class="d-inline">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-cart">
-                                        <i class="bi bi-cart-fill me-2"></i>Thêm vào giỏ hàng
-                                    </button>
-                                </form>
-                            }
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Login", "Account")" class="btn btn-login">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>Đăng nhập
-                            </a>
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-
-        <!-- Progress Section -->
-        @if (Model.IsEnrolled && Model.Course.Lessons != null && Model.Course.Lessons.Any())
-        {
-            var totalLessons = Model.Course.Lessons.Count;
-            var completedLessons = Model.Progresses != null ? Model.Progresses.Count(p => p.CompletionStatus) : 0;
-            var progressPercent = totalLessons > 0 ? (completedLessons * 100 / totalLessons) : 0;
-
-            <div class="progress-section">
-                <div class="progress-container">
-                    <div class="progress-header">
-                        <h2>Tiến trình của bạn</h2>
-                        <p>Theo dõi hành trình học tập của bạn</p>
-                    </div>
-                    <div class="progress-content">
-                        <div class="progress-circle">
-                            <svg viewBox="0 0 36 36" class="progress-ring">
-                                <defs>
-                                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" stop-color="#4CAF50" />
-                                        <stop offset="100%" stop-color="#8BC34A" />
-                                    </linearGradient>
-                                </defs>
-                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#f0f0f0" stroke-width="3.5"></circle>
-                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="url(#progressGradient)"
-                                        stroke-width="3.5" stroke-dasharray="@progressPercent, 100"
-                                        stroke-linecap="round" class="progress-circle"></circle>
-                            </svg>
-                            <div class="progress-text">
-                                <span class="percentage">@progressPercent%</span>
-                                <span class="label">Hoàn thành</span>
-                            </div>
-                        </div>
-                        <div class="progress-stats">
-                            <div class="stat-item">
-                                <span class="stat-value">@completedLessons</span>
-                                <span class="stat-label">Bài hoàn thành</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-value">@(totalLessons - completedLessons)</span>
-                                <span class="stat-label">Bài còn lại</span>
-                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
 
-        <!-- Lessons Section -->
-        <div class="lessons-section">
-            <div class="section-header">
-                <h2>Danh sách bài học</h2>
-                <p>Khám phá nội dung khóa học</p>
-            </div>
-
-            @if (User.Identity.IsAuthenticated && Model.IsEnrolled)
-            {
-                @if (Model.Course.Lessons != null && Model.Course.Lessons.Any())
+                @if (Model.IsEnrolled && Model.Course.Lessons != null && Model.Course.Lessons.Any())
                 {
-                    <div class="accordion" id="lessonsAccordion">
-                        @foreach (var lesson in Model.Course.Lessons.OrderBy(l => l.OrderNumber))
+                    var total = Model.Course.Lessons.Count;
+                    var completed = Model.Progresses?.Count(p => p.CompletionStatus) ?? 0;
+                    var progress = total > 0 ? (completed * 100 / total) : 0;
+                    <div class="progress-section bg-white rounded-3 p-3 mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0"><i class="bi bi-graph-up me-1"></i> Tiến độ học tập</h6>
+                            <span class="badge bg-primary">@progress%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar" style="width: @progress%"></div>
+                        </div>
+                        <div class="row text-center mt-3 small text-muted">
+                            <div class="col">
+                                <i class="bi bi-check-circle-fill text-success d-block mb-1 fs-5"></i>
+                                <strong>@completed</strong> hoàn thành
+                            </div>
+                            <div class="col">
+                                <i class="bi bi-hourglass-split text-muted d-block mb-1 fs-5"></i>
+                                <strong>@(total - completed)</strong> còn lại
+                            </div>
+                            <div class="col">
+                                <i class="bi bi-file-earmark-text text-primary d-block mb-1 fs-5"></i>
+                                <strong>@(Model.Course.Lessons.Sum(l => l.Assignments?.Count(a => a.AssignmentType?.Equals("Exercise", StringComparison.OrdinalIgnoreCase) == true) ?? 0))</strong> bài tập
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (User.Identity.IsAuthenticated && Model.IsEnrolled)
+                {
+                    <div class="study-stats-card rounded-3 p-3 mb-4" id="study-stats-card" data-course-id="@Model.Course.CourseId">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-stopwatch text-primary fs-4"></i>
+                                <div>
+                                    <h5 class="mb-0">Study Timer</h5>
+                                    <small class="text-muted">Pomodoro 25 phút – lưu thời gian học của bạn</small>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm study-stats-refresh" data-course-id="@Model.Course.CourseId">
+                                <i class="bi bi-arrow-repeat me-1"></i>Làm mới
+                            </button>
+                        </div>
+                        <div class="study-stats-grid">
+                            <div class="study-stat-item">
+                                <span class="study-stat-label text-muted">Tổng thời gian</span>
+                                <span class="study-stat-value" id="study-stat-total">@{
+                                    var totalMins = Model.StudyStats?.TotalMinutes ?? 0;
+                                    var totalHours = totalMins / 60;
+                                    var totalMinsRemain = totalMins % 60;
+                                    if (totalHours > 0) {
+                                        Write($"{totalHours} giờ {totalMinsRemain} phút");
+                                    } else {
+                                        Write($"{totalMinsRemain} phút");
+                                    }
+                                }</span>
+                            </div>
+                            <div class="study-stat-item">
+                                <span class="study-stat-label text-muted">7 ngày gần nhất</span>
+                                <span class="study-stat-value" id="study-stat-weekly">@{
+                                    var weeklyMins = Model.StudyStats?.WeeklyMinutes ?? 0;
+                                    var weeklyHours = weeklyMins / 60;
+                                    var weeklyMinsRemain = weeklyMins % 60;
+                                    if (weeklyHours > 0) {
+                                        Write($"{weeklyHours} giờ {weeklyMinsRemain} phút");
+                                    } else {
+                                        Write($"{weeklyMinsRemain} phút");
+                                    }
+                                }</span>
+                            </div>
+                            <div class="study-stat-item">
+                                <span class="study-stat-label text-muted">Chuỗi ngày học</span>
+                                <span class="study-stat-value" id="study-stat-streak">@(Model.StudyStats?.CurrentStreakDays ?? 0) ngày</span>
+                            </div>
+                            <div class="study-stat-item">
+                                <span class="study-stat-label text-muted">Phiên học đã lưu</span>
+                                <span class="study-stat-value" id="study-stat-sessions">@(Model.StudyStats?.TotalSessions ?? 0) phiên</span>
+                            </div>
+                            <div class="study-stat-item">
+                                <span class="study-stat-label text-muted">Lần cuối học</span>
+                                <span class="study-stat-value" id="study-stat-last">@(Model.StudyStats?.LastStudiedAt.HasValue == true ? Model.StudyStats.LastStudiedAt.Value.ToString("dd/MM/yyyy HH:mm") : "Chưa có")</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="study-timer-card p-3 mb-4" data-course-id="@Model.Course.CourseId" data-duration="1500">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                            <div>
+                                <span class="text-muted small d-block">Pomodoro 25 phút</span>
+                                <span class="study-timer-display fw-semibold">25:00</span>
+                            </div>
+                            <div class="study-timer-controls d-flex gap-2">
+                                <button type="button" class="btn btn-primary btn-sm study-timer-toggle">
+                                    <i class="bi bi-play-fill me-1"></i>Bắt đầu
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm study-timer-reset" disabled>
+                                    <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
+                                </button>
+                                <button type="button" class="btn btn-success btn-sm study-timer-log" disabled>
+                                    <i class="bi bi-check2-circle me-1"></i>Lưu phiên học
+                                </button>
+                            </div>
+                        </div>
+                        <div class="study-timer-meta small text-muted mt-2">
+                            <span class="study-timer-session-info">Thời gian học của bạn sẽ được lưu cho bài này.</span>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="lesson-pills-tabContent">
+                        @if (Model.Course.Lessons != null && Model.Course.Lessons.Any())
                         {
-                            var progress = Model.Progresses?.FirstOrDefault(p => p.LessonId == lesson.LessonId);
-                            bool isCompleted = progress != null && progress.CompletionStatus;
-                            bool isInProgress = progress != null && !progress.CompletionStatus;
-                            var expanded = lesson.OrderNumber == Model.Course.Lessons.OrderBy(l => l.OrderNumber).First().OrderNumber ? "true" : "false";
-                            var show = lesson.OrderNumber == Model.Course.Lessons.OrderBy(l => l.OrderNumber).First().OrderNumber ? "show" : "";
-                            <div class="accordion-item lesson-card @(isCompleted ? "completed" : (isInProgress ? "in-progress" : ""))">
-                                <h2 class="accordion-header" id="heading-@lesson.LessonId">
-                                    <button class="accordion-button @(show)" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@lesson.LessonId" aria-expanded="@expanded" aria-controls="collapse-@lesson.LessonId">
-                                        <span class="lesson-number">@lesson.OrderNumber</span>
-                                        <span class="lesson-title">@lesson.LessonTitle</span>
-                                        <span class="lesson-status">
-                                            <i class="bi bi-check-circle-fill completion-icon @(isCompleted ? "completed" : (isInProgress ? "in-progress" : ""))" data-lesson-id="@lesson.LessonId"></i>
-                                        </span>
-                                    </button>
-                                </h2>
-                                <div id="collapse-@lesson.LessonId" class="accordion-collapse collapse @(show)" aria-labelledby="heading-@lesson.LessonId" data-bs-parent="#lessonsAccordion">
-                                    <div class="accordion-body lesson-content">
-                                        <p class="lesson-description">@lesson.Content</p>
+                            @foreach (var lesson in Model.Course.Lessons.OrderBy(l => l.OrderNumber))
+                            {
+                                var tabId = $"lesson-content-{lesson.LessonId}";
+                                var isActive = lesson.OrderNumber == 1;
+
+                                <div class="tab-pane fade @(isActive ? "show active" : "")" id="@tabId" role="tabpanel">
+                                    <div class="lesson-content-main-wrapper bg-white rounded-3 p-3 p-md-4 mb-4">
+
+                                        <h3 class="mb-3">@lesson.LessonTitle</h3>
+
                                         @if (!string.IsNullOrEmpty(lesson.VideoUrl))
                                         {
-                                            <div class="video-container mb-3">
-                                                <video width="100%" height="400" controls class="custom-video" data-lesson-id="@lesson.LessonId">
+                                            <div class="ratio ratio-16x9 mb-3 rounded overflow-hidden shadow-sm">
+                                                <video controls class="w-100" data-lesson-id="@lesson.LessonId">
                                                     <source src="@lesson.VideoUrl" type="video/mp4">
-                                                    Trình duyệt của bạn không hỗ trợ thẻ video.
+                                                    Trình duyệt không hỗ trợ video.
                                                 </video>
                                             </div>
                                         }
 
-                                        <!-- Assignments Section -->
-                                        <div class="assignments-section mt-5">
-                                            <h4 class="mb-4 text-dark" style="font-weight: 600; border-bottom: 2px solid #ffb300; padding-bottom: 10px;">
-                                                <i class="bi bi-pen me-2"></i> Bài tập của bài học
-                                            </h4>
+                                        @if (!string.IsNullOrWhiteSpace(lesson.Content))
+                                        {
+                                            <div class="lesson-content-formatted mb-3 p-3 bg-light rounded small text-muted">
+                                                @lesson.Content
+                                            </div>
 
-                                            @if (lesson.Assignments?.Any(a => a.AssignmentType != null && a.AssignmentType.Equals("Exercise", StringComparison.OrdinalIgnoreCase)) == true)
-                                            {
-                                                @foreach (var assignment in lesson.Assignments.Where(a => a.AssignmentType != null && a.AssignmentType.Equals("Exercise", StringComparison.OrdinalIgnoreCase)).OrderBy(a => a.CreatedDate))
-                                                {
-                                                    double totalMaxScore = assignment.Questions != null ? assignment.Questions.Sum(q => q.MaxScore ?? 0) : 0;
-                                                    var allQuestions = assignment.Questions?.ToList() ?? new List<AssignmentQuestion>();
-                                                    var submittedQuestions = Model.PreviousSubmissions != null ? Model.PreviousSubmissions.Keys.Intersect(allQuestions.Select(q => q.QuestionId)).Count() : 0;
-                                                    var allSubmitted = allQuestions.Any() && submittedQuestions == allQuestions.Count;
-                                                    double totalScore = 0;
-                                                    if (allSubmitted && Model.PreviousSubmissions != null)
-                                                    {
-                                                        foreach (var question in allQuestions)
+                                            <div class="lesson-translation-widget" data-lesson-id="@lesson.LessonId" data-course-id="@Model.Course.CourseId">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle translation-dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                        <i class="bi bi-translate me-1"></i>Dịch nội dung
+                                                    </button>
+                                                    <ul class="dropdown-menu translation-language-menu shadow">
+                                                        @foreach (var lang in translationLanguages)
                                                         {
-                                                            if (Model.PreviousSubmissions.TryGetValue(question.QuestionId, out var submission) && submission.Score.HasValue)
-                                                            {
-                                                                totalScore += submission.Score.Value;
-                                                            }
+                                                            <li>
+                                                                <button type="button"
+                                                                        class="dropdown-item translation-option"
+                                                                        data-lesson-id="@lesson.LessonId"
+                                                                        data-course-id="@Model.Course.CourseId"
+                                                                        data-lang-code="@lang.Code"
+                                                                        data-lang-name="@lang.Name">
+                                                                    <img src="@Url.Content(lang.Flag)" alt="@lang.Name flag" width="20" height="14" class="me-2 flag-icon" loading="lazy" />
+                                                                    @lang.Name
+                                                                </button>
+                                                            </li>
                                                         }
-                                                    }
+                                                    </ul>
+                                                </div>
+                                                <div class="translation-result mt-3" id="translation-result-@lesson.LessonId" hidden>
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <div>
+                                                            <strong class="translation-title d-block">Bản dịch</strong>
+                                                            <small class="text-muted translation-target-label" id="translation-target-@lesson.LessonId"></small>
+                                                        </div>
+                                                        <button type="button" class="btn btn-link btn-sm text-decoration-none translation-close" data-lesson-id="@lesson.LessonId">Ẩn</button>
+                                                    </div>
+                                                    <div class="translation-content" id="translation-content-@lesson.LessonId">
+                                                        <div class="text-muted small">Chọn ngôn ngữ để bắt đầu dịch.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
 
-                                                    <div class="card assignment-card mb-4" data-assignment-id="@assignment.AssignmentId">
-                                                        <div class="card-body">
-                                                            <h5 class="card-title">@(assignment.Title ?? "Bài tập không có tiêu đề")</h5>
-                                                            <p class="card-text text-muted mb-3">
-                                                                @(string.IsNullOrEmpty(assignment.Description) ? "Bài tập này chưa có mô tả." : assignment.Description)
-                                                            </p>
-                                                            <div class="d-flex flex-wrap gap-3 mb-4">
-                                                                <span class="badge bg-warning text-dark">
-                                                                    <i class="bi bi-tag"></i> Loại: Bài tập
-                                                                </span>
-                                                                <span class="badge bg-info text-dark">
-                                                                    <i class="bi bi-clock"></i> Thời gian: @(assignment.DurationMinutes.HasValue ? $"{assignment.DurationMinutes} phút" : "Không giới hạn")
-                                                                </span>
-                                                                <span class="badge bg-secondary text-white">
-                                                                    <i class="bi bi-calendar3"></i> Ngày tạo: @(assignment.CreatedDate != DateTime.MinValue ? assignment.CreatedDate.ToString("dd/MM/yyyy") : "Không xác định")
-                                                                </span>
+                                        <div class="lesson-activities mt-4">
+                                            <ul class="nav nav-tabs nav-tabs-modern mb-3" id="lesson-activity-tab-@lesson.LessonId" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#ai-tutor-@lesson.LessonId">
+                                                        <i class="bi bi-robot me-1"></i> AI Tutor
+                                                    </button>
+                                                </li>
+                                                @if (lesson.Assignments?.Any(a => a.AssignmentType?.Equals("Exercise", StringComparison.OrdinalIgnoreCase) == true) == true)
+                                                {
+                                                    <li class="nav-item" role="presentation">
+                                                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#assignments-@lesson.LessonId">
+                                                            <i class="bi bi-pen-fill me-1"></i> Bài tập
+                                                        </button>
+                                                    </li>
+                                                }
+                                            </ul>
+
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade show active" id="ai-tutor-@lesson.LessonId">
+                                                    <div class="ai-tutor-compact p-3 bg-primary bg-opacity-10 rounded">
+                                                        <div class="d-flex align-items-center gap-2 mb-3">
+                                                            <i class="bi bi-robot" style="color:#3b82f6;"></i>
+                                                                <strong class="small">AI Tutor</strong>
+                                                        </div>
+                                                        <div class="ai-tabs">
+                                                            <button class="ai-tab active" onclick="switchAITab(event, 'qa-@lesson.LessonId')">
+                                                                    <i class="bi bi-chat-dots"></i>
+                                                                    <span data-i18n-vi="Hỏi đáp" data-i18n-en="Q&amp;A">Hỏi đáp</span>
+                                                            </button>
+                                                            <button class="ai-tab" onclick="switchAITab(event, 'quiz-@lesson.LessonId')">
+                                                                    <i class="bi bi-lightbulb"></i>
+                                                                    <span data-i18n-vi="Bài tập" data-i18n-en="Exercises">Bài tập</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div id="qa-@lesson.LessonId" class="ai-content active">
+                                                            <div class="ai-input-group">
+                                                                    <input type="text" class="ai-input" placeholder="Nhập câu hỏi hoặc 'tóm tắt'..." id="ai-q-@lesson.LessonId"
+                                                                           data-i18n-placeholder-vi="Nhập câu hỏi hoặc 'tóm tắt'..." data-i18n-placeholder-en="Type a question or 'summary'..." />
+                                                                <button class="ai-btn ai-btn-primary" onclick="aiAsk('@Model.Course.CourseId','@lesson.LessonId')">
+                                                                    <i class="bi bi-send"></i>
+                                                                </button>
                                                             </div>
-                                                            @if (assignment.Questions != null && assignment.Questions.Any())
-                                                            {
-                                                                <div class="questions-section mt-4">
-                                                                    <h6 class="text-dark mb-3" style="font-weight: 600;">Danh sách câu hỏi</h6>
-                                                                    <form asp-action="SubmitAssignment" asp-controller="Assignment" asp-route-lessonId="@lesson.LessonId" method="post" class="assignment-form">
-                                                                        @Html.AntiForgeryToken()
-                                                                        @foreach (var question in assignment.Questions.OrderBy(q => q.OrderNumber))
-                                                                        {
-                                                                            var hasSubmission = Model.PreviousSubmissions != null && Model.PreviousSubmissions.ContainsKey(question.QuestionId);
-                                                                            var previousSubmission = hasSubmission
-                                                                            ? Model.PreviousSubmissions[question.QuestionId]
-                                                                            : (SelectedOptionText: null, SelectedOptionLabel: null, IsCorrect: (bool?)null, Score: (int?)null);
+                                                                <div class="ai-response" id="ai-answer-@lesson.LessonId" data-i18n-vi="AI sẽ trả lời ở đây..." data-i18n-en="AI will respond here...">AI sẽ trả lời ở đây...</div>
+                                                        </div>
 
-                                                                            <div class="card question-card mb-3">
-                                                                                <div class="card-body">
-                                                                                    <p class="card-text font-weight-bold mb-2">
-                                                                                        <i class="bi bi-question-circle me-2"></i> Câu @(question.OrderNumber != 0 ? question.OrderNumber : "N/A"): @(question.QuestionText ?? "Câu hỏi không có nội dung")
-                                                                                        <span class="badge bg-success text-white ms-2">
-                                                                                            Điểm tối đa: @(question.MaxScore?.ToString("F1") ?? "Chưa xác định")
-                                                                                        </span>
-                                                                                    </p>
-                                                                                    <small class="text-muted mb-3 d-block">
-                                                                                        Loại câu hỏi: @(question.QuestionType == "MultipleChoice" ? "Trắc nghiệm" : "Tự luận")
-                                                                                    </small>
-                                                                                    @if (question.QuestionType == "MultipleChoice" && question.Options != null && question.Options.Any())
-                                                                                    {
-                                                                                        <div class="options-section mt-3">
-                                                                                            @foreach (var option in question.Options)
-                                                                                            {
-                                                                                                <div class="form-check mb-3">
-                                                                                                    <input class="form-check-input" type="radio" name="answers[@question.QuestionId]" id="option-@option.OptionId" value="@option.OptionId"
-                                                                                                    @(hasSubmission ? "disabled" : "") @(hasSubmission ? "" : "required") @(previousSubmission.SelectedOptionLabel == option.OptionLabel ? "checked" : "")>
-                                                                                                    <label class="form-check-label" for="option-@option.OptionId">
-                                                                                                        @(option.OptionLabel ?? "N/A"). @(option.OptionText ?? "Không có nội dung")
-                                                                                                        @if (hasSubmission && previousSubmission.SelectedOptionLabel == option.OptionLabel)
-                                                                                                        {
-                                                                                                            if (previousSubmission.IsCorrect == true)
-                                                                                                            {
-                                                                                                                <span class="text-success ms-2"><i class="bi bi-check-circle"></i> Đúng</span>
-                                                                                                            }
-                                                                                                            else
-                                                                                                            {
-                                                                                                                <span class="text-danger ms-2"><i class="bi bi-x-circle"></i> Sai</span>
-                                                                                                            }
-                                                                                                        }
-                                                                                                        @if (hasSubmission && option.IsCorrect == true)
-                                                                                                        {
-                                                                                                            <span class="text-success ms-2"><i class="bi bi-check-circle"></i> Đáp án đúng</span>
-                                                                                                        }
-                                                                                                    </label>
-                                                                                                </div>
-                                                                                            }
-                                                                                        </div>
-                                                                                        @if (hasSubmission && !string.IsNullOrEmpty(previousSubmission.SelectedOptionLabel))
-                                                                                        {
-                                                                                            <div class="mt-2">
-                                                                                                <small class="text-success">
-                                                                                                    Đáp án đã chọn: <strong>@previousSubmission.SelectedOptionLabel</strong>
-                                                                                                </small>
-                                                                                                @if (previousSubmission.Score.HasValue)
-                                                                                                {
-                                                                                                    <small class="text-primary ms-2">
-                                                                                                        Điểm: <strong>@previousSubmission.Score.Value.ToString("F1")</strong>
-                                                                                                    </small>
-                                                                                                }
-                                                                                            </div>
-                                                                                        }
-                                                                                    }
-                                                                                    else if (question.QuestionType == "Essay")
-                                                                                    {
-                                                                                        <div class="essay-section mt-3">
-                                                                                            <textarea class="form-control" name="answers[@question.QuestionId]" rows="4" placeholder="Nhập câu trả lời của bạn..." @(hasSubmission ? "disabled" : "") @(hasSubmission ? "" : "required")>@previousSubmission.SelectedOptionText</textarea>
-                                                                                        </div>
-                                                                                        @if (hasSubmission && !string.IsNullOrEmpty(previousSubmission.SelectedOptionText))
-                                                                                        {
-                                                                                            <div class="mt-2">
-                                                                                                <small class="text-success">
-                                                                                                    Đáp án đã chọn: <strong>@previousSubmission.SelectedOptionText</strong>
-                                                                                                </small>
-                                                                                                @if (previousSubmission.Score.HasValue)
-                                                                                                {
-                                                                                                    <small class="text-primary ms-2">
-                                                                                                        Điểm: <strong>@previousSubmission.Score.Value.ToString("F1")</strong>
-                                                                                                    </small>
-                                                                                                }
-                                                                                                else
-                                                                                                {
-                                                                                                    <small class="text-muted ms-2">
-                                                                                                        Đang chờ giáo viên chấm điểm
-                                                                                                    </small>
-                                                                                                }
-                                                                                            </div>
-                                                                                        }
-                                                                                    }
-                                                                                </div>
-                                                                            </div>
-                                                                        }
-                                                                        @if (allQuestions.Any())
+                                                        <div id="quiz-@lesson.LessonId" class="ai-content">
+                                                            <div class="ai-input-group">
+                                                                <input type="number" class="ai-input ai-input-number" value="3" min="1" max="10" id="ai-count-@lesson.LessonId" placeholder="Số câu">
+                                                                <select class="ai-input ai-input-select" id="ai-level-@lesson.LessonId">
+                                                                    <option value="dễ" data-i18n-vi="Dễ" data-i18n-en="Easy">Dễ</option>
+                                                                    <option value="trung bình" data-i18n-vi="Trung bình" data-i18n-en="Medium" selected>Trung bình</option>
+                                                                    <option value="khó" data-i18n-vi="Khó" data-i18n-en="Hard">Khó</option>
+                                                                </select>
+                                                                <button class="ai-btn ai-btn-warning" onclick="aiGenerate('@Model.Course.CourseId','@lesson.LessonId')">
+                                                                    <i class="bi bi-plus-circle me-1"></i>
+                                                                    <span data-i18n-vi="Tạo bài tập" data-i18n-en="Generate">Tạo bài tập</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="small text-muted mt-2" id="ai-quiz-helper-@lesson.LessonId" data-i18n-vi="Chọn số câu (1–10) và mức độ, sau đó nhấn nút để tạo bài luyện." data-i18n-en="Choose 1–10 questions and a difficulty, then click the button to generate practice.">
+                                                                Chọn số câu (1–10) và mức độ, sau đó nhấn nút để tạo bài luyện.
+                                                            </div>
+                                                            <div class="small text-danger d-none" id="ai-quiz-error-@lesson.LessonId"></div>
+                                                            <div class="small text-muted mt-1" id="ai-quiz-stats-@lesson.LessonId"></div>
+                                                            <div class="ai-response" id="ai-mcq-@lesson.LessonId" style="display:none;"></div>
+                                                            <div id="ai-mcq-list-@lesson.LessonId"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                @if (lesson.Assignments?.Any(a => a.AssignmentType?.Equals("Exercise", StringComparison.OrdinalIgnoreCase) == true) == true)
+                                                {
+                                                    <div class="tab-pane fade" id="assignments-@lesson.LessonId">
+                                                        <div class="assignments-compact mt-3">
+                                                            <div class="accordion accordion-flush" id="assignAccordion-@lesson.LessonId">
+                                                                @foreach (var assignment in lesson.Assignments.Where(a => a.AssignmentType?.Equals("Exercise", StringComparison.OrdinalIgnoreCase) == true).OrderBy(a => a.CreatedDate))
+                                                                {
+                                                                    var allQuestions = assignment.Questions?.ToList() ?? new List<AssignmentQuestion>();
+                                                                    var submittedCount = Model.PreviousSubmissions?.Keys.Intersect(allQuestions.Select(q => q.QuestionId)).Count() ?? 0;
+                                                                    var allSubmitted = allQuestions.Any() && submittedCount == allQuestions.Count;
+                                                                    var totalScore = 0.0;
+                                                                    var totalMax = allQuestions.Sum(q => q.MaxScore ?? 0);
+
+                                                                    if (allSubmitted && Model.PreviousSubmissions != null)
+                                                                    {
+                                                                        foreach (var q in allQuestions)
                                                                         {
-                                                                            @if (allSubmitted)
-                                                                            {
-                                                                                <div class="alert alert-success text-center mt-3" role="alert">
-                                                                                    <i class="bi bi-check-circle me-2"></i> Đã nộp bài tập
-                                                                                    <span class="ms-2">Tổng điểm: <strong>@totalScore.ToString("F1")</strong> / @totalMaxScore.ToString("F1")</span>
-                                                                                </div>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <div class="mt-4 text-center">
-                                                                                    <button type="submit" class="btn btn-submit">
-                                                                                        <i class="bi bi-send-fill me-2"></i> Gửi bài tập
-                                                                                    </button>
-                                                                                </div>
-                                                                            }
+                                                                            if (Model.PreviousSubmissions.TryGetValue(q.QuestionId, out var sub) && sub.Score.HasValue)
+                                                                                totalScore += sub.Score.Value;
                                                                         }
-                                                                    </form>
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="no-assignments">
-                                                                    <i class="bi bi-info-circle"></i>
-                                                                    <p>Bài tập này chưa có câu hỏi nào.</p>
-                                                                </div>
-                                                            }
+                                                                    }
+
+                                                                    var assignId = $"assign-{assignment.AssignmentId}";
+                                                                    <div class="accordion-item border rounded mb-2 overflow-hidden">
+                                                                        <h2 class="accordion-header">
+                                                                            <button class="accordion-button collapsed py-2 px-3 small fw-semibold" type="button"
+                                                                                    data-bs-toggle="collapse" data-bs-target="#@assignId">
+                                                                                <span class="text-truncate" style="max-width: 180px;">@assignment.Title</span>
+                                                                                <span class="ms-auto small text-muted">
+                                                                                    @(allSubmitted ? $"Đã nộp ({totalScore:F1}/{totalMax:F1})" : $"{submittedCount}/{allQuestions.Count} câu")
+                                                                                </span>
+                                                                            </button>
+                                                                        </h2>
+                                                                        <div id="@assignId" class="accordion-collapse collapse" data-bs-parent="#assignAccordion-@lesson.LessonId">
+                                                                            <div class="accordion-body p-3 pt-2 small">
+                                                                                @if (!string.IsNullOrEmpty(assignment.Description))
+                                                                                {
+                                                                                    <p class="text-muted mb-2" style="font-size: 0.8rem;">@assignment.Description</p>
+                                                                                }
+
+                                                                                <div class="d-flex flex-wrap gap-2 mb-2 text-muted" style="font-size: 0.7rem;">
+                                                                                    <span><i class="bi bi-clock"></i> @(assignment.DurationMinutes.HasValue ? $"{assignment.DurationMinutes} phút" : "Không giới hạn")</span>
+                                                                                    <span><i class="bi bi-calendar3"></i> @assignment.CreatedDate.ToString("dd/MM")</span>
+                                                                                </div>
+
+                                                                                @if (allQuestions.Any())
+                                                                                {
+                                                                                    <form asp-action="SubmitAssignment" asp-controller="Assignment" method="post" class="assignment-form">
+                                                                                        @Html.AntiForgeryToken()
+                                                                                        <input type="hidden" name="lessonId" value="@lesson.LessonId" />
+
+                                                                                        @foreach (var question in allQuestions.OrderBy(q => q.OrderNumber))
+                                                                                        {
+                                                                                            var hasSub = Model.PreviousSubmissions != null && Model.PreviousSubmissions.ContainsKey(question.QuestionId);
+                                                                                            var prev = hasSub ? Model.PreviousSubmissions[question.QuestionId] : (SelectedOptionText: null, SelectedOptionLabel: null, IsCorrect: null, Score: null);
+
+                                                                                            <div class="question-card mb-3 p-2 border rounded bg-light">
+                                                                                                <div class="d-flex justify-content-between align-items-start mb-1">
+                                                                                                    <strong class="small">Câu @question.OrderNumber:</strong>
+                                                                                                    <span class="badge bg-success small">@question.MaxScore điểm</span>
+                                                                                                </div>
+                                                                                                <p class="mb-2 small fw-medium">@question.QuestionText</p>
+
+                                                                                                @if (question.QuestionType == "MultipleChoice" && question.Options?.Any() == true)
+                                                                                                {
+                                                                                                    <div class="options-small">
+                                                                                                        @foreach (var opt in question.Options)
+                                                                                                        {
+                                                                                                            var isChecked = hasSub && prev.SelectedOptionLabel == opt.OptionLabel;
+                                                                                                            var isCorrect = hasSub && opt.IsCorrect == true;
+
+                                                                                                            <label class="option-label @(isChecked ? "selected" : "") @(isCorrect ? "correct" : "")">
+                                                                                                                <input type="radio" name="answers[@question.QuestionId]" value="@opt.OptionId"
+                                                                                                                @(hasSub ? "disabled" : "") @(isChecked ? "checked" : "")>
+                                                                                                                <span>@opt.OptionLabel. @opt.OptionText</span>
+                                                                                                                @if (hasSub && isChecked)
+                                                                                                                {
+                                                                                                                    <i class="bi @(prev.IsCorrect == true ? "bi-check-circle text-success" : "bi-x-circle text-danger") ms-1"></i>
+                                                                                                                }
+                                                                                                                @if (hasSub && isCorrect && !isChecked)
+                                                                                                                {
+                                                                                                                    <i class="bi bi-check-circle text-success ms-1"></i>
+                                                                                                                }
+                                                                                                            </label>
+                                                                                                        }
+                                                                                                    </div>
+                                                                                                    @if (hasSub && prev.Score.HasValue)
+                                                                                                    {
+                                                                                                        <small class="text-primary d-block mt-1">Điểm: @(prev.Score.Value.ToString("F1"))</small>
+                                                                                                    }
+                                                                                                }
+                                                                                                else if (question.QuestionType == "Essay")
+                                                                                                {
+                                                                                                    <textarea class="form-control form-control-sm mt-1" name="answers[@question.QuestionId]" rows="2"
+                                                                                                              placeholder="Nhập câu trả lời..." data-i18n-placeholder-vi="Nhập câu trả lời..." data-i18n-placeholder-en="Enter your answer..."
+                                                                                                              @(hasSub ? "disabled" : "")>@prev.SelectedOptionText</textarea>
+                                                                                                    @if (hasSub)
+                                                                                                    {
+                                                                                                        if (prev.Score.HasValue)
+                                                                                                        {
+                                                                                                            <small class="text-primary d-block mt-1">Điểm: @(prev.Score.Value.ToString("F1"))</small>
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <small class="text-muted d-block mt-1">Đang chờ chấm</small>
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            </div>
+                                                                                        }
+
+                                                                                        @if (!allSubmitted)
+                                                                                        {
+                                                                                            <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">
+                                                                                                <i class="bi bi-send-fill me-1"></i>
+                                                                                                <span data-i18n-vi="Nộp bài" data-i18n-en="Submit answers">Nộp bài</span>
+                                                                                            </button>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div class="alert alert-success small text-center p-2 mt-2">
+                                                                                                <i class="bi bi-check-circle me-1"></i>
+                                                                                                Đã nộp – Tổng: <strong>@(totalScore.ToString("F1")) / @(totalMax.ToString("F1"))</strong>
+                                                                                            </div>
+                                                                                        }
+                                                                                    </form>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <p class="text-muted small text-center">Chưa có câu hỏi</p>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 }
-                                            }
-                                            else
-                                            {
-                                                <div class="no-assignments">
-                                                    <i class="bi bi-info-circle"></i>
-                                                    <p>Chưa có bài tập nào cho bài học này</p>
-                                                </div>
-                                            }
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="bg-white rounded-3 p-5 text-center shadow-sm">
+                                <i class="bi bi-info-circle fs-3 text-muted"></i>
+                                <p class="mt-2 mb-0">Chưa có bài học nào trong khóa học này.</p>
                             </div>
                         }
                     </div>
                 }
                 else
                 {
-                    <div class="no-lessons">
-                        <i class="bi bi-book"></i>
-                        <p>Khóa học này chưa có bài học nào</p>
+                    <div class="bg-white rounded-3 p-3 shadow-sm">
+                        <h6 class="section-title mb-3"><i class="bi bi-list-ul me-1"></i> Nội dung khóa học</h6>
+                        <div class="text-center p-5 bg-light rounded">
+                            <i class="bi bi-lock fs-3 text-muted"></i>
+                            <p class="mt-2">Đăng ký để xem nội dung</p>
+                        </div>
                     </div>
                 }
-            }
-            else
-            {
-                <div class="enrollment-prompt">
-                    <i class="bi bi-lock"></i>
-                    <h3>Đăng ký để xem nội dung</h3>
-                    <p>Vui lòng đăng ký khóa học để xem toàn bộ nội dung bài học</p>
-                    @if (User.Identity.IsAuthenticated)
+
+
+                <!-- Forum Section -->
+                @if (Model.IsEnrolled || User.IsInRole("Instructor") || User.IsInRole("Admin"))
+                {
+                    <div class="forum-section mt-4 bg-white rounded-3 p-3 p-md-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="section-title mb-0">
+                                <i class="bi bi-chat-dots me-1"></i>
+                                <span data-i18n-vi="Diễn đàn" data-i18n-en="Forum">Diễn đàn</span>
+                            </h6>
+                            <a href="@Url.Action("Index", "Forum", new { courseId = Model.Course.CourseId })" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-arrow-right me-1"></i>
+                                <span data-i18n-vi="Xem tất cả" data-i18n-en="View all">Xem tất cả</span>
+                            </a>
+                        </div>
+                        <p class="text-muted small mb-3" data-i18n-vi="Thảo luận, hỏi đáp về khóa học" data-i18n-en="Discuss and ask questions about this course">Thảo luận, hỏi đáp về khóa học</p>
+                        <a href="@Url.Action("Index", "Forum", new { courseId = Model.Course.CourseId })" class="btn btn-primary btn-sm">
+                            <i class="bi bi-plus-circle me-1"></i>
+                            <span data-i18n-vi="Vào diễn đàn" data-i18n-en="Visit forum">Vào diễn đàn</span>
+                        </a>
+                    </div>
+                }
+
+                <div class="comments-section mt-4 bg-white rounded-3 p-4 p-md-5" id="comments-section">
+                    <h6 class="section-title mb-4"><i class="bi bi-chat-left-text me-2"></i> Bình luận</h6>
+
+                    @if (Model.IsEnrolled)
                     {
-                        if (Model.Course.Price == 0 || Model.Course.Price == null)
-                        {
-                            <form asp-action="Enroll" asp-controller="Enrollment" asp-route-courseId="@Model.Course.CourseId" method="post">
+                        <div class="comment-form mb-4 p-3 rounded-3">
+                           
+                            <form asp-action="AddComment" asp-controller="Course" method="post" id="commentForm" data-scroll-target="comments-section">
                                 @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-enroll">
-                                    <i class="bi bi-plus-circle-fill me-2"></i>Đăng ký miễn phí
+                                <input type="hidden" name="id" value="@Model.Course.CourseId" />
+                                <input type="hidden" name="model.NewCommentRating" id="ratingValue" value="0" />
+
+                                <div class="star-rating mb-2" id="commentRating">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <input type="radio" id="cstar@i" name="comment-star" value="@i" />
+                                        <label for="cstar@i" data-value="@i"><i class="bi bi-star-fill"></i></label>
+                                    }
+                                </div>
+
+                                <textarea class="form-control form-control-sm" rows="2" name="model.NewCommentContent"
+                                          placeholder="Chia sẻ suy nghĩ..." data-i18n-placeholder-vi="Chia sẻ suy nghĩ..." data-i18n-placeholder-en="Share your thoughts..." required></textarea>
+                                <button type="submit" class="btn btn-primary btn-sm mt-2 w-100">
+                                    <i class="bi bi-send me-1"></i>
+                                    <span data-i18n-vi="Gửi" data-i18n-en="Submit">Gửi</span>
                                 </button>
                             </form>
+                        </div>
+
+                        <div id="comments-list">
+                            @if (Model.Comments?.Any() == true)
+                            {
+                                @foreach (var c in Model.Comments)
+                                {
+                                    <div class="comment-item" data-comment-id="@c.CommentId">
+                                        <img src="@(string.IsNullOrEmpty(c.User?.Avatar) ? "/images/default-avatar.png" : c.User.Avatar)"
+                                             class="avatar" alt="@c.User?.FullName">
+                                        <div class="comment-content">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <div class="comment-author">@(c.User?.FullName ?? "Người dùng")</div>
+                                                    <div class="comment-stars">
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            <i class="bi bi-star-fill @(i <= (c.Rating ?? 0) ? "text-warning" : "text-muted-light")"></i>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                @if (User.Identity.IsAuthenticated && c.UserName == User.Identity.Name)
+                                                {
+                                                    <div class="comment-actions">
+                                                        <button type="button" class="btn btn-sm btn-outline-primary btn-edit"
+                                                                data-comment-id="@c.CommentId"
+                                                                data-content="@c.Content"
+                                                                data-rating="@(c.Rating ?? 0)"
+                                                                title="Chỉnh sửa">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-sm btn-outline-danger btn-delete"
+                                                                data-comment-id="@c.CommentId"
+                                                                title="Xóa">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="comment-text">@c.Content</div>
+                                            <div class="comment-date">@c.CreatedDate.ToString("dd/MM/yyyy HH:mm")</div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-center text-muted small">Chưa có bình luận nào.</p>
+                            }
+                        </div>
+
+                        <!-- Phân trang cho comments -->
+                        @if (Model.CommentTotalPages > 1)
+                        {
+                            <nav aria-label="Phân trang bình luận" class="mt-4">
+                                <ul class="pagination justify-content-center pagination-sm">
+                                    @if (Model.CommentPage > 1)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href="?id=@Model.Course.CourseId&page=@(Model.CommentPage - 1)#comments-section">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item disabled">
+                                            <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+                                        </li>
+                                    }
+
+                                    @for (int i = Math.Max(1, Model.CommentPage - 2); i <= Math.Min(Model.CommentTotalPages, Model.CommentPage + 2); i++)
+                                    {
+                                        <li class="page-item @(i == Model.CommentPage ? "active" : "")">
+                                            <a class="page-link" href="?id=@Model.Course.CourseId&page=@i#comments-section">@i</a>
+                                        </li>
+                                    }
+
+                                    @if (Model.CommentPage < Model.CommentTotalPages)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href="?id=@Model.Course.CourseId&page=@(Model.CommentPage + 1)#comments-section">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item disabled">
+                                            <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+                                        </li>
+                                    }
+                                </ul>
+                                <div class="text-center text-muted small mt-2">
+                                    Trang @Model.CommentPage / @Model.CommentTotalPages (@Model.CommentTotalCount bình luận)
+                                </div>
+                            </nav>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-center text-muted small py-3"><i class="bi bi-lock"></i> Đăng ký để bình luận</p>
+                    }
+                </div>
+
+            </div> <div class="col-lg-3">
+                <div class="syllabus-sidebar sticky-top" style="top: 80px;">
+                    <!-- Phần giá và mã khuyến mãi -->
+                    @if (!Model.IsEnrolled && (Model.Course.Price > 0))
+                    {
+                        <div class="bg-white rounded-3 overflow-hidden mb-3 shadow-sm">
+                            <div class="p-3 border-bottom bg-gradient" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <h5 class="mb-0 text-white">
+                                    <i class="bi bi-currency-dollar me-2"></i>Giá khóa học
+                                </h5>
+                            </div>
+                            <div class="p-3">
+                                <div class="text-center mb-3">
+                                    <div class="course-price-display">
+                                        <span class="text-decoration-line-through text-muted small me-2" id="originalPrice">₫@Model.Course.Price.Value.ToString("N0")</span>
+                                        <span class="fw-bold fs-4 text-primary" id="finalPrice">₫@Model.Course.Price.Value.ToString("N0")</span>
+                                    </div>
+                                </div>
+
+                                <!-- Phần mã khuyến mãi -->
+                                <div class="promo-code-section mb-3">
+                                    <label class="form-label fw-semibold mb-2 small">
+                                        <i class="bi bi-ticket-perforated me-1 text-primary"></i>
+                                        Mã khuyến mãi
+                                    </label>
+                                    <div class="input-group input-group-sm mb-2">
+                                        <input type="text" 
+                                               class="form-control promo-code-input" 
+                                               id="promoCode" 
+                                               placeholder="Nhập mã"
+                                               maxlength="50" />
+                                        <button class="btn btn-outline-primary apply-promo-btn" type="button" id="applyPromoBtn">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+                                    </div>
+                                    <div id="promoMessage" class="small mt-1" style="display: none; min-height: 20px;"></div>
+                                    <div id="appliedPromo" class="applied-promo-badge mt-2" style="display: none;">
+                                        <span class="badge bg-success w-100 d-flex align-items-center justify-content-between">
+                                            <span>
+                                                <i class="bi bi-check-circle me-1"></i>
+                                                <span id="appliedPromoText"></span>
+                                            </span>
+                                            <button type="button" class="btn-close btn-close-white" id="removePromoBtn" style="font-size: 0.6rem;"></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="bg-white rounded-3 overflow-hidden">
+                        <div class="p-3 border-bottom">
+                            <h5 class="mb-0"><i class="bi bi-list-task me-2"></i>Nội dung khóa học</h5>
+                        </div>
+                        @if (User.Identity.IsAuthenticated && Model.IsEnrolled)
+                        {
+                            <div class="nav flex-column nav-pills" id="lesson-pills-tab" role="tablist" aria-orientation="vertical">
+                                <div class="syllabus-lesson-list">
+                                    @foreach (var lesson in Model.Course.Lessons.OrderBy(l => l.OrderNumber))
+                                    {
+                                        var progress = Model.Progresses?.FirstOrDefault(p => p.LessonId == lesson.LessonId);
+                                        bool isCompleted = progress?.CompletionStatus == true;
+                                        bool isInProgress = progress != null && !progress.CompletionStatus;
+                                        var tabTarget = $"#lesson-content-{lesson.LessonId}";
+                                        var isActive = lesson.OrderNumber == 1;
+
+                                        <button class="nav-link syllabus-nav-link text-start @(isActive ? "active" : "") @(isCompleted ? "lesson-completed" : "")"
+                                                id="lesson-tab-@lesson.LessonId"
+                                                data-bs-toggle="pill"
+                                                data-bs-target="@tabTarget"
+                                                type="button" role="tab">
+
+                                            <span class="me-2 fs-5 @(isCompleted ? "text-success" : isInProgress ? "text-warning" : "text-muted")">
+                                                <i class="bi @(isCompleted ? "bi-check-circle-fill" : isInProgress ? "bi-clock-fill" : "bi-circle")"></i>
+                                            </span>
+
+                                            <span class="flex-grow-1">
+                                                <span class="fw-medium d-block">@lesson.LessonTitle</span>
+                                                <small class="text-muted">Bài @lesson.OrderNumber</small>
+                                            </span>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
                         }
                         else
                         {
-                            <form asp-action="AddToCart" asp-controller="Cart" asp-route-courseId="@Model.Course.CourseId" method="post" class="d-inline">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-cart">
-                                    <i class="bi bi-cart-fill me-2"></i>Thêm vào giỏ hàng
-                                </button>
-                            </form>
+                            <div class="p-4 text-center text-muted small">
+                                <i class="bi bi-lock-fill fs-4 d-block mb-2"></i>
+                                Đăng ký để xem toàn bộ danh sách bài học.
+                            </div>
                         }
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("Login", "Account")" class="btn btn-login">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>Đăng nhập
-                        </a>
-                    }
+                    </div>
                 </div>
-            }
-        </div>
-
-        <!-- Comments Section -->
-        <div class="comments-section">
-            <div class="section-header">
-                <h2>Bình luận</h2>
-                <p>Chia sẻ ý kiến của bạn về khóa học</p>
             </div>
-
-            @if (Model.IsEnrolled)
-            {
-                <div class="comment-form-container">
-                    <form asp-action="AddComment" asp-controller="Course" asp-route-id="@Model.Course.CourseId" method="post" class="comment-form">
-                        @Html.AntiForgeryToken()
-                        <div class="rating-input">
-                            <label>Đánh giá khóa học</label>
-                            <div class="star-rating" id="commentRating">
-                                <input type="radio" id="star5" name="NewCommentRating" value="5" required />
-                                <label for="star5" title="5 sao"><i class="bi bi-star-fill"></i></label>
-                                <input type="radio" id="star4" name="NewCommentRating" value="4" />
-                                <label for="star4" title="4 sao"><i class="bi bi-star-fill"></i></label>
-                                <input type="radio" id="star3" name="NewCommentRating" value="3" />
-                                <label for="star3" title="3 sao"><i class="bi bi-star-fill"></i></label>
-                                <input type="radio" id="star2" name="NewCommentRating" value="2" />
-                                <label for="star2" title="2 sao"><i class="bi bi-star-fill"></i></label>
-                                <input type="radio" id="star1" name="NewCommentRating" value="1" />
-                                <label for="star1" title="1 sao"><i class="bi bi-star-fill"></i></label>
-                            </div>
-                        </div>
-                        <div class="comment-input">
-                            <textarea asp-for="NewCommentContent"
-                                      placeholder="Chia sẻ suy nghĩ của bạn về khóa học..."
-                                      required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-submit-comment">
-                            <i class="bi bi-send-fill me-2"></i>Gửi bình luận
-                        </button>
-                    </form>
-                </div>
-
-                <div class="comments-list">
-                    @if (Model.Comments != null && Model.Comments.Any())
-                    {
-                        foreach (var comment in Model.Comments)
-                        {
-                            <div class="comment-card" data-comment-id="@comment.CommentId">
-                                <div class="comment-header">
-                                    <div class="comment-user">
-                                        <img src="@(string.IsNullOrEmpty(comment.User.Avatar) ? "/images/default-avatar.png" : comment.User.Avatar)"
-                                             alt="@comment.User.FullName"
-                                             class="user-avatar" />
-                                        <div class="user-info">
-                                            <h4>@comment.User.FullName</h4>
-                                            <span class="comment-date">@comment.CreatedDate.ToString("dd/MM/yyyy HH:mm")</span>
-                                        </div>
-                                    </div>
-                                    <div class="comment-rating">
-                                        @for (int i = 1; i <= 5; i++)
-                                        {
-                                            <i class="bi @(i <= (comment.Rating ?? 0) ? "bi-star-fill" : "bi-star")"></i>
-                                        }
-                                    </div>
-                                </div>
-                                <div class="comment-content">
-                                    <p>@comment.Content</p>
-                                </div>
-                                @if (User.Identity.IsAuthenticated && comment.UserName == User.Identity.Name)
-                                {
-                                    <div class="comment-actions">
-                                        <button class="btn btn-edit" data-comment-id="@comment.CommentId">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </button>
-                                        <button class="btn btn-delete" data-comment-id="@comment.CommentId">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
-                                    </div>
-                                }
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        <div class="no-comments">
-                            <i class="bi bi-chat-dots"></i>
-                            <p>Chưa có bình luận nào. Hãy là người đầu tiên chia sẻ suy nghĩ!</p>
-                        </div>
-                    }
-                </div>
-            }
-            else
-            {
-                <div class="enrollment-prompt">
-                    <i class="bi bi-lock"></i>
-                    <h3>Đăng ký để bình luận</h3>
-                    <p>Vui lòng đăng ký khóa học để thêm bình luận</p>
-                </div>
-            }
         </div>
     }
     else
     {
-        <div class="error-message">
-            <i class="bi bi-exclamation-triangle-fill"></i>
+        <div class="text-center p-5">
+            <i class="bi bi-exclamation-triangle-fill fs-1 text-danger"></i>
             <h3>Không tìm thấy khóa học</h3>
-            <p>Khóa học bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
         </div>
     }
 </div>
+
 
 @section Styles {
     <link rel="stylesheet" href="~/css/Course/CourseDetails.css" />
@@ -548,4 +790,95 @@
 
 @section Scripts {
     <script src="~/js/Course/CourseDetails.js"></script>
+    <script>
+        @if (!Model.IsEnrolled && Model.Course.Price > 0)
+        {
+            <text>
+            let originalPrice = @Model.Course.Price.Value;
+            let currentDiscount = 0;
+            let appliedPromoCode = '';
+
+            document.getElementById('applyPromoBtn')?.addEventListener('click', function() {
+                const promoCode = document.getElementById('promoCode').value.trim().toUpperCase();
+                const promoMessage = document.getElementById('promoMessage');
+                const appliedPromo = document.getElementById('appliedPromo');
+                const appliedPromoText = document.getElementById('appliedPromoText');
+                
+                if (!promoCode) {
+                    showPromoMessage('Vui lòng nhập mã khuyến mãi', 'danger');
+                    return;
+                }
+
+                // TODO: Gọi API để validate promo code
+                // Tạm thời demo với một số mã test
+                const promoCodes = {
+                    'WELCOME10': { discount: 10, type: 'percent', message: 'Giảm 10%' },
+                    'SAVE50K': { discount: 50000, type: 'fixed', message: 'Giảm 50,000₫' },
+                    'STUDENT20': { discount: 20, type: 'percent', message: 'Giảm 20%' }
+                };
+
+                if (promoCodes[promoCode]) {
+                    const promo = promoCodes[promoCode];
+                    appliedPromoCode = promoCode;
+                    currentDiscount = promo.type === 'percent' 
+                        ? (originalPrice * promo.discount / 100)
+                        : promo.discount;
+                    
+                    appliedPromoText.textContent = promo.message;
+                    appliedPromo.style.display = 'block';
+                    promoMessage.style.display = 'none';
+                    document.getElementById('promoCode').value = '';
+                    updatePrice();
+                } else {
+                    showPromoMessage('Mã khuyến mãi không hợp lệ hoặc đã hết hạn', 'danger');
+                }
+            });
+
+            document.getElementById('removePromoBtn')?.addEventListener('click', function() {
+                appliedPromoCode = '';
+                currentDiscount = 0;
+                document.getElementById('appliedPromo').style.display = 'none';
+                document.getElementById('promoCodeValue').value = '';
+                updatePrice();
+            });
+
+            document.getElementById('promoCode')?.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('applyPromoBtn').click();
+                }
+            });
+
+            function showPromoMessage(message, type) {
+                const promoMessage = document.getElementById('promoMessage');
+                promoMessage.textContent = message;
+                promoMessage.className = `small mt-1 text-${type}`;
+                promoMessage.style.display = 'block';
+                setTimeout(() => {
+                    promoMessage.style.display = 'none';
+                }, 3000);
+            }
+
+            function updatePrice() {
+                const discount = currentDiscount;
+                const finalPrice = Math.max(0, originalPrice - discount);
+
+                const originalPriceEl = document.getElementById('originalPrice');
+                const finalPriceEl = document.getElementById('finalPrice');
+
+                if (discount > 0) {
+                    originalPriceEl.style.display = 'inline';
+                    finalPriceEl.textContent = formatCurrency(finalPrice);
+                } else {
+                    originalPriceEl.style.display = 'none';
+                    finalPriceEl.textContent = formatCurrency(originalPrice);
+                }
+            }
+
+            function formatCurrency(amount) {
+                return '₫' + Math.round(amount).toLocaleString('vi-VN');
+            }
+            </text>
+        }
+    </script>
 }

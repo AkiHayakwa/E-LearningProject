@@ -56,7 +56,7 @@
     });
 
     // Pagination for Suggested Courses
-    const suggestedRowsPerPage = 4; // 4 khóa học mỗi trang
+    const suggestedRowsPerPage = 20; // 5 hàng x 4 khóa học mỗi trang
     let suggestedCurrentPage = 1;
     let suggestedRows = document.querySelectorAll('#suggestedCourses .course-item');
     let suggestedTotalRows = suggestedRows.length;
@@ -73,6 +73,11 @@
 
         updateSuggestedPagination();
         updateSuggestedPaginationInfo();
+        
+        // Khởi tạo lại popover sau khi pagination thay đổi
+        setTimeout(function() {
+            document.dispatchEvent(new Event('popover:reinit'));
+        }, 100);
     }
 
     function updateSuggestedPaginationInfo() {
@@ -175,7 +180,7 @@
     }
 
     // Pagination for Enrolled Courses
-    const enrolledRowsPerPage = 4; // 4 khóa học mỗi trang
+    const enrolledRowsPerPage = 20; // 5 hàng x 4 khóa học mỗi trang
     let enrolledCurrentPage = 1;
     let enrolledRows = document.querySelectorAll('#enrolledCourses .course-item');
     let enrolledTotalRows = enrolledRows.length;
@@ -192,6 +197,11 @@
 
         updateEnrolledPagination();
         updateEnrolledPaginationInfo();
+        
+        // Khởi tạo lại popover sau khi pagination thay đổi
+        setTimeout(function() {
+            document.dispatchEvent(new Event('popover:reinit'));
+        }, 100);
     }
 
     function updateEnrolledPaginationInfo() {

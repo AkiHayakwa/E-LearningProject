@@ -180,13 +180,53 @@ namespace LearningManagementSystem.Controllers
                         model.Avatar = "/images/defaultAvatar.png";
                     }
 
+                    // Hash password trước khi lưu vào TempData (không lưu plain password)
                     model.HashPassword(_passwordHasher, password);
-                    _context.Users.Add(model);
-                    await _context.SaveChangesAsync();
 
-                    _logger.LogInformation($"User {model.UserName} registered successfully.");
-                    TempData["Success"] = "Đăng ký thành công! Vui lòng đăng nhập để tiếp tục.";
-                    return RedirectToAction("Login");
+                    // Tạo OTP (6 chữ số) để xác nhận email
+                    Random random = new Random();
+                    string otp = random.Next(100000, 999999).ToString();
+
+                    // Lưu thông tin đăng ký vào TempData (chưa tạo account trong DB)
+                    TempData["RegisterEmail"] = model.Email;
+                    TempData["RegisterOtp"] = otp;
+                    TempData["RegisterUserName"] = model.UserName;
+                    TempData["RegisterFullName"] = model.FullName;
+                    TempData["RegisterPassword"] = model.Password; // Đã hash
+                    TempData["RegisterRoleId"] = model.RoleId;
+                    TempData["RegisterAvatar"] = model.Avatar;
+                    TempData.Keep("RegisterEmail");
+                    TempData.Keep("RegisterOtp");
+                    TempData.Keep("RegisterUserName");
+                    TempData.Keep("RegisterFullName");
+                    TempData.Keep("RegisterPassword");
+                    TempData.Keep("RegisterRoleId");
+                    TempData.Keep("RegisterAvatar");
+
+                    // Gửi OTP qua email
+                    var emailBody = $@"
+        <h3>Xác minh email đăng ký tài khoản</h3>
+        <p>Chào bạn,</p>
+        <p>Cảm ơn bạn đã đăng ký tài khoản tại E-Learning System!</p>
+        <p>Để hoàn tất đăng ký, vui lòng nhập mã OTP sau đây:</p>
+        <h2 style='color: #7c3aed; text-align: center; font-size: 32px; margin: 20px 0;'>{otp}</h2>
+        <p>Mã OTP này sẽ hết hạn sau 10 phút. Nếu bạn không đăng ký tài khoản này, vui lòng bỏ qua email này.</p>
+        <p>Trân trọng,</p>
+        <p>E-Learning System</p>";
+
+                    try
+                    {
+                        await _emailService.SendEmailAsync(model.Email, "Xác minh email đăng ký - E-Learning System", emailBody);
+                        _logger.LogInformation($"Registration OTP sent to {model.Email} for user {model.UserName}.");
+                        TempData["Success"] = "Vui lòng kiểm tra email để xác nhận tài khoản. Mã OTP đã được gửi đến email của bạn.";
+                        return RedirectToAction("VerifyRegistrationOtp");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError($"Failed to send registration OTP email to {model.Email}: {ex.Message}");
+                        ModelState.AddModelError("", "Đã xảy ra lỗi khi gửi email xác nhận. Vui lòng thử lại sau.");
+                        return View(model);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -247,7 +287,9 @@ public async Task<IActionResult> EditProfile()
               {
                   CourseTitle = course.CourseName,
                   Content = comment.Content,
-                  CommentDate = comment.CreatedDate
+                  CommentDate = comment.CreatedDate,
+                  Rating = comment.Rating,
+                  CourseId = comment.CourseId
               })
         .OrderByDescending(c => c.CommentDate)
         .ToListAsync();
@@ -647,6 +689,231 @@ public async Task<IActionResult> UpdateAvatar(UserProfileEditViewModel model, IF
             TempData.Remove("Otp"); // Xóa OTP sau khi xác minh thành công
             return RedirectToAction("ResetPassword");
         }
+        #endregion
+
+        #region Xác nhận email đăng ký
+        // GET: VerifyRegistrationOtp
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult VerifyRegistrationOtp()
+        {
+            if (TempData["RegisterEmail"] == null)
+            {
+                TempData["Error"] = "Phiên đăng ký đã hết hạn. Vui lòng đăng ký lại.";
+                return RedirectToAction("Register");
+            }
+
+            ViewBag.Email = TempData["RegisterEmail"];
+            ViewBag.UserName = TempData["RegisterUserName"];
+            TempData.Keep("RegisterEmail");
+            TempData.Keep("RegisterOtp");
+            TempData.Keep("RegisterUserName");
+            return View();
+        }
+
+        // POST: VerifyRegistrationOtp
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> VerifyRegistrationOtp(string email, string otp)
+        {
+            if (TempData["RegisterEmail"] == null || TempData["RegisterOtp"] == null)
+            {
+                TempData["Error"] = "Phiên xác minh đã hết hạn. Vui lòng đăng ký lại.";
+                return RedirectToAction("Register");
+            }
+
+            string storedEmail = TempData["RegisterEmail"].ToString();
+            string storedOtp = TempData["RegisterOtp"].ToString();
+            string storedUserName = TempData["RegisterUserName"]?.ToString();
+
+            if (email != storedEmail)
+            {
+                TempData["Error"] = "Email không khớp. Vui lòng thử lại.";
+                ViewBag.Email = storedEmail;
+                ViewBag.UserName = storedUserName;
+                TempData.Keep("RegisterEmail");
+                TempData.Keep("RegisterOtp");
+                TempData.Keep("RegisterUserName");
+                return View();
+            }
+
+            if (otp != storedOtp)
+            {
+                TempData["Error"] = "Mã OTP không đúng. Vui lòng kiểm tra lại.";
+                ViewBag.Email = storedEmail;
+                ViewBag.UserName = storedUserName;
+                TempData.Keep("RegisterEmail");
+                TempData.Keep("RegisterOtp");
+                TempData.Keep("RegisterUserName");
+                return View();
+            }
+
+            // OTP đúng, tạo account trong database
+            try
+            {
+                // Kiểm tra lại xem user đã tồn tại chưa (phòng trường hợp đã tạo trong lần đăng ký trước)
+                var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == storedEmail || u.UserName == storedUserName);
+                if (existingUser != null)
+                {
+                    _logger.LogWarning($"User already exists for email {storedEmail} or username {storedUserName}.");
+                    TempData["Error"] = "Tài khoản đã tồn tại. Vui lòng đăng nhập.";
+                    TempData.Remove("RegisterEmail");
+                    TempData.Remove("RegisterOtp");
+                    TempData.Remove("RegisterUserName");
+                    TempData.Remove("RegisterFullName");
+                    TempData.Remove("RegisterPassword");
+                    TempData.Remove("RegisterRoleId");
+                    TempData.Remove("RegisterAvatar");
+                    return RedirectToAction("Login");
+                }
+
+                // Lấy thông tin từ TempData
+                string registerFullName = TempData["RegisterFullName"]?.ToString() ?? storedUserName;
+                string registerPassword = TempData["RegisterPassword"]?.ToString();
+                string registerRoleId = TempData["RegisterRoleId"]?.ToString();
+                string registerAvatar = TempData["RegisterAvatar"]?.ToString() ?? "/images/defaultAvatar.png";
+
+                if (string.IsNullOrEmpty(registerPassword) || string.IsNullOrEmpty(registerRoleId))
+                {
+                    _logger.LogError($"Missing registration data for email {storedEmail}.");
+                    TempData["Error"] = "Thông tin đăng ký không hợp lệ. Vui lòng đăng ký lại.";
+                    return RedirectToAction("Register");
+                }
+
+                // Tạo user mới
+                var newUser = new User
+                {
+                    UserName = storedUserName,
+                    Email = storedEmail,
+                    FullName = registerFullName,
+                    Password = registerPassword, // Đã được hash từ Register action
+                    RoleId = registerRoleId,
+                    Avatar = registerAvatar,
+                    WalletBalance = 0
+                };
+
+                _context.Users.Add(newUser);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation($"Account created successfully for user {storedUserName} after email verification.");
+                TempData["Success"] = "Xác nhận email thành công! Tài khoản của bạn đã được tạo. Bạn có thể đăng nhập ngay bây giờ.";
+                
+                // Xóa tất cả TempData
+                TempData.Remove("RegisterEmail");
+                TempData.Remove("RegisterOtp");
+                TempData.Remove("RegisterUserName");
+                TempData.Remove("RegisterFullName");
+                TempData.Remove("RegisterPassword");
+                TempData.Remove("RegisterRoleId");
+                TempData.Remove("RegisterAvatar");
+                
+                return RedirectToAction("Login");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error creating account for user {storedUserName}: {ex.Message}");
+                TempData["Error"] = "Đã có lỗi xảy ra khi tạo tài khoản. Vui lòng thử lại.";
+                ViewBag.Email = storedEmail;
+                ViewBag.UserName = storedUserName;
+                TempData.Keep("RegisterEmail");
+                TempData.Keep("RegisterOtp");
+                TempData.Keep("RegisterUserName");
+                TempData.Keep("RegisterFullName");
+                TempData.Keep("RegisterPassword");
+                TempData.Keep("RegisterRoleId");
+                TempData.Keep("RegisterAvatar");
+                return View();
+            }
+        }
+
+        // POST: ResendRegistrationOtp
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResendRegistrationOtp(string email, string userName)
+        {
+            if (TempData["RegisterEmail"] == null)
+            {
+                TempData["Error"] = "Phiên đăng ký đã hết hạn. Vui lòng đăng ký lại.";
+                return RedirectToAction("Register");
+            }
+
+            // Kiểm tra xem account đã được tạo chưa
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == email || u.UserName == userName);
+            if (existingUser != null)
+            {
+                TempData["Success"] = "Tài khoản đã được tạo. Bạn có thể đăng nhập ngay.";
+                TempData.Remove("RegisterEmail");
+                TempData.Remove("RegisterOtp");
+                TempData.Remove("RegisterUserName");
+                TempData.Remove("RegisterFullName");
+                TempData.Remove("RegisterPassword");
+                TempData.Remove("RegisterRoleId");
+                TempData.Remove("RegisterAvatar");
+                return RedirectToAction("Login");
+            }
+
+            // Lấy lại thông tin từ TempData
+            string storedEmail = TempData["RegisterEmail"]?.ToString();
+            string storedUserName = TempData["RegisterUserName"]?.ToString();
+            string storedFullName = TempData["RegisterFullName"]?.ToString();
+            string storedPassword = TempData["RegisterPassword"]?.ToString();
+            string storedRoleId = TempData["RegisterRoleId"]?.ToString();
+            string storedAvatar = TempData["RegisterAvatar"]?.ToString();
+
+            if (string.IsNullOrEmpty(storedEmail) || string.IsNullOrEmpty(storedUserName))
+            {
+                TempData["Error"] = "Phiên đăng ký đã hết hạn. Vui lòng đăng ký lại.";
+                return RedirectToAction("Register");
+            }
+
+            // Tạo OTP mới
+            Random random = new Random();
+            string otp = random.Next(100000, 999999).ToString();
+
+            // Lưu lại OTP và thông tin vào TempData
+            TempData["RegisterEmail"] = storedEmail;
+            TempData["RegisterOtp"] = otp;
+            TempData["RegisterUserName"] = storedUserName;
+            TempData["RegisterFullName"] = storedFullName;
+            TempData["RegisterPassword"] = storedPassword;
+            TempData["RegisterRoleId"] = storedRoleId;
+            TempData["RegisterAvatar"] = storedAvatar;
+            TempData.Keep("RegisterEmail");
+            TempData.Keep("RegisterOtp");
+            TempData.Keep("RegisterUserName");
+            TempData.Keep("RegisterFullName");
+            TempData.Keep("RegisterPassword");
+            TempData.Keep("RegisterRoleId");
+            TempData.Keep("RegisterAvatar");
+
+            // Gửi OTP qua email
+            var emailBody = $@"
+        <h3>Xác minh email đăng ký tài khoản</h3>
+        <p>Chào bạn,</p>
+        <p>Cảm ơn bạn đã đăng ký tài khoản tại E-Learning System!</p>
+        <p>Để hoàn tất đăng ký, vui lòng nhập mã OTP sau đây:</p>
+        <h2 style='color: #7c3aed; text-align: center; font-size: 32px; margin: 20px 0;'>{otp}</h2>
+        <p>Mã OTP này sẽ hết hạn sau 10 phút. Nếu bạn không đăng ký tài khoản này, vui lòng bỏ qua email này.</p>
+        <p>Trân trọng,</p>
+        <p>E-Learning System</p>";
+
+            try
+            {
+                await _emailService.SendEmailAsync(storedEmail, "Xác minh email đăng ký - E-Learning System", emailBody);
+                _logger.LogInformation($"Registration OTP resent to {storedEmail} for user {storedUserName}.");
+                TempData["Success"] = "Mã OTP mới đã được gửi đến email của bạn. Vui lòng kiểm tra hộp thư (hoặc thư rác).";
+                return RedirectToAction("VerifyRegistrationOtp");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to resend registration OTP email to {storedEmail}: {ex.Message}");
+                TempData["Error"] = "Đã xảy ra lỗi khi gửi email. Vui lòng thử lại sau.";
+                return RedirectToAction("VerifyRegistrationOtp");
+            }
+        }
+        #endregion
 
         // GET: ResetPassword
         [HttpGet]
@@ -730,7 +997,7 @@ public async Task<IActionResult> UpdateAvatar(UserProfileEditViewModel model, IF
                 return View();
             }
         }
-        #endregion
+
 
         #region Đổi mật khẩu (ChangePassword)
         [HttpGet]
@@ -829,7 +1096,7 @@ public async Task<IActionResult> UpdateAvatar(UserProfileEditViewModel model, IF
                 _logger.LogInformation($"Initiating account deletion process for user: {userName}");
 
                 // Lấy user và tất cả dữ liệu liên quan, bao gồm Cart và CartItems
-                var user = await _context.Users
+                var userToDelete = await _context.Users
                     .Include(u => u.Comments)
                     .Include(u => u.Enrollments)
                     .Include(u => u.Progresses)
@@ -841,7 +1108,7 @@ public async Task<IActionResult> UpdateAvatar(UserProfileEditViewModel model, IF
                     .Include(u => u.CourseInstructors)
                     .FirstOrDefaultAsync(u => u.UserName == userName);
 
-                if (user == null)
+                if (userToDelete == null)
                 {
                     _logger.LogWarning($"User {userName} not found when attempting to delete account.");
                     TempData["Error"] = "Không tìm thấy tài khoản.";
@@ -851,77 +1118,93 @@ public async Task<IActionResult> UpdateAvatar(UserProfileEditViewModel model, IF
                 _logger.LogInformation($"Starting deletion process for user {userName}");
 
                 // Xóa các AssignmentSubmissions
-                if (user.AssignmentSubmissions?.Any() == true)
+                if (userToDelete.AssignmentSubmissions?.Any() == true)
                 {
-                    _logger.LogInformation($"Deleting {user.AssignmentSubmissions.Count} assignment submissions");
-                    _context.AssignmentSubmissions.RemoveRange(user.AssignmentSubmissions);
+                    _logger.LogInformation($"Deleting {userToDelete.AssignmentSubmissions.Count} assignment submissions");
+                    _context.AssignmentSubmissions.RemoveRange(userToDelete.AssignmentSubmissions);
                 }
 
                 // Xóa các Carts (CartItems sẽ tự động bị xóa nếu có cascade)
-                if (user.Carts?.Any() == true)
+                if (userToDelete.Carts?.Any() == true)
                 {
-                    _logger.LogInformation($"Deleting {user.Carts.Count} carts for user {userName}");
-                    _context.Carts.RemoveRange(user.Carts);
+                    _logger.LogInformation($"Deleting {userToDelete.Carts.Count} carts for user {userName}");
+                    _context.Carts.RemoveRange(userToDelete.Carts);
                 }
 
-                // Xóa các Payments
-                if (user.Payments?.Any() == true)
-                {
-                    _logger.LogInformation($"Deleting {user.Payments.Count} payments");
-                    _context.Payments.RemoveRange(user.Payments);
-                }
-
-                // Xóa các Notifications
-                if (user.Notifications?.Any() == true)
-                {
-                    _logger.LogInformation($"Deleting {user.Notifications.Count} notifications");
-                    _context.Notifications.RemoveRange(user.Notifications);
-                }
-
-                // Xóa các CourseInstructors
-                if (user.CourseInstructors?.Any() == true)
-                {
-                    _logger.LogInformation($"Deleting {user.CourseInstructors.Count} course instructor records");
-                    _context.CourseInstructors.RemoveRange(user.CourseInstructors);
-                }
-
-                // Xóa các Enrollments
-                if (user.Enrollments?.Any() == true)
-                {
-                    _logger.LogInformation($"Deleting {user.Enrollments.Count} enrollments");
-                    _context.Enrollments.RemoveRange(user.Enrollments);
-                }
-
-                // Xóa các Comments
-                if (user.Comments?.Any() == true)
-                {
-                    _logger.LogInformation($"Deleting {user.Comments.Count} comments");
-                    _context.Comments.RemoveRange(user.Comments);
-                }
-
-                // Xóa các Progresses
-                if (user.Progresses?.Any() == true)
-                {
-                    _logger.LogInformation($"Deleting {user.Progresses.Count} progress records");
-                    _context.Progresses.RemoveRange(user.Progresses);
-                }
-
-                // Xóa các OrderDetails liên quan đến các PaymentId của user
-                var paymentIds = user.Payments?.Select(p => p.PaymentId).ToList();
+                // Xóa các OrderDetails liên quan đến các PaymentId của user TRƯỚC KHI xóa Payments
+                // (Vì OrderDetails có foreign key Restrict với Payments)
+                var paymentIds = userToDelete.Payments?.Select(p => p.PaymentId).ToList();
                 if (paymentIds?.Any() == true)
                 {
-                    var orderDetails = _context.OrderDetails.Where(od => paymentIds.Contains(od.PaymentId));
+                    var orderDetails = await _context.OrderDetails
+                        .Where(od => paymentIds.Contains(od.PaymentId))
+                        .ToListAsync();
                     if (orderDetails.Any())
                     {
                         _context.OrderDetails.RemoveRange(orderDetails);
-                        _logger.LogInformation($"Deleted {orderDetails.Count()} order details for user {userName}");
+                        await _context.SaveChangesAsync();
+                        _logger.LogInformation($"Deleted {orderDetails.Count} order details for user {userName}");
+                    }
+
+                    // Xóa các RevenueShare liên quan đến các PaymentId và UserName
+                    // (Vì RevenueShare có foreign key Restrict với Payments và Users)
+                    var revenueShares = await _context.RevenueShares
+                        .Where(rs => paymentIds.Contains(rs.PaymentId) || rs.UserName == userName)
+                        .ToListAsync();
+                    if (revenueShares.Any())
+                    {
+                        _context.RevenueShares.RemoveRange(revenueShares);
+                        await _context.SaveChangesAsync();
+                        _logger.LogInformation($"Deleted {revenueShares.Count} revenue shares for user {userName}");
                     }
                 }
 
-                // Xóa avatar nếu có
-                if (!string.IsNullOrEmpty(user.Avatar) && user.Avatar != "/images/defaultAvatar.png")
+                // Xóa các Payments (sau khi đã xóa OrderDetails và RevenueShare)
+                if (userToDelete.Payments?.Any() == true)
                 {
-                    var avatarPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", user.Avatar.TrimStart('/'));
+                    _logger.LogInformation($"Deleting {userToDelete.Payments.Count} payments");
+                    _context.Payments.RemoveRange(userToDelete.Payments);
+                }
+
+                // Xóa các Notifications
+                if (userToDelete.Notifications?.Any() == true)
+                {
+                    _logger.LogInformation($"Deleting {userToDelete.Notifications.Count} notifications");
+                    _context.Notifications.RemoveRange(userToDelete.Notifications);
+                }
+
+                // Xóa các CourseInstructors
+                if (userToDelete.CourseInstructors?.Any() == true)
+                {
+                    _logger.LogInformation($"Deleting {userToDelete.CourseInstructors.Count} course instructor records");
+                    _context.CourseInstructors.RemoveRange(userToDelete.CourseInstructors);
+                }
+
+                // Xóa các Enrollments
+                if (userToDelete.Enrollments?.Any() == true)
+                {
+                    _logger.LogInformation($"Deleting {userToDelete.Enrollments.Count} enrollments");
+                    _context.Enrollments.RemoveRange(userToDelete.Enrollments);
+                }
+
+                // Xóa các Comments
+                if (userToDelete.Comments?.Any() == true)
+                {
+                    _logger.LogInformation($"Deleting {userToDelete.Comments.Count} comments");
+                    _context.Comments.RemoveRange(userToDelete.Comments);
+                }
+
+                // Xóa các Progresses
+                if (userToDelete.Progresses?.Any() == true)
+                {
+                    _logger.LogInformation($"Deleting {userToDelete.Progresses.Count} progress records");
+                    _context.Progresses.RemoveRange(userToDelete.Progresses);
+                }
+
+                // Xóa avatar nếu có
+                if (!string.IsNullOrEmpty(userToDelete.Avatar) && userToDelete.Avatar != "/images/defaultAvatar.png")
+                {
+                    var avatarPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", userToDelete.Avatar.TrimStart('/'));
                     if (System.IO.File.Exists(avatarPath))
                     {
                         _logger.LogInformation($"Deleting avatar file: {avatarPath}");
@@ -931,7 +1214,7 @@ public async Task<IActionResult> UpdateAvatar(UserProfileEditViewModel model, IF
 
                 // Xóa user
                 _logger.LogInformation($"Deleting user record for {userName}");
-                _context.Users.Remove(user);
+                _context.Users.Remove(userToDelete);
 
                 // Lưu tất cả thay đổi
                 var changes = await _context.SaveChangesAsync();

@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "ContainingType": "LearningManagementSystem.Controllers.StudyTimerController",
+    "Method": "GetStats",
+    "RelativePath": "StudyTimer/GetStats",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "courseId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LearningManagementSystem.Controllers.StudyTimerController",
+    "Method": "LogSession",
+    "RelativePath": "StudyTimer/LogSession",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "LearningManagementSystem.Controllers.StudyTimerController\u002BLogSessionRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

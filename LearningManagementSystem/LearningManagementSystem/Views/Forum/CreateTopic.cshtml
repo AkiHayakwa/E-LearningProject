@@ -1,0 +1,913 @@
+@{
+    ViewData["Title"] = "Tạo chủ đề mới";
+    Layout = "_Layout";
+}
+
+<div class="create-topic-container">
+    <div class="create-topic-wrapper">
+        <div class="back-link-wrapper">
+            <a href="@Url.Action("Index", "Forum", new { courseId = ViewBag.CourseId })" class="back-link">
+                <i class="bi bi-arrow-left"></i>
+                <span>Quay lại diễn đàn</span>
+            </a>
+        </div>
+
+        <div class="create-topic-card">
+            <div class="create-topic-header">
+                <div class="header-icon">
+                    <i class="bi bi-plus-circle"></i>
+                </div>
+                <div class="header-content">
+                    <h1 class="page-title">Tạo chủ đề mới</h1>
+                    <p class="page-subtitle">Chia sẻ câu hỏi hoặc thảo luận với cộng đồng</p>
+                </div>
+            </div>
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="error-alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <span>@TempData["Error"]</span>
+                    <button type="button" class="alert-close" onclick="this.parentElement.remove()">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+            }
+
+            <div class="create-topic-body">
+                <form asp-action="CreateTopic" asp-controller="Forum" method="post" id="createTopicForm" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="courseId" value="@ViewBag.CourseId" />
+
+                    <div class="form-group">
+                        <label for="Title" class="form-label">
+                            <span class="label-text">Tiêu đề</span>
+                            <span class="required-mark">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" 
+                                   class="form-input" 
+                                   id="Title" 
+                                   name="Title" 
+                                   maxlength="200" 
+                                   required 
+                                   placeholder="Ví dụ: Làm thế nào để giải bài tập này?">
+                            <div class="char-counter">
+                                <span id="titleCounter">0</span>/200
+                            </div>
+                        </div>
+                        <div class="form-hint">
+                            <i class="bi bi-info-circle"></i>
+                            <span>Tiêu đề ngắn gọn, rõ ràng sẽ giúp mọi người dễ tìm thấy chủ đề của bạn</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Content" class="form-label">
+                            <span class="label-text">Nội dung</span>
+                            <span class="required-mark">*</span>
+                        </label>
+                        <div class="editor-wrapper">
+                            <div id="contentEditor" class="content-editor"></div>
+                            <input type="hidden" id="Content" name="Content" required />
+                            <div class="char-counter">
+                                <span id="contentCounter">0</span>/4000
+                            </div>
+                        </div>
+                        <div class="form-hint">
+                            <i class="bi bi-info-circle"></i>
+                            <span>Mô tả chi tiết sẽ giúp mọi người hiểu rõ vấn đề và đưa ra câu trả lời tốt hơn</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Tags" class="form-label">
+                            <span class="label-text">Tags</span>
+                            <span class="optional-mark">(tùy chọn)</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" 
+                                   class="form-input" 
+                                   id="Tags" 
+                                   name="tags" 
+                                   placeholder="Ví dụ: bài1, khó, câu hỏi">
+                        </div>
+                        <div class="form-hint">
+                            <i class="bi bi-info-circle"></i>
+                            <span>Phân cách các tags bằng dấu phẩy. Tags giúp người khác dễ tìm thấy chủ đề của bạn</span>
+                        </div>
+                        <div class="tags-preview" id="tagsPreview" style="display: none;">
+                            <div class="tags-preview-label">Tags của bạn:</div>
+                            <div class="tags-list" id="tagsList"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">
+                            <i class="bi bi-send"></i>
+                            <span>Đăng chủ đề</span>
+                        </button>
+                        <a href="@Url.Action("Index", "Forum", new { courseId = ViewBag.CourseId })" class="btn-cancel">
+                            <i class="bi bi-x-circle"></i>
+                            <span>Hủy</span>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Character counters
+    const titleInput = document.getElementById('Title');
+    const contentTextarea = document.getElementById('Content');
+    const titleCounter = document.getElementById('titleCounter');
+    const contentCounter = document.getElementById('contentCounter');
+    const tagsInput = document.getElementById('Tags');
+    const tagsPreview = document.getElementById('tagsPreview');
+    const tagsList = document.getElementById('tagsList');
+
+    // Update title counter
+    titleInput.addEventListener('input', function() {
+        titleCounter.textContent = this.value.length;
+        if (this.value.length > 180) {
+            titleCounter.parentElement.classList.add('warning');
+        } else {
+            titleCounter.parentElement.classList.remove('warning');
+        }
+    });
+
+    // Initialize Quill Editor
+    let contentQuill;
+    document.addEventListener('DOMContentLoaded', function() {
+        contentQuill = new Quill('#contentEditor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'font': [] }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'align': [] }],
+                    ['link', 'image', 'video'],
+                    ['blockquote', 'code-block'],
+                    ['clean']
+                ]
+            },
+            placeholder: 'Mô tả chi tiết câu hỏi hoặc vấn đề bạn muốn thảo luận...'
+        });
+
+        // Update hidden input and counter
+        contentQuill.on('text-change', function() {
+            const html = contentQuill.root.innerHTML;
+            const text = contentQuill.getText();
+            document.getElementById('Content').value = html;
+            
+            // Count text length (not HTML)
+            const length = text.trim().length;
+            contentCounter.textContent = length;
+            if (length > 3800) {
+                contentCounter.parentElement.classList.add('warning');
+            } else {
+                contentCounter.parentElement.classList.remove('warning');
+            }
+        });
+
+        // Handle image upload in editor
+        const toolbar = contentQuill.getModule('toolbar');
+        toolbar.addHandler('image', function() {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+
+            input.onchange = async function() {
+                const file = input.files[0];
+                if (file) {
+                    // Show loading
+                    const range = contentQuill.getSelection(true);
+                    if (!range) {
+                        contentQuill.setSelection(contentQuill.getLength());
+                    }
+                    const currentRange = contentQuill.getSelection(true);
+                    contentQuill.insertText(currentRange.index, 'Đang tải hình ảnh...', 'user');
+                    contentQuill.setSelection(currentRange.index + 20);
+
+                    // Upload image
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    formData.append('__RequestVerificationToken', document.querySelector('input[name="__RequestVerificationToken"]').value);
+
+                    try {
+                        const response = await fetch('@Url.Action("UploadImage", "Forum")', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            contentQuill.deleteText(currentRange.index, 20);
+                            contentQuill.insertEmbed(currentRange.index, 'image', data.url);
+                            contentQuill.setSelection(currentRange.index + 1);
+                            
+                            // Add line break after image
+                            contentQuill.insertText(currentRange.index + 1, '\n', 'user');
+                        } else {
+                            contentQuill.deleteText(currentRange.index, 20);
+                            alert('Lỗi khi tải hình ảnh: ' + (data.message || 'Vui lòng thử lại'));
+                        }
+                    } catch (error) {
+                        const currentPos = contentQuill.getSelection(true);
+                        if (currentPos) {
+                            contentQuill.deleteText(currentPos.index, 20);
+                        }
+                        alert('Lỗi khi tải hình ảnh: ' + error.message);
+                    }
+                }
+            };
+        });
+
+        // Handle image preview for additional images and add to editor
+        const imageInput = document.getElementById('topicImages');
+        if (imageInput) {
+            imageInput.addEventListener('change', async function(e) {
+                const files = e.target.files;
+                if (!files || files.length === 0) return;
+
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                
+                for (let file of Array.from(files)) {
+                    if (file.type.startsWith('image/')) {
+                        // Show loading
+                        let range = contentQuill.getSelection(true);
+                        if (!range) {
+                            contentQuill.setSelection(contentQuill.getLength());
+                            range = contentQuill.getSelection(true);
+                        }
+                        const currentRange = range;
+                        contentQuill.insertText(currentRange.index, 'Đang tải hình ảnh...', 'user');
+                        contentQuill.setSelection(currentRange.index + 20);
+
+                        // Upload image
+                        const formData = new FormData();
+                        formData.append('image', file);
+                        formData.append('__RequestVerificationToken', token);
+
+                        try {
+                            const response = await fetch('@Url.Action("UploadImage", "Forum")', {
+                                method: 'POST',
+                                body: formData
+                            });
+
+                            const data = await response.json();
+                            if (data.success) {
+                                contentQuill.deleteText(currentRange.index, 20);
+                                contentQuill.insertEmbed(currentRange.index, 'image', data.url);
+                                contentQuill.setSelection(currentRange.index + 1);
+                                
+                                // Add line break after image
+                                contentQuill.insertText(currentRange.index + 1, '\n', 'user');
+                            } else {
+                                contentQuill.deleteText(currentRange.index, 20);
+                                alert('Lỗi khi tải hình ảnh: ' + (data.message || 'Vui lòng thử lại'));
+                            }
+                        } catch (error) {
+                            const currentPos = contentQuill.getSelection(true);
+                            if (currentPos) {
+                                contentQuill.deleteText(currentPos.index, 20);
+                            }
+                            alert('Lỗi khi tải hình ảnh: ' + error.message);
+                        }
+                    }
+                }
+                
+                // Clear the input
+                e.target.value = '';
+                // Clear preview container
+                const previewContainer = document.getElementById('imagePreview');
+                if (previewContainer) {
+                    previewContainer.innerHTML = '';
+                }
+            });
+        }
+    });
+
+
+    // Tags preview
+    if (tagsInput) {
+        tagsInput.addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value) {
+                const tags = value.split(',').map(t => t.trim()).filter(t => t);
+                if (tags.length > 0) {
+                    if (tagsList) {
+                        tagsList.innerHTML = tags.map(tag => 
+                            `<span class="tag-preview-item">#${tag}</span>`
+                        ).join('');
+                    }
+                    if (tagsPreview) {
+                        tagsPreview.style.display = 'block';
+                    }
+                } else {
+                    if (tagsPreview) {
+                        tagsPreview.style.display = 'none';
+                    }
+                }
+            } else {
+                if (tagsPreview) {
+                    tagsPreview.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    // Parse tags từ input khi submit
+    const createTopicForm = document.getElementById('createTopicForm');
+    if (createTopicForm) {
+        createTopicForm.addEventListener('submit', function(e) {
+        // Validate content
+        let content = document.getElementById('Content').value;
+        if (!content || content.trim() === '' || content === '<p><br></p>') {
+            e.preventDefault();
+            alert('Vui lòng nhập nội dung');
+            return false;
+        }
+
+            if (tagsInput && tagsInput.value.trim()) {
+                const tags = tagsInput.value.split(',').map(t => t.trim()).filter(t => t);
+                // Tạo hidden inputs cho mỗi tag
+                tags.forEach(tag => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'tags';
+                    input.value = tag;
+                    this.appendChild(input);
+                });
+                tagsInput.disabled = true; // Disable để không gửi giá trị gốc
+            }
+        });
+    }
+</script>
+
+<style>
+    /* Container */
+    .create-topic-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .create-topic-wrapper {
+        width: 100%;
+    }
+
+    .back-link-wrapper {
+        margin-bottom: 1.5rem;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #6b7280;
+        text-decoration: none;
+        font-size: 0.938rem;
+        transition: all 0.2s;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+    }
+
+    .back-link:hover {
+        color: #111827;
+        background: #f3f4f6;
+    }
+
+    /* Card */
+    .create-topic-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Header */
+    .create-topic-header {
+        padding: 2rem;
+        background: #f9fafb;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .header-icon {
+        width: 56px;
+        height: 56px;
+        background: #3b82f6;
+        color: #ffffff;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .header-content {
+        flex: 1;
+    }
+
+    .page-title {
+        font-size: 1.875rem;
+        font-weight: 600;
+        color: #111827;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .page-subtitle {
+        font-size: 0.938rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    /* Error Alert */
+    .error-alert {
+        margin: 1.5rem 2rem 0;
+        padding: 1rem 1.25rem;
+        background: #fee2e2;
+        border: 1px solid #fecaca;
+        border-radius: 10px;
+        color: #991b1b;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: relative;
+    }
+
+    .error-alert i {
+        font-size: 1.125rem;
+        flex-shrink: 0;
+    }
+
+    .alert-close {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #991b1b;
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 4px;
+        transition: all 0.2s;
+    }
+
+    .alert-close:hover {
+        background: #fecaca;
+    }
+
+    /* Body */
+    .create-topic-body {
+        padding: 2rem;
+    }
+
+    /* Form Groups */
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+        color: #111827;
+        font-size: 0.938rem;
+    }
+
+    .label-text {
+        color: #111827;
+    }
+
+    .required-mark {
+        color: #ef4444;
+    }
+
+    .optional-mark {
+        color: #6b7280;
+        font-weight: 400;
+        font-size: 0.875rem;
+    }
+
+    /* Input Wrapper */
+    .input-wrapper,
+    .textarea-wrapper {
+        position: relative;
+    }
+
+    .form-input,
+    .form-textarea {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        font-size: 0.938rem;
+        font-family: inherit;
+        transition: all 0.2s;
+        background: #ffffff;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 200px;
+        line-height: 1.6;
+    }
+
+    /* Editor Wrapper */
+    .editor-wrapper {
+        position: relative;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        background: #ffffff;
+        overflow: hidden;
+    }
+
+    .content-editor {
+        min-height: 600px;
+    }
+
+    .content-editor .ql-editor {
+        min-height: 600px;
+        font-size: 1rem;
+        line-height: 1.8;
+        padding: 2rem;
+    }
+
+    .content-editor .ql-editor img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 1rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .content-editor .ql-editor p {
+        margin-bottom: 1rem;
+    }
+
+    .content-editor .ql-editor h1,
+    .content-editor .ql-editor h2,
+    .content-editor .ql-editor h3,
+    .content-editor .ql-editor h4,
+    .content-editor .ql-editor h5,
+    .content-editor .ql-editor h6 {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .content-editor .ql-toolbar {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom: 1px solid #d1d5db;
+        padding: 0.75rem;
+        background: #f9fafb;
+    }
+
+    .content-editor .ql-container {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border: none;
+    }
+
+    .editor-wrapper .char-counter {
+        position: absolute;
+        bottom: 1.5rem;
+        right: 2rem;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 0.25rem 0.75rem;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+
+    body.dark-theme .editor-wrapper .char-counter {
+        background: rgba(30, 41, 59, 0.9);
+        color: #e2e8f0;
+    }
+
+    /* Image Upload Section */
+    .image-upload-section {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .image-upload-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: #f3f4f6;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #374151;
+        font-size: 0.938rem;
+        font-weight: 500;
+    }
+
+    .image-upload-label:hover {
+        background: #e5e7eb;
+        border-color: #6366f1;
+        color: #6366f1;
+    }
+
+    .image-upload-label i {
+        font-size: 1.25rem;
+        color: #6366f1;
+    }
+
+    .image-upload-hint {
+        font-size: 0.813rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .char-counter {
+        position: absolute;
+        bottom: 0.75rem;
+        right: 1rem;
+        font-size: 0.813rem;
+        color: #9ca3af;
+        background: #ffffff;
+        padding: 0.125rem 0.5rem;
+        border-radius: 4px;
+    }
+
+    .char-counter.warning {
+        color: #f59e0b;
+    }
+
+    .form-hint {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        font-size: 0.813rem;
+        color: #6b7280;
+        line-height: 1.5;
+    }
+
+    .form-hint i {
+        color: #9ca3af;
+        margin-top: 0.125rem;
+        flex-shrink: 0;
+    }
+
+    /* Tags Preview */
+    .tags-preview {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+    }
+
+    .tags-preview-label {
+        font-size: 0.813rem;
+        font-weight: 500;
+        color: #6b7280;
+        margin-bottom: 0.75rem;
+    }
+
+    .tags-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .tag-preview-item {
+        display: inline-block;
+        padding: 0.375rem 0.75rem;
+        background: #ffffff;
+        color: #3b82f6;
+        border: 1px solid #bfdbfe;
+        border-radius: 6px;
+        font-size: 0.813rem;
+        font-weight: 500;
+    }
+
+    /* Form Actions */
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e5e7eb;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-submit {
+        padding: 0.875rem 2rem;
+        background: #3b82f6;
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-submit:hover {
+        background: #2563eb;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+    }
+
+    .btn-cancel {
+        padding: 0.875rem 2rem;
+        background: #ffffff;
+        color: #6b7280;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+    .btn-cancel:hover {
+        background: #f9fafb;
+        border-color: #9ca3af;
+        color: #111827;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .create-topic-container {
+            padding: 1rem;
+        }
+
+        .create-topic-header {
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .header-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 1.25rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+        }
+
+        .create-topic-body {
+            padding: 1.5rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-submit,
+        .btn-cancel {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    /* Dark Mode */
+    body.dark-theme .create-topic-card {
+        background: #1e293b;
+        border-color: #334155;
+    }
+
+    body.dark-theme .create-topic-header {
+        background: #0f172a;
+        border-color: #334155;
+    }
+
+    body.dark-theme .page-title {
+        color: #e2e8f0;
+    }
+
+    body.dark-theme .page-subtitle {
+        color: #94a3b8;
+    }
+
+    body.dark-theme .form-label,
+    body.dark-theme .label-text {
+        color: #e2e8f0;
+    }
+
+    body.dark-theme .form-input,
+    body.dark-theme .form-textarea {
+        background: #1e293b;
+        border-color: #334155;
+        color: #e2e8f0;
+    }
+
+    body.dark-theme .form-input:focus,
+    body.dark-theme .form-textarea:focus {
+        border-color: #3b82f6;
+    }
+
+    body.dark-theme .editor-wrapper {
+        background: #1e293b;
+        border-color: #334155;
+    }
+
+    body.dark-theme .content-editor {
+        background: #1e293b;
+    }
+
+    body.dark-theme .content-editor .ql-editor {
+        color: #e2e8f0;
+    }
+
+    body.dark-theme .content-editor .ql-toolbar {
+        background: #0f172a;
+        border-color: #334155;
+    }
+
+    body.dark-theme .content-editor .ql-toolbar .ql-stroke {
+        stroke: #94a3b8;
+    }
+
+    body.dark-theme .content-editor .ql-toolbar .ql-fill {
+        fill: #94a3b8;
+    }
+
+    body.dark-theme .content-editor .ql-toolbar button:hover .ql-stroke {
+        stroke: #e2e8f0;
+    }
+
+    body.dark-theme .content-editor .ql-toolbar button:hover .ql-fill {
+        fill: #e2e8f0;
+    }
+
+    body.dark-theme .content-editor .ql-editor img {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-theme .image-upload-label {
+        background: #334155;
+        border-color: #475569;
+        color: #e2e8f0;
+    }
+
+    body.dark-theme .image-upload-label:hover {
+        background: #475569;
+        border-color: #a78bfa;
+        color: #a78bfa;
+    }
+
+    body.dark-theme .image-upload-label i {
+        color: #a78bfa;
+    }
+
+    body.dark-theme .image-upload-hint {
+        color: #94a3b8;
+    }
+</style>
+
+<!-- Quill.js CSS -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<!-- Quill.js JS -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+

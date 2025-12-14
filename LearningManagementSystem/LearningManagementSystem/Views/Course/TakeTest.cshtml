@@ -40,7 +40,7 @@
                                             <h3 class="question-text">@question.QuestionText</h3>
                                             <div class="question-meta">
                                                 <span class="question-points">
-                                                    <i class="fas fa-star"></i> Điểm tối đa: @(question.MaxScore ?? 0)
+                                                    <i class="fas fa-star"></i> <span data-i18n-vi="Điểm tối đa:" data-i18n-en="Max score:">Điểm tối đa:</span> @(question.MaxScore ?? 0)
                                                 </span>
                                             </div>
                                         </div>
@@ -71,7 +71,8 @@
                                                 <textarea class="form-control question-input"
                                                           name="SelectedAnswers[@question.QuestionId]"
                                                           rows="4"
-                                                          placeholder="Nhập câu trả lời của bạn..." required></textarea>
+                                                          placeholder="Nhập câu trả lời của bạn..." required
+                                                          data-i18n-placeholder-vi="Nhập câu trả lời của bạn..." data-i18n-placeholder-en="Enter your answer..."></textarea>
                                             </div>
                                         }
                                     </div>
@@ -81,7 +82,7 @@
 
                         <div class="form-actions">
                             <button type="submit" id="submitButton" class="btn-submit">
-                                <i class="fas fa-paper-plane"></i> Nộp bài
+                                <i class="fas fa-paper-plane"></i> <span data-i18n-vi="Nộp bài" data-i18n-en="Submit test">Nộp bài</span>
                             </button>
                         </div>
                     </form>
@@ -89,24 +90,24 @@
                 <div class="col-lg-3">
                     <div class="sidebar">
                         <div class="time-display">
-                            <h3 class="sidebar-title">Thời gian còn lại</h3>
+                            <h3 class="sidebar-title" data-i18n-vi="Thời gian còn lại" data-i18n-en="Time remaining">Thời gian còn lại</h3>
                             <div class="time-circle">
                                 <span id="timer-display">00:00</span>
                             </div>
                         </div>
 
                         <div class="test-progress">
-                            <h3 class="sidebar-title">Tiến độ bài làm</h3>
+                            <h3 class="sidebar-title" data-i18n-vi="Tiến độ bài làm" data-i18n-en="Submission progress">Tiến độ bài làm</h3>
                             <div class="progress-container">
                                 <div class="progress-bar" id="progressBar"></div>
                             </div>
                             <div class="progress-stats">
-                                <span id="completedQuestions">0</span>/<span id="totalQuestions">@Model.Questions.Count</span> câu hỏi
+                                <span id="completedQuestions">0</span>/<span id="totalQuestions">@Model.Questions.Count</span> <span data-i18n-vi="câu hỏi" data-i18n-en="questions">câu hỏi</span>
                             </div>
                         </div>
 
                         <div class="test-navigation">
-                            <h3 class="sidebar-title">Điều hướng</h3>
+                            <h3 class="sidebar-title" data-i18n-vi="Điều hướng" data-i18n-en="Navigation">Điều hướng</h3>
                             <div class="question-navigation" id="navigationButtons">
                                 @for (int i = 0; i < Model.Questions.Count; i++)
                                 {

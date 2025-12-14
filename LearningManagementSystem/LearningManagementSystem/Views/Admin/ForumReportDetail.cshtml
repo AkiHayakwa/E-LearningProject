@@ -1,0 +1,148 @@
+@model LearningManagementSystem.Models.Report
+@{
+    ViewData["Title"] = "Chi tiết báo cáo";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <div class="mb-3">
+        <a href="@Url.Action("ManageForumReports", "Admin")" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Quay lại
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0"><i class="bi bi-flag-fill me-2"></i>Chi tiết báo cáo</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <strong>Loại:</strong>
+                    @if (Model.PostId != null)
+                    {
+                        <span class="badge bg-info">Post</span>
+                    }
+                    else if (Model.TopicId != null)
+                    {
+                        <span class="badge bg-primary">Topic</span>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <strong>Trạng thái:</strong>
+                    @if (Model.Status == "Pending")
+                    {
+                        <span class="badge bg-warning">Chờ xử lý</span>
+                    }
+                    else if (Model.Status == "Resolved")
+                    {
+                        <span class="badge bg-success">Đã xử lý</span>
+                    }
+                    else if (Model.Status == "Rejected")
+                    {
+                        <span class="badge bg-danger">Đã từ chối</span>
+                    }
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <strong>Người báo cáo:</strong>
+                    @(Model.ReportedByUser?.FullName ?? Model.ReportedBy)
+                </div>
+                <div class="col-md-6">
+                    <strong>Ngày tạo:</strong>
+                    @Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <strong>Lý do:</strong>
+                <span class="badge bg-warning">@Model.Reason</span>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <div class="mb-3">
+                    <strong>Mô tả:</strong>
+                    <p class="mt-2">@Model.Description</p>
+                </div>
+            }
+
+            @if (Model.PostId != null && Model.Post != null)
+            {
+                <div class="mb-3">
+                    <strong>Nội dung Post:</strong>
+                    <div class="card mt-2">
+                        <div class="card-body">
+                            <p>@Model.Post.Content</p>
+                            <small class="text-muted">
+                                Bởi: @(Model.Post.User?.FullName ?? Model.Post.UserName) -
+                                @Model.Post.CreatedDate.ToString("dd/MM/yyyy HH:mm")
+                            </small>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("TopicDetail", "Forum", new { id = Model.Post.TopicId })" target="_blank" class="btn btn-sm btn-primary mt-2">
+                        <i class="bi bi-box-arrow-up-right me-1"></i>Xem post
+                    </a>
+                </div>
+            }
+
+            @if (Model.TopicId != null && Model.Topic != null)
+            {
+                <div class="mb-3">
+                    <strong>Nội dung Topic:</strong>
+                    <div class="card mt-2">
+                        <div class="card-body">
+                            <h5>@Model.Topic.Title</h5>
+                            <p>@Model.Topic.Content</p>
+                            <small class="text-muted">
+                                Bởi: @(Model.Topic.User?.FullName ?? Model.Topic.UserName) -
+                                @Model.Topic.CreatedDate.ToString("dd/MM/yyyy HH:mm")
+                            </small>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("TopicDetail", "Forum", new { id = Model.TopicId })" target="_blank" class="btn btn-sm btn-primary mt-2">
+                        <i class="bi bi-box-arrow-up-right me-1"></i>Xem topic
+                    </a>
+                </div>
+            }
+
+            @if (Model.Status == "Pending")
+            {
+                <div class="mt-4">
+                    <form method="post" action="@Url.Action("ResolveReport", "Admin")">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.ReportId" />
+                        <div class="mb-3">
+                            <label class="form-label">Ghi chú (tùy chọn):</label>
+                            <textarea class="form-control" name="adminNote" rows="3"></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" name="action" value="Resolve" class="btn btn-success">
+                                <i class="bi bi-check-circle me-1"></i>Xử lý (Xóa nội dung)
+                            </button>
+                            <button type="submit" name="action" value="Reject" class="btn btn-danger">
+                                <i class="bi bi-x-circle me-1"></i>Từ chối
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="mt-4">
+                    @if (Model.ResolvedByUser != null)
+                    {
+                        <p><strong>Xử lý bởi:</strong> @Model.ResolvedByUser.FullName</p>
+                    }
+                    @if (Model.ResolvedDate.HasValue)
+                    {
+                        <p><strong>Ngày xử lý:</strong> @Model.ResolvedDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

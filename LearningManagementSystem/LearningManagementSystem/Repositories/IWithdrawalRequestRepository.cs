@@ -13,6 +13,9 @@ namespace LearningManagementSystem.Repositories
         Task<WithdrawalRequest> UpdateAsync(WithdrawalRequest withdrawalRequest);
         Task DeleteAsync(string id);
         Task<bool> ExistsAsync(string id);
+        Task<IEnumerable<WithdrawalRequest>> GetApprovedByUserNameAsync(string userName);
+        Task<IEnumerable<WithdrawalRequest>> GetAllPendingAsync();
+
     }
 }
 

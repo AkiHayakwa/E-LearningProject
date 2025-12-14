@@ -78,6 +78,61 @@ namespace LearningManagementSystem.Migrations
                     b.ToTable("AssignmentSubmissions");
                 });
 
+            modelBuilder.Entity("LearningManagementSystem.Models.AIPractice", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("AnsweredAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CorrectAnswer")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("CourseId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsCorrect")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Options")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("UserAnswer")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id")
+                        .HasName("PK_AIPractices");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("UserName", "CourseId")
+                        .HasDatabaseName("IX_AIPractices_UserName_CourseId");
+
+                    b.ToTable("AIPractices");
+                });
+
             modelBuilder.Entity("LearningManagementSystem.Models.Assignment", b =>
                 {
                     b.Property<string>("AssignmentId")
@@ -321,9 +376,16 @@ namespace LearningManagementSystem.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<int?>("DurationMinutes")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImageUrl")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Level")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(10,2)");
@@ -350,6 +412,24 @@ namespace LearningManagementSystem.Migrations
                     b.HasIndex("UserName");
 
                     b.ToTable("CourseInstructors");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.CourseTag", b =>
+                {
+                    b.Property<string>("CourseId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TagId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("CourseId", "TagId")
+                        .HasName("PK_CourseTags");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("CourseTags");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Enrollment", b =>
@@ -381,6 +461,39 @@ namespace LearningManagementSystem.Migrations
                         .HasDatabaseName("UQ_Enrollments_UserName_CourseId");
 
                     b.ToTable("Enrollments");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.Forum", b =>
+                {
+                    b.Property<string>("ForumId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CourseId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("ForumId")
+                        .HasName("PK_Forums");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Forums");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Lesson", b =>
@@ -532,6 +645,131 @@ namespace LearningManagementSystem.Migrations
                     b.ToTable("Payments");
                 });
 
+            modelBuilder.Entity("LearningManagementSystem.Models.Post", b =>
+                {
+                    b.Property<string>("PostId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(10000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsAnswer")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LikeCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ParentPostId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TopicId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("PostId")
+                        .HasName("PK_Posts");
+
+                    b.HasIndex("ParentPostId")
+                        .HasDatabaseName("IX_Posts_ParentPostId");
+
+                    b.HasIndex("TopicId")
+                        .HasDatabaseName("IX_Posts_TopicId");
+
+                    b.HasIndex("UserName");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.PostAttachment", b =>
+                {
+                    b.Property<string>("AttachmentId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FileType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("UploadedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("AttachmentId")
+                        .HasName("PK_PostAttachments");
+
+                    b.HasIndex("PostId")
+                        .HasDatabaseName("IX_PostAttachments_PostId");
+
+                    b.ToTable("PostAttachments");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.PostLike", b =>
+                {
+                    b.Property<string>("LikeId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("LikeId")
+                        .HasName("PK_PostLikes");
+
+                    b.HasIndex("UserName");
+
+                    b.HasIndex("PostId", "UserName")
+                        .IsUnique()
+                        .HasDatabaseName("UQ_PostLikes_PostId_UserName");
+
+                    b.ToTable("PostLikes");
+                });
+
             modelBuilder.Entity("LearningManagementSystem.Models.Progress", b =>
                 {
                     b.Property<string>("ProgressId")
@@ -564,6 +802,66 @@ namespace LearningManagementSystem.Migrations
                         .HasDatabaseName("UQ_Progresses_UserName_LessonId");
 
                     b.ToTable("Progresses");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.Report", b =>
+                {
+                    b.Property<string>("ReportId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("PostId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ReportedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ResolvedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("ResolvedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("TopicId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ReportId")
+                        .HasName("PK_Reports");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("ReportedBy");
+
+                    b.HasIndex("ResolvedBy");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("IX_Reports_Status");
+
+                    b.HasIndex("TopicId");
+
+                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.RevenueShare", b =>
@@ -630,6 +928,182 @@ namespace LearningManagementSystem.Migrations
                         .HasName("PK_Roles");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.StudySession", b =>
+                {
+                    b.Property<string>("SessionId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CourseId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("DurationSeconds")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LessonId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("StartedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("SessionId")
+                        .HasName("PK_StudySessions");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("UserName", "CourseId", "StartedAt")
+                        .HasDatabaseName("IX_StudySessions_User_Course_StartedAt");
+
+                    b.ToTable("StudySessions");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.Tag", b =>
+                {
+                    b.Property<string>("TagId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Slug")
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.HasKey("TagId")
+                        .HasName("PK_Tags");
+
+                    b.HasIndex("Slug")
+                        .IsUnique()
+                        .HasDatabaseName("UQ_Tags_Slug")
+                        .HasFilter("[Slug] IS NOT NULL");
+
+                    b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.Topic", b =>
+                {
+                    b.Property<string>("TopicId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(10000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ForumId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastReplyBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("LastReplyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReplyCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("TopicId")
+                        .HasName("PK_Topics");
+
+                    b.HasIndex("ForumId")
+                        .HasDatabaseName("IX_Topics_ForumId");
+
+                    b.HasIndex("UserName");
+
+                    b.ToTable("Topics");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.TopicTag", b =>
+                {
+                    b.Property<string>("TagId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TagName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TopicId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("TagId")
+                        .HasName("PK_TopicTags");
+
+                    b.HasIndex("TopicId")
+                        .HasDatabaseName("IX_TopicTags_TopicId");
+
+                    b.ToTable("TopicTags");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.User", b =>
@@ -771,6 +1245,25 @@ namespace LearningManagementSystem.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("LearningManagementSystem.Models.AIPractice", b =>
+                {
+                    b.HasOne("LearningManagementSystem.Models.Course", "Course")
+                        .WithMany("AIPractices")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LearningManagementSystem.Models.User", "User")
+                        .WithMany("AIPractices")
+                        .HasForeignKey("UserName")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LearningManagementSystem.Models.Assignment", b =>
                 {
                     b.HasOne("LearningManagementSystem.Models.Course", "Course")
@@ -879,6 +1372,25 @@ namespace LearningManagementSystem.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("LearningManagementSystem.Models.CourseTag", b =>
+                {
+                    b.HasOne("LearningManagementSystem.Models.Course", "Course")
+                        .WithMany("CourseTags")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LearningManagementSystem.Models.Tag", "Tag")
+                        .WithMany("CourseTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Tag");
+                });
+
             modelBuilder.Entity("LearningManagementSystem.Models.Enrollment", b =>
                 {
                     b.HasOne("LearningManagementSystem.Models.Course", "Course")
@@ -896,6 +1408,16 @@ namespace LearningManagementSystem.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.Forum", b =>
+                {
+                    b.HasOne("LearningManagementSystem.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Lesson", b =>
@@ -957,6 +1479,62 @@ namespace LearningManagementSystem.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("LearningManagementSystem.Models.Post", b =>
+                {
+                    b.HasOne("LearningManagementSystem.Models.Post", "ParentPost")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentPostId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("LearningManagementSystem.Models.Topic", "Topic")
+                        .WithMany("Posts")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LearningManagementSystem.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserName")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ParentPost");
+
+                    b.Navigation("Topic");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.PostAttachment", b =>
+                {
+                    b.HasOne("LearningManagementSystem.Models.Post", "Post")
+                        .WithMany("PostAttachments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.PostLike", b =>
+                {
+                    b.HasOne("LearningManagementSystem.Models.Post", "Post")
+                        .WithMany("PostLikes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LearningManagementSystem.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserName")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LearningManagementSystem.Models.Progress", b =>
                 {
                     b.HasOne("LearningManagementSystem.Models.Lesson", "Lesson")
@@ -974,6 +1552,38 @@ namespace LearningManagementSystem.Migrations
                     b.Navigation("Lesson");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.Report", b =>
+                {
+                    b.HasOne("LearningManagementSystem.Models.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("LearningManagementSystem.Models.User", "ReportedByUser")
+                        .WithMany()
+                        .HasForeignKey("ReportedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LearningManagementSystem.Models.User", "ResolvedByUser")
+                        .WithMany()
+                        .HasForeignKey("ResolvedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("LearningManagementSystem.Models.Topic", "Topic")
+                        .WithMany()
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Post");
+
+                    b.Navigation("ReportedByUser");
+
+                    b.Navigation("ResolvedByUser");
+
+                    b.Navigation("Topic");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.RevenueShare", b =>
@@ -1001,6 +1611,62 @@ namespace LearningManagementSystem.Migrations
                     b.Navigation("Payment");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.StudySession", b =>
+                {
+                    b.HasOne("LearningManagementSystem.Models.Course", "Course")
+                        .WithMany("StudySessions")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LearningManagementSystem.Models.Lesson", "Lesson")
+                        .WithMany("StudySessions")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("LearningManagementSystem.Models.User", "User")
+                        .WithMany("StudySessions")
+                        .HasForeignKey("UserName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.Topic", b =>
+                {
+                    b.HasOne("LearningManagementSystem.Models.Forum", "Forum")
+                        .WithMany("Topics")
+                        .HasForeignKey("ForumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LearningManagementSystem.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserName")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Forum");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.TopicTag", b =>
+                {
+                    b.HasOne("LearningManagementSystem.Models.Topic", "Topic")
+                        .WithMany("TopicTags")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.User", b =>
@@ -1053,6 +1719,8 @@ namespace LearningManagementSystem.Migrations
 
             modelBuilder.Entity("LearningManagementSystem.Models.Course", b =>
                 {
+                    b.Navigation("AIPractices");
+
                     b.Navigation("Assignments");
 
                     b.Navigation("CartItems");
@@ -1061,6 +1729,8 @@ namespace LearningManagementSystem.Migrations
 
                     b.Navigation("CourseInstructors");
 
+                    b.Navigation("CourseTags");
+
                     b.Navigation("Enrollments");
 
                     b.Navigation("Lessons");
@@ -1068,6 +1738,13 @@ namespace LearningManagementSystem.Migrations
                     b.Navigation("OrderDetails");
 
                     b.Navigation("Payments");
+
+                    b.Navigation("StudySessions");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.Forum", b =>
+                {
+                    b.Navigation("Topics");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Lesson", b =>
@@ -1075,6 +1752,8 @@ namespace LearningManagementSystem.Migrations
                     b.Navigation("Assignments");
 
                     b.Navigation("Progresses");
+
+                    b.Navigation("StudySessions");
                 });
 
             modelBuilder.Entity("LearningManagementSystem.Models.Payment", b =>
@@ -1082,13 +1761,36 @@ namespace LearningManagementSystem.Migrations
                     b.Navigation("OrderDetails");
                 });
 
+            modelBuilder.Entity("LearningManagementSystem.Models.Post", b =>
+                {
+                    b.Navigation("PostAttachments");
+
+                    b.Navigation("PostLikes");
+
+                    b.Navigation("Replies");
+                });
+
             modelBuilder.Entity("LearningManagementSystem.Models.Role", b =>
                 {
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("LearningManagementSystem.Models.Tag", b =>
+                {
+                    b.Navigation("CourseTags");
+                });
+
+            modelBuilder.Entity("LearningManagementSystem.Models.Topic", b =>
+                {
+                    b.Navigation("Posts");
+
+                    b.Navigation("TopicTags");
+                });
+
             modelBuilder.Entity("LearningManagementSystem.Models.User", b =>
                 {
+                    b.Navigation("AIPractices");
+
                     b.Navigation("AssignmentSubmissions");
 
                     b.Navigation("Carts");
@@ -1104,6 +1806,8 @@ namespace LearningManagementSystem.Migrations
                     b.Navigation("Payments");
 
                     b.Navigation("Progresses");
+
+                    b.Navigation("StudySessions");
                 });
 #pragma warning restore 612, 618
         }

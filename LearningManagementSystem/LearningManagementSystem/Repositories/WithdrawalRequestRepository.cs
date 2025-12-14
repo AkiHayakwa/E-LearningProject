@@ -88,6 +88,23 @@ namespace LearningManagementSystem.Repositories
         {
             return await _context.WithdrawalRequests.AnyAsync(wr => wr.WithdrawalRequestId == id);
         }
+
+        public async Task<IEnumerable<WithdrawalRequest>> GetApprovedByUserNameAsync(string userName)
+        {
+            return await _context.WithdrawalRequests
+                .Where(w => w.UserName == userName && w.Status == "Approved")
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<WithdrawalRequest>> GetAllPendingAsync()
+        {
+            return await _context.WithdrawalRequests
+                .Include(w => w.User)
+                .Where(w => w.Status == "Pending")
+                .OrderByDescending(w => w.RequestDate)
+                .ToListAsync();
+        }
+
     }
 }
 

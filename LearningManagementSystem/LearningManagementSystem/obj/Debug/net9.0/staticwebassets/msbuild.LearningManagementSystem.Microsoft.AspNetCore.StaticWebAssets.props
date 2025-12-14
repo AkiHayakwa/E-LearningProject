@@ -90,6 +90,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\avatars\16c4cf05-da0e-4d75-82bc-29e106c91262.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\avatars\19e7ff3d-9920-4d21-bb11-3bb077e674ed.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>avatars/19e7ff3d-9920-4d21-bb11-3bb077e674ed.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>m3jipddz9p</Fingerprint>
+      <Integrity>zjG01TX4UPf7tXKjXybAv4MJMlA6epSH9uavQFppPFI=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\avatars\19e7ff3d-9920-4d21-bb11-3bb077e674ed.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\avatars\224ec418-7ead-4106-b70c-0f06e52d174c.png'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
@@ -396,6 +414,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\avatars\bf54bdd7-dafb-47cc-b06a-97c44a9cf002.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\avatars\d9261cf7-3cf1-4e12-b3b8-050595b20bff.jpg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>avatars/d9261cf7-3cf1-4e12-b3b8-050595b20bff.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>m3jipddz9p</Fingerprint>
+      <Integrity>zjG01TX4UPf7tXKjXybAv4MJMlA6epSH9uavQFppPFI=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\avatars\d9261cf7-3cf1-4e12-b3b8-050595b20bff.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\avatars\e543bf65-7431-48a9-adba-b980fa89e525.jpg'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
@@ -486,6 +522,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Account\AccessDenied.css'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Account\AuthBase.css'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>css/Account/AuthBase.css</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>sr6odbaii6</Fingerprint>
+      <Integrity>uG5r3N+J0RGbcDbAAD8k6b0i5Sg4nAZexqd+BSLTalo=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Account\AuthBase.css'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Account\ChangePassword.css'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
@@ -516,8 +570,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>aivk5k6wl1</Fingerprint>
-      <Integrity>fs4A3sIK3JSkd0p3DNGHRCozm5ksltd0XykRPKEIftA=</Integrity>
+      <Fingerprint>bq3w5hck04</Fingerprint>
+      <Integrity>HVxyZ6nIEWrYzdgUggDQFnfbPi6GBJIA0JV5+ZMSlQA=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Account\ForgotPassword.css'))</OriginalItemSpec>
@@ -534,8 +588,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>77d2638s8r</Fingerprint>
-      <Integrity>rR4JHN9SYp66ibykRwwvwit+K4efhnF47X906gTKVE0=</Integrity>
+      <Fingerprint>vq7uejw0ts</Fingerprint>
+      <Integrity>t3zFwQxiQwpo90rZeWnkwArjiaD0kYUJIkmOPFNXwJQ=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Account\Login.css'))</OriginalItemSpec>
@@ -570,8 +624,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>y9k15kg3k3</Fingerprint>
-      <Integrity>5tGBDimLFypoWTbIu8b9PFiTFUlcfwmkRQAZ1C1G0T4=</Integrity>
+      <Fingerprint>cqi70nbbdz</Fingerprint>
+      <Integrity>lIalHsV1dQ5fXnw1HYCvjAbUQ8Cv7RjlzRmq/hc1dk4=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Account\Register.css'))</OriginalItemSpec>
@@ -624,8 +678,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>9imlvhljzp</Fingerprint>
-      <Integrity>MdjwHBokIFIsKumxVtgPq5RxOo9kC8Z1KolpnQHtOrg=</Integrity>
+      <Fingerprint>kbqrhk23j4</Fingerprint>
+      <Integrity>AB+oBPt3LgVNBat6cJPB/yK+us3mTdoOgwGXqqrD9aY=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Account\UserProfileEdit.css'))</OriginalItemSpec>
@@ -642,8 +696,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>by9xth2wkp</Fingerprint>
-      <Integrity>XQ7eQY4JTSDRtNVKVjpw+T6GkSpDsy47qPzsfYkf8PQ=</Integrity>
+      <Fingerprint>9n2tuxa2ir</Fingerprint>
+      <Integrity>WyuqVW9rimqYPUUwD15H48OLGukrmpPD3BJe9Q20EFE=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Account\VerifyOtp.css'))</OriginalItemSpec>
@@ -822,8 +876,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>wrgbaelbzp</Fingerprint>
-      <Integrity>VIQSEktf68+qtRBfcD2WWwGIBPZPKrOO6ICNeOqFcPY=</Integrity>
+      <Fingerprint>rz4f3essrt</Fingerprint>
+      <Integrity>B2JAeV+UqEd6sNEy5fUqT6UvUqaTGNe9LqBDYxZ4vw4=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Cart\Cart.css'))</OriginalItemSpec>
@@ -840,8 +894,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>cu9uzqh7m3</Fingerprint>
-      <Integrity>VAjRyAdnrtMD43PQ5AwrfytD9GHpNq0ojmbBPOjZxxg=</Integrity>
+      <Fingerprint>zu2efgu7ba</Fingerprint>
+      <Integrity>+1S/iUDmRHNEyWWze/qLwAwIfvDsifv7i9me0ldIP50=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Cart\ConfirmPayment.css'))</OriginalItemSpec>
@@ -858,8 +912,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>cf71zkg1dl</Fingerprint>
-      <Integrity>KBGZxz/G/FyjzIb+cMD0wV9HDWzTvYeQAS6uBEqUcGw=</Integrity>
+      <Fingerprint>ws6icapwgh</Fingerprint>
+      <Integrity>EIngD3NJ4TrSpvYTTEk0LUDEsWsQJXaDc7gBF4IxIZ0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Cart\PaymentSuccess.css'))</OriginalItemSpec>
@@ -876,8 +930,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>2tqlrz3lm0</Fingerprint>
-      <Integrity>Cq7ZXP71AXHw9PtAAAu+asHwM/ne/RsI9xtHBD23UKE=</Integrity>
+      <Fingerprint>rocm09dn3p</Fingerprint>
+      <Integrity>RcJdclOVDZmHWQaA+rOybpoKXOIol8aQNgaShQSurv4=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Course\AllTests.css'))</OriginalItemSpec>
@@ -894,8 +948,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>1vso2odp2s</Fingerprint>
-      <Integrity>46XxFD1qiTe/AaJHeeK8Ey2zAfhaJffkECiTECsFzo4=</Integrity>
+      <Fingerprint>3o9hygszym</Fingerprint>
+      <Integrity>zZLvB1JXX4T3z6ImPbXrRVOR6ldaqmrdRajcH5fXiRY=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Course\CourseDetails.css'))</OriginalItemSpec>
@@ -966,8 +1020,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>773ac6dmw1</Fingerprint>
-      <Integrity>s+Jb9rvEgMdnu8Gg9pM+bYoUCqCeB0vUowwy+c2PSyQ=</Integrity>
+      <Fingerprint>hgvr3xmlm1</Fingerprint>
+      <Integrity>/4DPaAqC+abNUclytlSFkMLBaGW03GUb5rEeRxVTwak=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Course\TakeTest.css'))</OriginalItemSpec>
@@ -984,8 +1038,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>7b8dv4k4s6</Fingerprint>
-      <Integrity>rUU3b1Rxr4qTf6uDGTZReqVCPKYfEN1nrI9ZAxkcfDY=</Integrity>
+      <Fingerprint>g7r2f29gmf</Fingerprint>
+      <Integrity>PD01AmjhtFYWmHL3mYeYH14WmpeI+zTDbrdK3UcPDi8=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Course\TakeTestResult.css'))</OriginalItemSpec>
@@ -1020,8 +1074,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>g1kcjpowo6</Fingerprint>
-      <Integrity>dGebFFxt6RJbjXJIdsxlwLYJH9URcgn5KSEwSL6AeHw=</Integrity>
+      <Fingerprint>b3854o0p19</Fingerprint>
+      <Integrity>ySN96eOZg5GrdgTpUSderSu8L5nIH6v6qM7cG5aO3vw=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Home\Home.css'))</OriginalItemSpec>
@@ -1182,8 +1236,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>j55xx02ijq</Fingerprint>
-      <Integrity>V/nuTcavmZ5SBJAoBH7o7N+jPQAFv/l/4LBO/nVK4aE=</Integrity>
+      <Fingerprint>v876kczrsk</Fingerprint>
+      <Integrity>0WEP2umkWN+gNHz/wMe37QtLXLHK9LFHu+9SlRWJsOs=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Notification\Notifications.css'))</OriginalItemSpec>
@@ -1218,8 +1272,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>c2zfby7vde</Fingerprint>
-      <Integrity>vL0ImM2Ppk6B31F9Gi6JokQbzKsJwdd+q2z35B5Bwkw=</Integrity>
+      <Fingerprint>8nf2m6cf1n</Fingerprint>
+      <Integrity>TBYjnjN2LBypsFq0hBRK0rasHMPC5N8++K/cXeDUNg0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Payment\PaymentDetail.css'))</OriginalItemSpec>
@@ -1236,8 +1290,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>trtox7nhi4</Fingerprint>
-      <Integrity>uZno+62IkWQN+Fe183dPbIN5FBEBuBI70/r7+5ZhRsI=</Integrity>
+      <Fingerprint>mjbeuucs8z</Fingerprint>
+      <Integrity>Dvh9XQ7aWCqd6oQrjHdUpnrp7z2u8aM2CmaXw1IQGa4=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Payment\PaymentHistory.css'))</OriginalItemSpec>
@@ -1254,11 +1308,29 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>wahtyxlhgt</Fingerprint>
-      <Integrity>2BLu2JWPCJJ9GO/2q5Dpbhlzz0NwctS6THpVxrr9PhE=</Integrity>
+      <Fingerprint>e4lggq60ty</Fingerprint>
+      <Integrity>Ehm23RpPuwOqVfTp7aDPn1/ftfHDsU4oC+qSKpA0NVI=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Search\Search.css'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>css/site.css</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>v0vqt1zl0f</Fingerprint>
+      <Integrity>j3ALvntZsChEi5Sy5f5LDAjhjxi80QI7KnU2VX9Tc5U=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\Test\CreateTest.css'))">
       <SourceType>Package</SourceType>
@@ -1332,246 +1404,12 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\09ed99fe-c2ac-4755-90c6-a0920e38d7d4.jpg'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\7e48ea43-9772-4068-b94d-1ef2cce7422f.jpg'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/09ed99fe-c2ac-4755-90c6-a0920e38d7d4.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>hp6fer4m9g</Fingerprint>
-      <Integrity>S1YwDfcLVrS0vk8ccjEkOSdwqf6eiIJ62+5goJDOg2k=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\09ed99fe-c2ac-4755-90c6-a0920e38d7d4.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\21a556e0-1703-4e4c-9cf4-e539ec5afb71.png'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/21a556e0-1703-4e4c-9cf4-e539ec5afb71.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>elwzlmtmpt</Fingerprint>
-      <Integrity>PtM2jtjh67DinD/ro6PSfDALJsj/RcUevmtFHy+ZnT4=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\21a556e0-1703-4e4c-9cf4-e539ec5afb71.png'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\343fa6fa-e896-4b1c-bfe1-106530ce8e4c.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/343fa6fa-e896-4b1c-bfe1-106530ce8e4c.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>hp6fer4m9g</Fingerprint>
-      <Integrity>S1YwDfcLVrS0vk8ccjEkOSdwqf6eiIJ62+5goJDOg2k=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\343fa6fa-e896-4b1c-bfe1-106530ce8e4c.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\4f004bf6-8fe9-4cfb-9791-26b4689236f9.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/4f004bf6-8fe9-4cfb-9791-26b4689236f9.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>1yrwm9xpkh</Fingerprint>
-      <Integrity>h8DnYSsfscOoNLAuZe0YhfV7ajkUT5mTLFyKA3r9epQ=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\4f004bf6-8fe9-4cfb-9791-26b4689236f9.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\50280772-b554-4673-ac55-b37cb704a6f4.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/50280772-b554-4673-ac55-b37cb704a6f4.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5eqme9fjmm</Fingerprint>
-      <Integrity>HXE1tvOczt0aAjj1dIiUWYXgKh5aDYrkfoCjAFpTGGk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\50280772-b554-4673-ac55-b37cb704a6f4.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\51f9e72f-6f6f-48ca-b146-ca3f1e29042e.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/51f9e72f-6f6f-48ca-b146-ca3f1e29042e.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>1yrwm9xpkh</Fingerprint>
-      <Integrity>h8DnYSsfscOoNLAuZe0YhfV7ajkUT5mTLFyKA3r9epQ=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\51f9e72f-6f6f-48ca-b146-ca3f1e29042e.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\5381fe9f-bb91-41b2-894a-745e6198e819.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/5381fe9f-bb91-41b2-894a-745e6198e819.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>y82bleinvr</Fingerprint>
-      <Integrity>3hKHpoWQkYvgfUR/txKF4VYPl1olg7ohFD4G8QM1VzY=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\5381fe9f-bb91-41b2-894a-745e6198e819.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\5456a6f5-f9df-4057-8d02-566d476dacf8.webp'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/5456a6f5-f9df-4057-8d02-566d476dacf8.webp</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>8djt6ok2uc</Fingerprint>
-      <Integrity>tBJqVTKAYS2aFTAluiFTZUki7yoZ1BTMngu3R7W6gRY=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\5456a6f5-f9df-4057-8d02-566d476dacf8.webp'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\57dc168f-b6a6-4124-9223-b0c8802ad9e2.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/57dc168f-b6a6-4124-9223-b0c8802ad9e2.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5eqme9fjmm</Fingerprint>
-      <Integrity>HXE1tvOczt0aAjj1dIiUWYXgKh5aDYrkfoCjAFpTGGk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\57dc168f-b6a6-4124-9223-b0c8802ad9e2.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\5878da95-c217-458b-9710-2a390ea88f77.png'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/5878da95-c217-458b-9710-2a390ea88f77.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>qpccbjmq3i</Fingerprint>
-      <Integrity>oj1K2io/7MuYB0doy0Y/HiYz+wdpGYG2v9FqI0y3zm8=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\5878da95-c217-458b-9710-2a390ea88f77.png'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\681b66c0-2342-4c06-bc6b-0a3f5d71a4fc.png'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/681b66c0-2342-4c06-bc6b-0a3f5d71a4fc.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>ttuvzlw6xj</Fingerprint>
-      <Integrity>0aTrbFO8vcloT4JjXIBeHqSsFLInApMOi3FnpXt2PsQ=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\681b66c0-2342-4c06-bc6b-0a3f5d71a4fc.png'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\6a434b56-bc7e-4db2-85a9-577cf6651ca1.png'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/6a434b56-bc7e-4db2-85a9-577cf6651ca1.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>a72yg4kj6n</Fingerprint>
-      <Integrity>pt8KCfa8IMxjclVOuNUCXbtIRsaN09zbPo5vFDKcBss=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\6a434b56-bc7e-4db2-85a9-577cf6651ca1.png'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\79ab2066-99ac-4769-adea-ce11b04fce2c.png'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/79ab2066-99ac-4769-adea-ce11b04fce2c.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>2horizhvlf</Fingerprint>
-      <Integrity>Wr3f2tcka7bd+8xfPQN7pE0RxVqWKjfecgdb45hjKP0=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\79ab2066-99ac-4769-adea-ce11b04fce2c.png'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\88176352-cfcf-4c3a-beff-bfbc126991e5.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/88176352-cfcf-4c3a-beff-bfbc126991e5.jpg</RelativePath>
+      <RelativePath>images/7e48ea43-9772-4068-b94d-1ef2cce7422f.jpg</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
@@ -1582,223 +1420,61 @@
       <Integrity>3KVENcNgv0mJZb9QaCWJHvlcGsDhnbEdU693PE8ay4I=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\88176352-cfcf-4c3a-beff-bfbc126991e5.jpg'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\7e48ea43-9772-4068-b94d-1ef2cce7422f.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\9367289f-d115-4323-bae6-fa951e4da61d.jpg'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\banner11.png'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/9367289f-d115-4323-bae6-fa951e4da61d.jpg</RelativePath>
+      <RelativePath>images/banner11.png</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5eqme9fjmm</Fingerprint>
-      <Integrity>HXE1tvOczt0aAjj1dIiUWYXgKh5aDYrkfoCjAFpTGGk=</Integrity>
+      <Fingerprint>jqba4hl1du</Fingerprint>
+      <Integrity>Fa6dd3fQU32SOOCe5LBBXco52MT7svvYpc3Fxa4aw3w=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\9367289f-d115-4323-bae6-fa951e4da61d.jpg'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\banner11.png'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\9fae6b26-0bb1-4c40-af31-5a37e6170c08.png'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\banner12.jpg'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/9fae6b26-0bb1-4c40-af31-5a37e6170c08.png</RelativePath>
+      <RelativePath>images/banner12.jpg</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>mwuu8w112u</Fingerprint>
-      <Integrity>9s8OAOkPYoQrMn8ZxjhzEsgoEtiaoqbeN2dzzg7PR/M=</Integrity>
+      <Fingerprint>lyq5pym9h7</Fingerprint>
+      <Integrity>Q8fYbcebcPzJNVPIj1N2PreYHSKa/cPbWVDL2tLAzK8=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\9fae6b26-0bb1-4c40-af31-5a37e6170c08.png'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\banner12.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\a1fd1853-8524-4632-8863-641b7848b97e.png'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\banner13.png'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/a1fd1853-8524-4632-8863-641b7848b97e.png</RelativePath>
+      <RelativePath>images/banner13.png</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>47boho2vdw</Fingerprint>
-      <Integrity>sD8p8e0+ofsjRhN/khI1vjA0PAa8avml6ru4jSqtikk=</Integrity>
+      <Fingerprint>skru54dznb</Fingerprint>
+      <Integrity>5NOV9cR0Gpfo2xTy/62gzrSKPVIKmmxjhpnZVuyB+q8=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\a1fd1853-8524-4632-8863-641b7848b97e.png'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\a9fd8519-99c7-4eca-98d3-f904a5b81ce4.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/a9fd8519-99c7-4eca-98d3-f904a5b81ce4.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>bkmixlnnfk</Fingerprint>
-      <Integrity>RVgkMx20rPuD8shN7EBwp5u8JddE2FHQJWbODvbQZxY=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\a9fd8519-99c7-4eca-98d3-f904a5b81ce4.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\agigen-404.gif'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/agigen-404.gif</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>eljby55nst</Fingerprint>
-      <Integrity>DiLYqvp+uQupOpBUBgxn+z5vAPaUGM1HExD2rI/lo+c=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\agigen-404.gif'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\b193346e-a6b8-408a-854e-907eeab19dd7.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/b193346e-a6b8-408a-854e-907eeab19dd7.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5eqme9fjmm</Fingerprint>
-      <Integrity>HXE1tvOczt0aAjj1dIiUWYXgKh5aDYrkfoCjAFpTGGk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\b193346e-a6b8-408a-854e-907eeab19dd7.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\b210989f-d85a-4043-8e6c-62c9dee808b3.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/b210989f-d85a-4043-8e6c-62c9dee808b3.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5eqme9fjmm</Fingerprint>
-      <Integrity>HXE1tvOczt0aAjj1dIiUWYXgKh5aDYrkfoCjAFpTGGk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\b210989f-d85a-4043-8e6c-62c9dee808b3.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\b44a6814-f96f-46a2-a3c1-dc6b0a9ff681.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/b44a6814-f96f-46a2-a3c1-dc6b0a9ff681.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>ncxqxd1p3o</Fingerprint>
-      <Integrity>qW8uf84Nqg//G8R05VgXhSYEEreA86EryW20kfRnYhU=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\b44a6814-f96f-46a2-a3c1-dc6b0a9ff681.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\b4b5f107-6750-491b-ae82-d864cf79319d.png'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/b4b5f107-6750-491b-ae82-d864cf79319d.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>47boho2vdw</Fingerprint>
-      <Integrity>sD8p8e0+ofsjRhN/khI1vjA0PAa8avml6ru4jSqtikk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\b4b5f107-6750-491b-ae82-d864cf79319d.png'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\cb34d3c4-a628-447e-ba8c-e6043bf72ec6.png'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/cb34d3c4-a628-447e-ba8c-e6043bf72ec6.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>j0tmsklu79</Fingerprint>
-      <Integrity>Y3jFdazSn3guNtLFpFVJ1lxCIeL00C3hnQL7HpSK1Bk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\cb34d3c4-a628-447e-ba8c-e6043bf72ec6.png'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\cdbed970-42b7-40ba-9877-07a642a3669e.png'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/cdbed970-42b7-40ba-9877-07a642a3669e.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>elwzlmtmpt</Fingerprint>
-      <Integrity>PtM2jtjh67DinD/ro6PSfDALJsj/RcUevmtFHy+ZnT4=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\cdbed970-42b7-40ba-9877-07a642a3669e.png'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\de630d5f-75da-4c3e-afda-e766a8b6a4f1.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/de630d5f-75da-4c3e-afda-e766a8b6a4f1.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5eqme9fjmm</Fingerprint>
-      <Integrity>HXE1tvOczt0aAjj1dIiUWYXgKh5aDYrkfoCjAFpTGGk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\de630d5f-75da-4c3e-afda-e766a8b6a4f1.jpg'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\banner13.png'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\defaultAvatar.png'))">
       <SourceType>Package</SourceType>
@@ -1818,78 +1494,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\defaultAvatar.png'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e2f22b51-d565-4662-97d7-69ba89e6a90c.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/e2f22b51-d565-4662-97d7-69ba89e6a90c.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5eqme9fjmm</Fingerprint>
-      <Integrity>HXE1tvOczt0aAjj1dIiUWYXgKh5aDYrkfoCjAFpTGGk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e2f22b51-d565-4662-97d7-69ba89e6a90c.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e32ae618-d5cf-4188-919f-17da6675e676.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/e32ae618-d5cf-4188-919f-17da6675e676.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>0vatoiawld</Fingerprint>
-      <Integrity>xOMsKarMIF73TrRXi1M9GndueTTQMcn00H7q1xeS7cU=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e32ae618-d5cf-4188-919f-17da6675e676.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e6628d54-35c0-4b5b-bc35-1bf21ddee58c.jpg'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/e6628d54-35c0-4b5b-bc35-1bf21ddee58c.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5eqme9fjmm</Fingerprint>
-      <Integrity>HXE1tvOczt0aAjj1dIiUWYXgKh5aDYrkfoCjAFpTGGk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e6628d54-35c0-4b5b-bc35-1bf21ddee58c.jpg'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e76ff110-91e4-417b-ae9d-496ed85357d9.png'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/e76ff110-91e4-417b-ae9d-496ed85357d9.png</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>ttuvzlw6xj</Fingerprint>
-      <Integrity>0aTrbFO8vcloT4JjXIBeHqSsFLInApMOi3FnpXt2PsQ=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\e76ff110-91e4-417b-ae9d-496ed85357d9.png'))</OriginalItemSpec>
-    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\Education.jpg'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
@@ -1908,59 +1512,203 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\Education.jpg'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\f405e796-405c-476d-8c25-5fc279922378.jpg'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\en.svg'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/f405e796-405c-476d-8c25-5fc279922378.jpg</RelativePath>
+      <RelativePath>images/flags/en.svg</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>01wkn901xw</Fingerprint>
-      <Integrity>3KVENcNgv0mJZb9QaCWJHvlcGsDhnbEdU693PE8ay4I=</Integrity>
+      <Fingerprint>zx3vm8pyab</Fingerprint>
+      <Integrity>SdRtWzyGDCaM+It8204kUxruA0jrm5l3dlvuUDWNnO0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\f405e796-405c-476d-8c25-5fc279922378.jpg'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\en.svg'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\f46a8c1d-ff9c-494c-80c9-33ace5bcb445.jpg'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\es.svg'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/f46a8c1d-ff9c-494c-80c9-33ace5bcb445.jpg</RelativePath>
+      <RelativePath>images/flags/es.svg</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5eqme9fjmm</Fingerprint>
-      <Integrity>HXE1tvOczt0aAjj1dIiUWYXgKh5aDYrkfoCjAFpTGGk=</Integrity>
+      <Fingerprint>7al0q498jb</Fingerprint>
+      <Integrity>QRpiZLYxdIbHbC15u5khTTpyVrkDbN7vwvjFoiR86pc=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\f46a8c1d-ff9c-494c-80c9-33ace5bcb445.jpg'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\es.svg'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\f930121e-f658-41bc-83fd-f1172d916d1f.png'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\fr.svg'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>images/f930121e-f658-41bc-83fd-f1172d916d1f.png</RelativePath>
+      <RelativePath>images/flags/fr.svg</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>lqp9qcaia2</Fingerprint>
-      <Integrity>jRTahMAWWR4F8gle++mTV6V99K7zlnmYM166pnBMLSA=</Integrity>
+      <Fingerprint>adliqkub2w</Fingerprint>
+      <Integrity>UvlQOIrYhtapZey8qU4arX/HbmfNyR6PbUi4S/fVZNw=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\f930121e-f658-41bc-83fd-f1172d916d1f.png'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\fr.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\ja.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>images/flags/ja.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>h0y1cz6yzm</Fingerprint>
+      <Integrity>j8W82SIMOTnbqBoU9uWRL82tms4GVZMXi13IGhvZteo=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\ja.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\ko.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>images/flags/ko.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>68qwr3206q</Fingerprint>
+      <Integrity>OqzoaqkW0OWzCRFSlV3IBpozq3GJaOhG4msaIA6cvg8=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\ko.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\vi.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>images/flags/vi.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>fn9ddiad09</Fingerprint>
+      <Integrity>5fgFMni6QafdEI6PkXIXuIE/H1UVfn9AqAEtRtLivr4=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\vi.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\zh.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>images/flags/zh.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>dqpx5dwzw8</Fingerprint>
+      <Integrity>e8ZIraJROIPtF67bJNe+x2AV8lE/aHUAoDzznOHlbRU=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\flags\zh.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\hero-learning.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>images/hero-learning.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>ozb4o9uvhk</Fingerprint>
+      <Integrity>TG5ns5/fg4nsn8hH9z1AiLi6gplWneWcYBdnkXEl3Io=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\hero-learning.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\illustrations\auth-forgot.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>images/illustrations/auth-forgot.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>1yfizb05bj</Fingerprint>
+      <Integrity>x4++AesdXAaAeARrUwjpS75jKqS8pmphG5yECLNaKGs=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\illustrations\auth-forgot.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\illustrations\auth-learning.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>images/illustrations/auth-learning.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>21fz9sskie</Fingerprint>
+      <Integrity>KnA5kV+iJ7uuXO3mMdoj+tq+Lrom6t/kNpPrmzt6NU4=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\illustrations\auth-learning.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\illustrations\auth-otp.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>images/illustrations/auth-otp.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>6sy1893io5</Fingerprint>
+      <Integrity>qh34O1qH+duGr8zQ514mnoZ3koNlYH48BSIhJQv5600=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\illustrations\auth-otp.svg'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\images\ltw.jpg'))">
       <SourceType>Package</SourceType>
@@ -2010,8 +1758,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>zbijr9n4lx</Fingerprint>
-      <Integrity>ce3xAAdR8x+iu765KxjTAnlMaC7ZJFcrSA3T+h+3G4A=</Integrity>
+      <Fingerprint>9peym6gqmz</Fingerprint>
+      <Integrity>7axBAp/5PLdeOW7i21qfX90NyfDgGjyiFT4cYhDxs5o=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Account\ChangePassword.js'))</OriginalItemSpec>
@@ -2100,8 +1848,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>oxvs0haobw</Fingerprint>
-      <Integrity>VOsuv+IXy16Zk+gocH2XweoNyfoyBTRMTAEvQS32W1o=</Integrity>
+      <Fingerprint>9peym6gqmz</Fingerprint>
+      <Integrity>7axBAp/5PLdeOW7i21qfX90NyfDgGjyiFT4cYhDxs5o=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Account\UpdateAvatar.js'))</OriginalItemSpec>
@@ -2118,8 +1866,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>zbijr9n4lx</Fingerprint>
-      <Integrity>ce3xAAdR8x+iu765KxjTAnlMaC7ZJFcrSA3T+h+3G4A=</Integrity>
+      <Fingerprint>9cxguvmp0u</Fingerprint>
+      <Integrity>N5kBQnOCOYjvLnAu4DsS/JiSRpKYJ0GMju/qlAT+erU=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Account\UserProfileEdit.js'))</OriginalItemSpec>
@@ -2334,8 +2082,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>5gcf5oxe8p</Fingerprint>
-      <Integrity>xQFfZ1SNcO1DRPl81oZwdU7cozYyvcu3qW0MubDR/mI=</Integrity>
+      <Fingerprint>pxs3z8v8nj</Fingerprint>
+      <Integrity>PcgQfhpVvAEGdX9smVFKT2wbI0loFHAqbxmA8Ok/b88=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Course\AllTests.js'))</OriginalItemSpec>
@@ -2352,8 +2100,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>sz90zei85q</Fingerprint>
-      <Integrity>mE3U6TyNC0oTsJLW2EjL9kpeWQs6BjzXN5v0xjYxT9M=</Integrity>
+      <Fingerprint>oyhvbhrpvj</Fingerprint>
+      <Integrity>UNRkprrcXgybMimnacUQ670DAYR3dMo2ow2i6UxGXRI=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Course\CourseDetails.js'))</OriginalItemSpec>
@@ -2424,8 +2172,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>s30e2q4qv7</Fingerprint>
-      <Integrity>+F0U9bIdgxTOiprJRX1Spmg8454jBC4qxzmPaonuuEk=</Integrity>
+      <Fingerprint>o7216nl1ss</Fingerprint>
+      <Integrity>jCzKBu9eH223VySI4JYCL6kvGUF3T6yBuR8qR+gXgFI=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Course\TakeTest.js'))</OriginalItemSpec>
@@ -2496,8 +2244,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>fbjxv3hy0h</Fingerprint>
-      <Integrity>9SS1z2ejhhPj30ejZkTlC4Tnp36wTGW+sqyo8r5ysZ0=</Integrity>
+      <Fingerprint>0e9a223al5</Fingerprint>
+      <Integrity>+Hcb/1DFTru+I8a1936i0sumzsSRqcoJKL30D7nezPk=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Home\Home.js'))</OriginalItemSpec>
@@ -2676,11 +2424,29 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>p6pw38zpwg</Fingerprint>
-      <Integrity>gboswedSpd15lIF0fODh4175L2v8XqVrLRwNAO4RbT4=</Integrity>
+      <Fingerprint>uqkuh8cfpn</Fingerprint>
+      <Integrity>hhUu6sV6SdhSyqxCq9wDafZZE1iBPDU6EQ6T5xQuDs0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Search\Search.js'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LearningManagementSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LearningManagementSystem</BasePath>
+      <RelativePath>js/site.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>oizgcp1flk</Fingerprint>
+      <Integrity>0Hfzsoftc4Vgp393YJKYRWbdGijTLG1QFkRn/Bvpi2I=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\Test\CreateTest.js'))">
       <SourceType>Package</SourceType>
@@ -3834,329 +3600,41 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lib\jquery\LICENSE.txt'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\01ed7660-08d9-4fb8-971e-a7da9239b24f.mp4'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\forum\0ca9e21d-8639-4c8d-b0b9-8e8d4add010d.png'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/01ed7660-08d9-4fb8-971e-a7da9239b24f.mp4</RelativePath>
+      <RelativePath>uploads/forum/0ca9e21d-8639-4c8d-b0b9-8e8d4add010d.png</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rpg7962ph0</Fingerprint>
-      <Integrity>XzE/RbZDnkhzeHr/hssMLe1OWprVh1/jgkUDGD8bDf0=</Integrity>
+      <Fingerprint>a72yg4kj6n</Fingerprint>
+      <Integrity>pt8KCfa8IMxjclVOuNUCXbtIRsaN09zbPo5vFDKcBss=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\01ed7660-08d9-4fb8-971e-a7da9239b24f.mp4'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\forum\0ca9e21d-8639-4c8d-b0b9-8e8d4add010d.png'))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\030c662a-feeb-45ec-b54c-ed71a4d23aa7.mp4'))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\forum\dd2ae14b-3b9a-4a4e-9aa6-cbda2aeed378.png'))">
       <SourceType>Package</SourceType>
       <SourceId>LearningManagementSystem</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/030c662a-feeb-45ec-b54c-ed71a4d23aa7.mp4</RelativePath>
+      <RelativePath>uploads/forum/dd2ae14b-3b9a-4a4e-9aa6-cbda2aeed378.png</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rpg7962ph0</Fingerprint>
-      <Integrity>XzE/RbZDnkhzeHr/hssMLe1OWprVh1/jgkUDGD8bDf0=</Integrity>
+      <Fingerprint>jqba4hl1du</Fingerprint>
+      <Integrity>Fa6dd3fQU32SOOCe5LBBXco52MT7svvYpc3Fxa4aw3w=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\030c662a-feeb-45ec-b54c-ed71a4d23aa7.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\0c8e8bcf-8604-4e37-9e5e-be67b6ba893c.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/0c8e8bcf-8604-4e37-9e5e-be67b6ba893c.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rpg7962ph0</Fingerprint>
-      <Integrity>XzE/RbZDnkhzeHr/hssMLe1OWprVh1/jgkUDGD8bDf0=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\0c8e8bcf-8604-4e37-9e5e-be67b6ba893c.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\3bcf77d3-3fc4-4af3-90a0-db07bfd77a13.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/3bcf77d3-3fc4-4af3-90a0-db07bfd77a13.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>bvblm90bzc</Fingerprint>
-      <Integrity>V4kSkb5jMPEz5cOdpuXpAaqcKNjAhr86KjwMcFsLCqk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\3bcf77d3-3fc4-4af3-90a0-db07bfd77a13.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\52ad9b95-b062-49ac-a325-cc54d36c1cee.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/52ad9b95-b062-49ac-a325-cc54d36c1cee.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>bvblm90bzc</Fingerprint>
-      <Integrity>V4kSkb5jMPEz5cOdpuXpAaqcKNjAhr86KjwMcFsLCqk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\52ad9b95-b062-49ac-a325-cc54d36c1cee.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\5b128218-a98a-4036-8d20-941a35d1c082.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/5b128218-a98a-4036-8d20-941a35d1c082.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>bvblm90bzc</Fingerprint>
-      <Integrity>V4kSkb5jMPEz5cOdpuXpAaqcKNjAhr86KjwMcFsLCqk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\5b128218-a98a-4036-8d20-941a35d1c082.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\61ae7c28-da5b-488b-ac13-2db20918880e.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/61ae7c28-da5b-488b-ac13-2db20918880e.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rpg7962ph0</Fingerprint>
-      <Integrity>XzE/RbZDnkhzeHr/hssMLe1OWprVh1/jgkUDGD8bDf0=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\61ae7c28-da5b-488b-ac13-2db20918880e.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\63a08427-a3db-4c8c-b2d0-71148f4ba18d.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/63a08427-a3db-4c8c-b2d0-71148f4ba18d.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rpg7962ph0</Fingerprint>
-      <Integrity>XzE/RbZDnkhzeHr/hssMLe1OWprVh1/jgkUDGD8bDf0=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\63a08427-a3db-4c8c-b2d0-71148f4ba18d.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\6d033124-c676-4f5c-862e-417a9ef6892c.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/6d033124-c676-4f5c-862e-417a9ef6892c.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>bvblm90bzc</Fingerprint>
-      <Integrity>V4kSkb5jMPEz5cOdpuXpAaqcKNjAhr86KjwMcFsLCqk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\6d033124-c676-4f5c-862e-417a9ef6892c.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\7c9df76c-98bb-4dc4-aec3-9824896d0915.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/7c9df76c-98bb-4dc4-aec3-9824896d0915.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rpg7962ph0</Fingerprint>
-      <Integrity>XzE/RbZDnkhzeHr/hssMLe1OWprVh1/jgkUDGD8bDf0=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\7c9df76c-98bb-4dc4-aec3-9824896d0915.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\7ea26282-8a8e-4759-adf1-e5472384faae.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/7ea26282-8a8e-4759-adf1-e5472384faae.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>bvblm90bzc</Fingerprint>
-      <Integrity>V4kSkb5jMPEz5cOdpuXpAaqcKNjAhr86KjwMcFsLCqk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\7ea26282-8a8e-4759-adf1-e5472384faae.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\9babde90-87f1-4073-85f3-76d87ca7ae18.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/9babde90-87f1-4073-85f3-76d87ca7ae18.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>bvblm90bzc</Fingerprint>
-      <Integrity>V4kSkb5jMPEz5cOdpuXpAaqcKNjAhr86KjwMcFsLCqk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\9babde90-87f1-4073-85f3-76d87ca7ae18.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\ae432384-e2c7-42df-90ee-18048133f15b.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/ae432384-e2c7-42df-90ee-18048133f15b.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rpg7962ph0</Fingerprint>
-      <Integrity>XzE/RbZDnkhzeHr/hssMLe1OWprVh1/jgkUDGD8bDf0=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\ae432384-e2c7-42df-90ee-18048133f15b.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\b8228b53-1eae-46a0-86bf-e87ccc15cba6.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/b8228b53-1eae-46a0-86bf-e87ccc15cba6.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rpg7962ph0</Fingerprint>
-      <Integrity>XzE/RbZDnkhzeHr/hssMLe1OWprVh1/jgkUDGD8bDf0=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\b8228b53-1eae-46a0-86bf-e87ccc15cba6.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\bb7db7f0-6888-4484-b323-aa740bb20a63.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/bb7db7f0-6888-4484-b323-aa740bb20a63.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rpg7962ph0</Fingerprint>
-      <Integrity>XzE/RbZDnkhzeHr/hssMLe1OWprVh1/jgkUDGD8bDf0=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\bb7db7f0-6888-4484-b323-aa740bb20a63.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\cf7cc9d3-34df-4aa7-bd4a-bf267a23f959.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/cf7cc9d3-34df-4aa7-bd4a-bf267a23f959.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rpg7962ph0</Fingerprint>
-      <Integrity>XzE/RbZDnkhzeHr/hssMLe1OWprVh1/jgkUDGD8bDf0=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\cf7cc9d3-34df-4aa7-bd4a-bf267a23f959.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\e669a025-a9b2-4248-8937-4e23a3447ff6.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/e669a025-a9b2-4248-8937-4e23a3447ff6.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>bvblm90bzc</Fingerprint>
-      <Integrity>V4kSkb5jMPEz5cOdpuXpAaqcKNjAhr86KjwMcFsLCqk=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\e669a025-a9b2-4248-8937-4e23a3447ff6.mp4'))</OriginalItemSpec>
-    </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\f678a36f-88fe-4881-a707-50ae280c327e.mp4'))">
-      <SourceType>Package</SourceType>
-      <SourceId>LearningManagementSystem</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/LearningManagementSystem</BasePath>
-      <RelativePath>videos/f678a36f-88fe-4881-a707-50ae280c327e.mp4</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>rpg7962ph0</Fingerprint>
-      <Integrity>XzE/RbZDnkhzeHr/hssMLe1OWprVh1/jgkUDGD8bDf0=</Integrity>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\f678a36f-88fe-4881-a707-50ae280c327e.mp4'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\forum\dd2ae14b-3b9a-4a4e-9aa6-cbda2aeed378.png'))</OriginalItemSpec>
     </StaticWebAsset>
   </ItemGroup>
 </Project>

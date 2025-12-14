@@ -52,9 +52,9 @@
             public List<CourseInstructor>? CourseInstructors { get; set; }
             public List<AssignmentSubmission>? AssignmentSubmissions { get; set; }
 
+            public ICollection<AIPractice> AIPractices { get; set; } = new List<AIPractice>();
+            public ICollection<StudySession> StudySessions { get; set; } = new List<StudySession>();
             public List<Cart>? Carts { get; set; }
-
-
 
             // Phương thức để băm mật khẩu
             public void HashPassword(IPasswordHasher<User> passwordHasher, string plainPassword)

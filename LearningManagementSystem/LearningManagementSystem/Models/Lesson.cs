@@ -31,6 +31,7 @@ namespace LearningManagementSystem.Models
         public Course? Course { get; set; }
         public List<Progress>? Progresses { get; set; }
         public List<Assignment>? Assignments { get; set; }
+        public ICollection<StudySession> StudySessions { get; set; } = new List<StudySession>();
 
     }
 }

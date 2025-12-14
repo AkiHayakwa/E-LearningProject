@@ -181,3 +181,38 @@
     border-radius: 0.75rem;
     transition: all 0.3s ease;
 }
+
+/* === Dark theme overrides === */
+body.dark-theme .card,
+body.dark-theme .cart-item,
+body.dark-theme .payment-summary,
+body.dark-theme .empty-cart-container {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    border-color: #1f2a44;
+    box-shadow: 0 12px 30px rgba(2, 6, 23, 0.7);
+}
+
+body.dark-theme .card-title,
+body.dark-theme .summary-item span,
+body.dark-theme .summary-total span,
+body.dark-theme .cart-item h6,
+body.dark-theme .cart-item span {
+    color: #e2e8f0 !important;
+}
+
+body.dark-theme .cart-item .bg-light,
+body.dark-theme .empty-cart-container {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid #22304c;
+}
+
+body.dark-theme .btn-outline-secondary {
+    color: #cbd5e1;
+    border-color: #3b4256;
+}
+
+body.dark-theme .btn-outline-secondary:hover {
+    background-color: #1f2937;
+    color: #fff;
+}

@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LearningManagementSystem.Controllers
 {
@@ -15,6 +18,7 @@ namespace LearningManagementSystem.Controllers
         private readonly IProgressRepository _progressRepository;
         private readonly IEnrollmentRepository _enrollmentRepository;
         private readonly ICourseRepository _courseRepository;
+        private readonly INotificationRepository _notificationRepository;
         private readonly ILogger<LessonController> _logger;
 
         public LessonController(
@@ -22,12 +26,14 @@ namespace LearningManagementSystem.Controllers
             IProgressRepository progressRepository,
             IEnrollmentRepository enrollmentRepository,
             ICourseRepository courseRepository,
+            INotificationRepository notificationRepository,
             ILogger<LessonController> logger)
         {
             _lessonRepository = lessonRepository;
             _progressRepository = progressRepository;
             _enrollmentRepository = enrollmentRepository;
             _courseRepository = courseRepository;
+            _notificationRepository = notificationRepository;
             _logger = logger;
         }
         [Authorize(Roles = "Student")] 
@@ -235,6 +241,17 @@ namespace LearningManagementSystem.Controllers
                     _logger.LogInformation($"Adding Lesson: {lesson.LessonId}, Title={lesson.LessonTitle}, CourseId={lesson.CourseId}");
                     _lessonRepository.Add(lesson);
                     _lessonRepository.Save();
+                    
+                    // Gửi thông báo cho học viên đã đăng ký
+                    if (course != null)
+                    {
+                        await NotifyEnrolledStudentsAsync(
+                            courseId,
+                            $"Bài học mới: {lesson.LessonTitle}",
+                            $"Khóa học '{course.CourseName}' đã có bài học mới: {lesson.LessonTitle}. Hãy vào học ngay nhé!"
+                        );
+                    }
+                    
                     TempData["Success"] = "Thêm bài học thành công.";
                     _logger.LogInformation($"Lesson {lesson.LessonId} added successfully to Course {courseId}.");
                     return RedirectToAction("ManageLessons", new { courseId });
@@ -479,6 +496,61 @@ namespace LearningManagementSystem.Controllers
             }
 
             return RedirectToAction("ManageLessons", new { courseId = lesson.CourseId });
+        }
+
+        // Helper method để gửi thông báo cho học viên đã đăng ký
+        private async Task NotifyEnrolledStudentsAsync(string courseId, string title, string content)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(courseId))
+                {
+                    _logger.LogWarning("CourseId is null or empty when trying to notify students");
+                    return;
+                }
+
+                // Lấy danh sách học viên đã đăng ký khóa học
+                var enrollments = _enrollmentRepository.GetAll()
+                    .Where(e => e.CourseId == courseId)
+                    .Select(e => e.UserName)
+                    .Distinct()
+                    .ToList();
+
+                if (!enrollments.Any())
+                {
+                    _logger.LogInformation("No enrolled students found for course {CourseId}", courseId);
+                    return;
+                }
+
+                // Tạo thông báo cho từng học viên
+                var notifications = new List<Notification>();
+                foreach (var userName in enrollments)
+                {
+                    var notification = new Notification
+                    {
+                        NotificationId = Guid.NewGuid().ToString(),
+                        UserName = userName,
+                        Title = title,
+                        Content = content,
+                        CreatedDate = DateTime.Now,
+                        IsRead = false
+                    };
+                    notifications.Add(notification);
+                }
+
+                // Lưu tất cả thông báo
+                if (notifications.Any())
+                {
+                    await _notificationRepository.AddRangeAsync(notifications);
+                    _logger.LogInformation("Sent {Count} notifications to enrolled students for course {CourseId}", 
+                        notifications.Count, courseId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error sending notifications to enrolled students for course {CourseId}", courseId);
+                // Không throw exception để không ảnh hưởng đến quá trình tạo bài học
+            }
         }
     }
 }

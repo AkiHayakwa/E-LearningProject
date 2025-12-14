@@ -1,0 +1,93 @@
+@model IEnumerable<LearningManagementSystem.Models.Tag>
+@{
+    ViewData["Title"] = "Quản lý Tag";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Quản lý Tag khóa học</h2>
+            <p class="text-muted mb-0">Nhóm tag theo ngôn ngữ, framework, hướng nghề nghiệp để chatbot và trang tìm kiếm gợi ý chính xác.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i> Thêm tag
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>@TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Tên tag</th>
+                            <th>Danh mục</th>
+                            <th>Slug</th>
+                            <th>Kích hoạt</th>
+                            <th>Ngày tạo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var tag in Model)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">@tag.Name</td>
+                                    <td><span class="badge bg-light text-dark border">@tag.Category</span></td>
+                                    <td class="text-muted">@tag.Slug</td>
+                                    <td>
+                                        @if (tag.IsActive)
+                                        {
+                                            <span class="badge bg-success-subtle text-success"><i class="bi bi-check-circle me-1"></i>Đang dùng</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary-subtle text-secondary">Ẩn</span>
+                                        }
+                                    </td>
+                                    <td>@tag.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td class="text-end">
+                                        <a asp-action="Edit" asp-route-id="@tag.TagId" class="btn btn-sm btn-outline-primary me-2">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <form asp-action="Delete" asp-route-id="@tag.TagId" method="post" class="d-inline" onsubmit="return confirm('Xóa tag này?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Chưa có tag nào.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

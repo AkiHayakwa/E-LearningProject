@@ -25,8 +25,8 @@
                         <div class="graduation-icon">
                             <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <h1 class="success-title">Thanh toán thành công!</h1>
-                        <p class="success-subtitle">Chúc mừng bạn đã đăng ký khóa học thành công</p>
+                        <h1 class="success-title" data-i18n-vi="Thanh toán thành công!" data-i18n-en="Payment successful!">Thanh toán thành công!</h1>
+                        <p class="success-subtitle" data-i18n-vi="Chúc mừng bạn đã đăng ký khóa học thành công" data-i18n-en="Congratulations! Your course purchase is complete.">Chúc mừng bạn đã đăng ký khóa học thành công</p>
                     </div>
 
                     <div class="card-body-custom">
@@ -45,7 +45,7 @@
                                     <i class="fas fa-receipt"></i>
                                 </div>
                                 <div class="detail-content">
-                                    <label>Mã giao dịch</label>
+                                    <label data-i18n-vi="Mã giao dịch" data-i18n-en="Transaction ID">Mã giao dịch</label>
                                     <span class="detail-value">#@Model.Payment.PaymentId</span>
                                 </div>
                             </div>
@@ -55,42 +55,44 @@
                                     <i class="fas fa-calendar-alt"></i>
                                 </div>
                                 <div class="detail-content">
-                                    <label>Ngày thanh toán</label>
+                                    <label data-i18n-vi="Ngày thanh toán" data-i18n-en="Payment date">Ngày thanh toán</label>
                                     <span class="detail-value">@Model.Payment.PaymentDate.ToString("dd/MM/yyyy HH:mm")</span>
                                 </div>
                             </div>
 
                             @if (Model.OrderDetails != null && Model.OrderDetails.Any())
                             {
-                                <div class="detail-item full-width">
-                                    <div class="detail-icon">
-                                        <i class="fas fa-book-open"></i>
-                                    </div>
-                                    <div class="detail-content">
-                                        <label>Khóa học đã mua</label>
-                                        <div class="course-list">
-                                            @foreach (var item in Model.OrderDetails)
-                                            {
-                                                <div class="course-item">
-                                                    <div class="course-info">
-                                                        <i class="fas fa-play-circle course-icon"></i>
-                                                        <span class="course-name">@item.Course?.CourseName</span>
-                                                    </div>
-                                                    <span class="course-price">₫@item.Price.ToString("N0")</span>
-                                                </div>
-                                            }
+                                <div class="purchased-courses-card">
+                                    <div class="purchased-courses-header">
+                                        <div class="purchased-courses-icon">
+                                            <i class="fas fa-book-open"></i>
                                         </div>
+                                        <h3 class="purchased-courses-title" data-i18n-vi="KHÓA HỌC ĐÃ MUA" data-i18n-en="PURCHASED COURSES">KHÓA HỌC ĐÃ MUA</h3>
+                                    </div>
+                                    <div class="purchased-courses-list">
+                                        @foreach (var item in Model.OrderDetails)
+                                        {
+                                            <div class="purchased-course-item">
+                                                <div class="purchased-course-info">
+                                                    <i class="fas fa-play purchased-course-icon"></i>
+                                                    <span class="purchased-course-name">@item.Course?.CourseName</span>
+                                                </div>
+                                                <span class="purchased-course-price">₫@item.Price.ToString("N0")</span>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             }
 
-                            <div class="detail-item total-amount">
-                                <div class="detail-icon">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                </div>
-                                <div class="detail-content">
-                                    <label>Tổng số tiền</label>
-                                    <span class="detail-value amount">₫@Model.Payment.Amount.ToString("N0")</span>
+                            <div class="total-amount-card">
+                                <div class="total-amount-header">
+                                    <div class="total-amount-icon">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                    </div>
+                                    <div class="total-amount-content">
+                                        <label class="total-amount-label" data-i18n-vi="TỔNG SỐ TIỀN" data-i18n-en="TOTAL AMOUNT">TỔNG SỐ TIỀN</label>
+                                        <span class="total-amount-value">₫@Model.Payment.Amount.ToString("N0")</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -99,11 +101,11 @@
                         <div class="action-buttons">
                             <a href="@Url.Action("MyLearning", "Account")" class="btn btn-primary-custom">
                                 <i class="fas fa-play me-2"></i>
-                                Bắt đầu học ngay
+                                <span data-i18n-vi="Bắt đầu học ngay" data-i18n-en="Start learning now">Bắt đầu học ngay</span>
                             </a>
                             <a href="@Url.Action("Index", "Home")" class="btn btn-secondary-custom">
                                 <i class="fas fa-home me-2"></i>
-                                Trở về trang chủ
+                                <span data-i18n-vi="Trở về trang chủ" data-i18n-en="Return to homepage">Trở về trang chủ</span>
                             </a>
                         </div>
 
@@ -111,11 +113,11 @@
                         <div class="additional-info">
                             <div class="info-item">
                                 <i class="fas fa-envelope"></i>
-                                <span>Email xác nhận đã được gửi đến hộp thư của bạn</span>
+                                <span data-i18n-vi="Email xác nhận đã được gửi đến hộp thư của bạn" data-i18n-en="A confirmation email has been sent to your inbox.">Email xác nhận đã được gửi đến hộp thư của bạn</span>
                             </div>
                             <div class="info-item">
                                 <i class="fas fa-support"></i>
-                                <span>Cần hỗ trợ? Liên hệ với chúng tôi qua hotline hoặc chat</span>
+                                <span data-i18n-vi="Cần hỗ trợ? Liên hệ với chúng tôi qua hotline hoặc chat" data-i18n-en="Need help? Contact us via hotline or chat.">Cần hỗ trợ? Liên hệ với chúng tôi qua hotline hoặc chat</span>
                             </div>
                         </div>
                     </div>

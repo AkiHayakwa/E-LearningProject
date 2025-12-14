@@ -1,5 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    const rowsPerPage = 8; // Hiển thị 8 khóa học mỗi trang
+    const rowsPerPage = 20; // Hiển thị 5 hàng x 4 khóa học mỗi trang
     let currentPage = 1;
     let rows = document.querySelectorAll('#course-list .course-item');
     let totalRows = rows.length;

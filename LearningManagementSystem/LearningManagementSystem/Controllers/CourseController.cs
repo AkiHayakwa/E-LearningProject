@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
@@ -70,14 +71,24 @@ namespace LearningManagementSystem.Controllers
                     CreatedDate = c.CreatedDate,
                     ImageUrl = c.ImageUrl,
                     IsEnrolled = userName != null && _enrollmentRepository.GetAll()
-                        .Any(e => e.UserName == userName && e.CourseId == c.CourseId)
+                        .Any(e => e.UserName == userName && e.CourseId == c.CourseId),
+                    Level = c.Level,
+                    DurationMinutes = c.DurationMinutes,
+                    TagNames = c.CourseTags != null
+                        ? c.CourseTags
+                            .Select(ct => ct.Tag != null ? ct.Tag.Name : string.Empty)
+                            .Where(name => !string.IsNullOrWhiteSpace(name))
+                            .ToList()
+                        : new List<string>()
                 })
                 .ToList();
 
             return View(courses);
         }
+        
+        [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string id, int page = 1)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -93,6 +104,8 @@ namespace LearningManagementSystem.Controllers
                 .Include(c => c.Lessons)
                 .Include(c => c.CourseInstructors)
                     .ThenInclude(ci => ci.User)
+                .Include(c => c.CourseTags)
+                    .ThenInclude(ct => ct.Tag)
                 .FirstOrDefaultAsync(c => c.CourseId == id);
 
             if (course == null)
@@ -116,16 +129,28 @@ namespace LearningManagementSystem.Controllers
                 .Where(p => p.UserName == userName && p.Lesson.CourseId == id)
                 .ToListAsync();
 
-            var comments = await _context.Comments
-                .Where(c => c.CourseId == id)
-                .Include(c => c.User)
-                .OrderByDescending(c => c.CreatedDate)
-                .ToListAsync();
+            // Phân trang cho comments
+            int pageSize = 5;
+            page = page < 1 ? 1 : page;
 
-            // Calculate AverageRating from comments
-            double? averageRating = comments.Any()
-                ? comments.Where(c => c.Rating.HasValue).Average(c => c.Rating.Value)
+            var allCommentsQuery = _context.Comments
+                .Where(c => c.CourseId == id)
+                .Include(c => c.User);
+
+            // Calculate AverageRating from ALL comments (not just current page)
+            var allCommentsForRating = await allCommentsQuery.ToListAsync();
+            double? averageRating = allCommentsForRating.Any() && allCommentsForRating.Any(c => c.Rating.HasValue)
+                ? allCommentsForRating.Where(c => c.Rating.HasValue).Average(c => c.Rating.Value)
                 : (double?)null;
+
+            var totalComments = allCommentsForRating.Count;
+            var totalPages = (int)Math.Ceiling(totalComments / (double)pageSize);
+
+            var comments = await allCommentsQuery
+                .OrderByDescending(c => c.CreatedDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
             // Khởi tạo dictionary cho bài nộp trước đó
             Dictionary<string, (string SelectedOptionText, string SelectedOptionLabel, bool? IsCorrect, double? Score)> previousSubmissions = new Dictionary<string, (string, string, bool?, double?)>();
@@ -184,6 +209,45 @@ namespace LearningManagementSystem.Controllers
 
             var instructorName = course.CourseInstructors?.FirstOrDefault()?.User?.FullName ?? "Không xác định";
 
+            var studyStats = new StudyTimerStatsViewModel
+            {
+                TotalMinutes = 0,
+                WeeklyMinutes = 0,
+                CurrentStreakDays = 0,
+                TotalSessions = 0,
+                LastStudiedAt = null
+            };
+
+            if (User.Identity.IsAuthenticated)
+            {
+                userName = User.FindFirstValue(ClaimTypes.Name);
+                if (!string.IsNullOrWhiteSpace(userName))
+                {
+                    var studySessions = await _context.StudySessions
+                        .Where(ss => ss.UserName == userName && ss.CourseId == course.CourseId)
+                        .OrderByDescending(ss => ss.StartedAt)
+                        .ToListAsync();
+
+                    if (studySessions.Any())
+                    {
+                        var totalSeconds = studySessions.Sum(ss => ss.DurationSeconds);
+                        var weekStart = DateTime.UtcNow.Date.AddDays(-6);
+                        var weeklySeconds = studySessions
+                            .Where(ss => ss.StartedAt.Date >= weekStart)
+                            .Sum(ss => ss.DurationSeconds);
+
+                        var lastSession = studySessions.FirstOrDefault();
+                        var lastStudied = lastSession?.EndedAt ?? lastSession?.StartedAt;
+
+                        studyStats.TotalMinutes = (int)Math.Round(totalSeconds / 60.0);
+                        studyStats.WeeklyMinutes = (int)Math.Round(weeklySeconds / 60.0);
+                        studyStats.CurrentStreakDays = CalculateStudyStreakDays(studySessions);
+                        studyStats.TotalSessions = studySessions.Count;
+                        studyStats.LastStudiedAt = lastStudied?.ToLocalTime();
+                    }
+                }
+            }
+
             // Map Course to CourseListViewModel
             var courseListViewModel = new CourseListViewModel
             {
@@ -197,7 +261,13 @@ namespace LearningManagementSystem.Controllers
                 Assignments = course.Lessons?.SelectMany(l => l.Assignments ?? new List<Assignment>()).ToList(),
                 AverageRating = averageRating,
                 Price = course.Price,
-                InstructorName = instructorName
+                InstructorName = instructorName,
+                Level = course.Level,
+                DurationMinutes = course.DurationMinutes,
+                TagNames = course.CourseTags
+                    .Select(ct => ct.Tag != null ? ct.Tag.Name : string.Empty)
+                    .Where(name => !string.IsNullOrWhiteSpace(name))
+                    .ToList()
             };
 
             var viewModel = new CourseDetailsViewModel
@@ -208,8 +278,18 @@ namespace LearningManagementSystem.Controllers
                 Comments = comments ?? new List<Comment>(),
                 PreviousSubmissions = previousSubmissions,
                 NewCommentContent = "",
-                NewCommentRating = 0
+                NewCommentRating = 0,
+                StudyStats = studyStats,
+                CommentPage = page,
+                CommentPageSize = pageSize,
+                CommentTotalPages = totalPages,
+                CommentTotalCount = totalComments
             };
+
+            ViewBag.CommentPage = page;
+            ViewBag.CommentTotalPages = totalPages;
+            ViewBag.CommentTotalCount = totalComments;
+            ViewBag.CourseId = id;
 
             return View("CourseDetails", viewModel);
         }
@@ -222,14 +302,14 @@ namespace LearningManagementSystem.Controllers
             if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(model.NewCommentContent))
             {
                 TempData["Error"] = "Nội dung bình luận không được để trống.";
-                return RedirectToAction("CourseDetails", new { id });
+                return RedirectToAction("Details", new { id });
             }
 
             // Validate rating
             if (model.NewCommentRating < 1 || model.NewCommentRating > 5)
             {
                 TempData["Error"] = "Đánh giá phải từ 1 đến 5 sao.";
-                return RedirectToAction("CourseDetails", new { id });
+                return RedirectToAction("Details", new { id });
             }
 
             var course = await _context.Courses
@@ -247,7 +327,7 @@ namespace LearningManagementSystem.Controllers
             if (!isEnrolled)
             {
                 TempData["Error"] = "Bạn cần đăng ký khóa học để bình luận.";
-                return RedirectToAction("CourseDetails", new { id });
+                return RedirectToAction("Details", new { id });
             }
 
             var comment = new Comment
@@ -274,6 +354,40 @@ namespace LearningManagementSystem.Controllers
             }
 
             return RedirectToAction("Details", new { id });
+        }
+
+        private static int CalculateStudyStreakDays(IEnumerable<StudySession> sessions)
+        {
+            var sessionDates = sessions
+                .Where(ss => ss.DurationSeconds > 0)
+                .Select(ss => ss.StartedAt.Date)
+                .Distinct()
+                .OrderByDescending(d => d)
+                .ToList();
+
+            if (!sessionDates.Any())
+            {
+                return 0;
+            }
+
+            var todayUtc = DateTime.UtcNow.Date;
+            var startDate = sessionDates.First();
+            if (sessionDates.Contains(todayUtc))
+            {
+                startDate = todayUtc;
+            }
+
+            var streak = 0;
+            var currentDate = startDate;
+            var dateSet = new HashSet<DateTime>(sessionDates);
+
+            while (dateSet.Contains(currentDate))
+            {
+                streak++;
+                currentDate = currentDate.AddDays(-1);
+            }
+
+            return streak;
         }
         [HttpPost]
         [Authorize]
@@ -395,11 +509,12 @@ namespace LearningManagementSystem.Controllers
                 .ToListAsync();
 
             // Truy vấn submissions với điều kiện bỏ qua bản ghi không hợp lệ
+            // Chỉ load submissions có SubmittedDate hợp lệ (lớn hơn DateTime.MinValue)
             var submissions = await _context.AssignmentSubmissions
                 .Include(s => s.Assignment)
                 .Include(s => s.Question)
                 .Where(s => s.UserName == userName
-                         && s.SubmittedDate != null
+                         && s.SubmittedDate > DateTime.MinValue
                          && s.AssignmentId != null
                          && s.QuestionId != null)
                 .ToListAsync();
@@ -439,7 +554,15 @@ namespace LearningManagementSystem.Controllers
                     Price = c.Price,
                     IsEnrolled = enrollments.Any(e => e.CourseId == c.CourseId),
                     Lessons = c.Lessons ?? new List<Lesson>(),
-                    Assignments = c.Assignments ?? new List<Assignment>()
+                    Assignments = c.Assignments ?? new List<Assignment>(),
+                    Level = c.Level,
+                    DurationMinutes = c.DurationMinutes,
+                    TagNames = c.CourseTags != null
+                        ? c.CourseTags
+                            .Select(ct => ct.Tag != null ? ct.Tag.Name : string.Empty)
+                            .Where(name => !string.IsNullOrWhiteSpace(name))
+                            .ToList()
+                        : new List<string>()
                 }).ToList(),
                 SearchQuery = null,
                 Enrollments = enrollments,
@@ -468,6 +591,22 @@ namespace LearningManagementSystem.Controllers
                 return NotFound("Không tìm thấy bài kiểm tra.");
             }
 
+            // Kiểm tra xem người dùng đã submit bài chưa
+            var existingSubmissions = await _context.AssignmentSubmissions
+                .Where(s => s.AssignmentId == assignmentId && s.UserName == userName)
+                .ToListAsync();
+
+            // Nếu đã có submission và đã submit (có SubmittedDate hợp lệ), không cho làm lại
+            // Kiểm tra xem có ít nhất một submission với SubmittedDate hợp lệ (đã submit)
+            var hasSubmitted = existingSubmissions.Any(s => 
+                s.SubmittedDate > DateTime.MinValue);
+            
+            if (hasSubmitted)
+            {
+                TempData["Error"] = "Bạn đã hoàn thành bài kiểm tra này. Không thể làm lại.";
+                return RedirectToAction("ViewTestResult", new { assignmentId = assignmentId, id = id });
+            }
+
             var viewModel = new TakeTestViewModel
             {
                 CourseId = id,
@@ -477,6 +616,9 @@ namespace LearningManagementSystem.Controllers
                 Questions = assignment.Questions,
                 SelectedAnswers = new Dictionary<string, string>()
             };
+
+            ViewBag.HasExistingSubmissions = existingSubmissions.Any();
+            ViewBag.AssignmentId = assignmentId;
 
             return View(viewModel);
         }
@@ -568,6 +710,7 @@ namespace LearningManagementSystem.Controllers
             _logger.LogInformation("CreateCourse GET called.");
 
             var model = new Course();
+            model.SelectedTagIds = new List<string>();
             if (User.IsInRole("Admin"))
             {
                 // Admin có thể chọn giảng viên
@@ -584,17 +727,20 @@ namespace LearningManagementSystem.Controllers
                 ViewBag.CurrentInstructor = currentInstructor;
             }
 
+            ViewBag.AllTags = GetActiveTags();
+
             return View("~/Views/Course/CreateCourse.cshtml", model);
         }
         // POST: Course/CreateCourse
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCourse(Course model, IFormFile imageFile, string instructorUserName)
+        public async Task<IActionResult> CreateCourse(Course model, IFormFile imageFile, string instructorUserName, List<string> selectedTagIds)
         {
             _logger.LogInformation("CreateCourse POST called.");
 
             model.CourseId = Guid.NewGuid().ToString();
             model.CreatedDate = DateTime.Now;
+            model.SelectedTagIds = selectedTagIds ?? new List<string>();
 
             // Xử lý upload hình ảnh
             if (imageFile != null && imageFile.Length > 0)
@@ -669,6 +815,25 @@ namespace LearningManagementSystem.Controllers
                 model.CourseInstructors = null;
             }
 
+            // Xử lý tag
+            if (model.SelectedTagIds.Any())
+            {
+                var tags = await _context.Tags
+                    .Where(t => model.SelectedTagIds.Contains(t.TagId))
+                    .ToListAsync();
+                model.CourseTags = tags
+                    .Select(tag => new CourseTag
+                    {
+                        CourseId = model.CourseId,
+                        TagId = tag.TagId,
+                        Tag = tag
+                    }).ToList();
+            }
+            else
+            {
+                model.CourseTags = new List<CourseTag>();
+            }
+
             // Xác thực lại model
             ModelState.Clear();
             TryValidateModel(model);
@@ -711,6 +876,8 @@ namespace LearningManagementSystem.Controllers
                 ViewBag.CurrentInstructor = currentInstructor;
             }
 
+            ViewBag.AllTags = GetActiveTags();
+
             return View("~/Views/Course/CreateCourse.cshtml", model);
         }
 
@@ -729,6 +896,8 @@ namespace LearningManagementSystem.Controllers
             var course = await _context.Courses
                 .Include(c => c.CourseInstructors)
                     .ThenInclude(ci => ci.User)
+                .Include(c => c.CourseTags)
+                    .ThenInclude(ct => ct.Tag)
                 .FirstOrDefaultAsync(c => c.CourseId == id);
 
             if (course == null)
@@ -761,13 +930,16 @@ namespace LearningManagementSystem.Controllers
                 ViewBag.CurrentInstructor = currentInstructor;
             }
 
+            course.SelectedTagIds = course.CourseTags.Select(ct => ct.TagId).ToList();
+            ViewBag.AllTags = GetActiveTags();
+
             return View("~/Views/Course/EditCourse.cshtml", course);
         }
 
         // POST: Course/EditCourse/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCourse(string id, Course model, IFormFile imageFile, string instructorUserName)
+        public async Task<IActionResult> EditCourse(string id, Course model, IFormFile imageFile, string instructorUserName, List<string> selectedTagIds)
         {
             _logger.LogInformation($"EditCourse POST called with CourseId: {id}");
 
@@ -780,6 +952,7 @@ namespace LearningManagementSystem.Controllers
             var course = await _context.Courses
                 .Include(c => c.CourseInstructors)
                     .ThenInclude(ci => ci.User)
+                .Include(c => c.CourseTags)
                 .FirstOrDefaultAsync(c => c.CourseId == id);
 
             if (course == null)
@@ -803,6 +976,8 @@ namespace LearningManagementSystem.Controllers
             course.Description = model.Description;
             course.Price = model.Price;
             course.CreatedDate = model.CreatedDate;
+            course.Level = model.Level;
+            course.DurationMinutes = model.DurationMinutes;
 
             // Xử lý hình ảnh
             if (imageFile != null && imageFile.Length > 0)
@@ -865,6 +1040,30 @@ namespace LearningManagementSystem.Controllers
                 }
             }
 
+            var normalizedTagIds = selectedTagIds?.Where(id => !string.IsNullOrWhiteSpace(id))
+                .Select(id => id.Trim()).Distinct().ToList() ?? new List<string>();
+            var existingCourseTags = await _context.CourseTags
+                .Where(ct => ct.CourseId == course.CourseId)
+                .ToListAsync();
+            var toRemove = existingCourseTags.Where(ct => !normalizedTagIds.Contains(ct.TagId)).ToList();
+            if (toRemove.Any())
+            {
+                _context.CourseTags.RemoveRange(toRemove);
+            }
+            var existingIds = existingCourseTags.Select(ct => ct.TagId).ToHashSet();
+            foreach (var tagId in normalizedTagIds)
+            {
+                if (!existingIds.Contains(tagId))
+                {
+                    _context.CourseTags.Add(new CourseTag
+                    {
+                        CourseId = course.CourseId,
+                        TagId = tagId
+                    });
+                }
+            }
+            course.SelectedTagIds = normalizedTagIds;
+
             // Xác thực lại model
             ModelState.Clear();
             TryValidateModel(course);
@@ -905,6 +1104,8 @@ namespace LearningManagementSystem.Controllers
                 var currentInstructor = _userRepository.GetByUserName(User.Identity.Name);
                 ViewBag.CurrentInstructor = currentInstructor;
             }
+
+            ViewBag.AllTags = GetActiveTags();
 
             return View("~/Views/Course/EditCourse.cshtml", course);
         }
@@ -966,6 +1167,15 @@ namespace LearningManagementSystem.Controllers
             }
 
             return RedirectToAction("ManageCourses");
+        }
+
+        private List<Tag> GetActiveTags()
+        {
+            return _context.Tags
+                .Where(t => t.IsActive)
+                .OrderBy(t => t.Category)
+                .ThenBy(t => t.Name)
+                .ToList();
         }
 
         // Phương thức hỗ trợ lưu file ảnh

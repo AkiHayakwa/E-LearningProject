@@ -241,8 +241,27 @@
     }
 
     .detail-item.total-amount {
-        background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
-        border: 2px solid #ffc107;
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border: 2px solid #facc15;
+        border-radius: 12px;
+        padding: 1.25rem 1.5rem;
+    }
+    
+    .detail-item.total-amount .detail-icon {
+        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    }
+    
+    .detail-item.total-amount .detail-content label {
+        color: #ffffff;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .detail-item.total-amount .detail-value.amount {
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-weight: 700;
     }
 
 .detail-icon {
@@ -320,6 +339,147 @@
 .course-price {
     font-weight: 600;
     color: #ff6b35;
+}
+
+/* Purchased Courses Card - Modern Dark Theme */
+.purchased-courses-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 16px;
+    padding: 1.75rem;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 2px solid #facc15;
+    position: relative;
+}
+
+.purchased-courses-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.purchased-courses-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.purchased-courses-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.purchased-courses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.purchased-course-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.875rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    transition: all 0.2s ease;
+}
+
+.purchased-course-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.purchased-course-icon {
+    color: #475569;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.purchased-course-name {
+    font-weight: 400;
+    color: #ffffff;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.purchased-course-price {
+    font-weight: 500;
+    color: #ffffff;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    margin-left: 1rem;
+}
+
+/* Total Amount Card */
+.total-amount-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1rem;
+    border: 2px solid #facc15;
+}
+
+.total-amount-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.total-amount-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.total-amount-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.total-amount-label {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.total-amount-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
 }
 
 .action-buttons {
@@ -421,7 +581,106 @@
         text-align: center;
         gap: 10px;
     }
+
+    .purchased-courses-card {
+        padding: 1.5rem;
+    }
+
+    .purchased-courses-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .purchased-courses-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.25rem;
+    }
+
+    .purchased-courses-title {
+        font-size: 1.1rem;
+    }
+
+    .purchased-course-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .purchased-course-price {
+        margin-left: 0;
+        align-self: flex-end;
+    }
 }
+
+/* === Dark theme overrides === */
+body.dark-theme .custom-alert {
+    background: rgba(34, 197, 94, 0.15);
+    color: #c4f5d6;
+}
+
+body.dark-theme .detail-item {
+    background-color: #101a32;
+    border: 1px solid #1f2a44;
+    color: #e2e8f0;
+}
+
+body.dark-theme .detail-content label,
+body.dark-theme .detail-value {
+    color: #e2e8f0;
+}
+
+
+body.dark-theme .info-item {
+    color: #e2e8f0;
+    border-color: #1f2a44;
+}
+
+/* === Dark theme overrides === */
+body.dark-theme .payment-success-container {
+    background: linear-gradient(135deg, #0f172a 0%, #111c2e 100%);
+}
+
+body.dark-theme .success-card,
+body.dark-theme .detail-item,
+body.dark-theme .course-item {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    border-color: #1f2a44;
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.8);
+}
+
+body.dark-theme .detail-item {
+    background-color: #13203a;
+}
+
+body.dark-theme .detail-item:hover {
+    background-color: #1b2947;
+}
+
+body.dark-theme .total-amount-card {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-color: #facc15;
+}
+
+body.dark-theme .detail-content label,
+body.dark-theme .detail-value,
+body.dark-theme .info-item,
+body.dark-theme .success-subtitle {
+    color: #e2e8f0;
+}
+
+body.dark-theme .btn-secondary-custom {
+    background: linear-gradient(135deg, #334155, #1f2937);
+}
+
+/* Dark theme for Purchased Courses Card */
+body.dark-theme .purchased-courses-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-color: #facc15;
+}
+
 
 /* FontAwesome Icons - Add this if not already included */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');

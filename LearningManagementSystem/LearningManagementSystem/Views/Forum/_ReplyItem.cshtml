@@ -1,0 +1,128 @@
+@model LearningManagementSystem.Models.Post
+@{
+    var topicId = ViewData["ReplyTopicId"] as string ?? string.Empty;
+    var currentUser = ViewData["ReplyCurrentUser"] as string ?? string.Empty;
+    var isInstructor = ViewData["ReplyIsInstructor"] as bool? ?? false;
+    var level = ViewData["ReplyLevel"] as int? ?? 1;
+}
+
+@* Tất cả replies đều dùng cùng một class, không phân biệt level *@
+<div class="reply-card-stackoverflow reply-level-same" id="post-@Model.PostId">
+    <div class="reply-header-stackoverflow">
+        <div class="reply-author-stackoverflow">
+            <img src="@(Model.User?.Avatar ?? "/images/defaultAvatar.png")"
+                 alt="@(Model.User?.FullName ?? Model.UserName)"
+                 class="reply-avatar-stackoverflow" />
+            <div class="reply-author-info-stackoverflow">
+                <div class="reply-author-name-stackoverflow">@((Model.User?.FullName ?? Model.UserName))</div>
+                @if (Model.User?.Role != null && !string.IsNullOrEmpty(Model.User.Role.RoleName))
+                {
+                    <div class="reply-author-role-stackoverflow">@Model.User.Role.RoleName</div>
+                }
+            </div>
+        </div>
+        <div class="reply-date-stackoverflow">@Model.CreatedDate.ToString("MMM d", new System.Globalization.CultureInfo("en-US"))</div>
+    </div>
+    <div class="reply-body-stackoverflow">
+        @if (Model.ParentPost != null)
+        {
+            <div class="replying-to-stackoverflow">
+                Trả lời <strong>@(Model.ParentPost.User?.FullName ?? Model.ParentPost.UserName)</strong>
+            </div>
+        }
+        <div class="reply-text-stackoverflow">
+            @Html.Raw(Model.Content)
+        </div>
+        @if (Model.PostAttachments != null && Model.PostAttachments.Any())
+        {
+            <div class="post-images-stackoverflow">
+                @foreach (var attachment in Model.PostAttachments)
+                {
+                    @if (attachment.FileType != null && attachment.FileType.StartsWith("image/"))
+                    {
+                        <div class="post-image-item">
+                            <img src="@attachment.FilePath" alt="@attachment.FileName" class="post-image" onclick="openImageModal('@attachment.FilePath')" />
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="@attachment.FilePath" target="_blank" class="attachment-link-stackoverflow">
+                            <i class="bi bi-paperclip"></i>
+                            <span>@attachment.FileName</span>
+                        </a>
+                    }
+                }
+            </div>
+        }
+    </div>
+    <div class="reply-actions-stackoverflow">
+        @if (Model.UserName != currentUser)
+        {
+            <button type="button"
+                    class="action-btn-stackoverflow like-btn-stackoverflow @(Model.PostLikes?.Any(pl => pl.UserName == currentUser) == true ? "liked" : "")"
+                    data-post-id="@Model.PostId"
+                    data-post-author="@Model.UserName"
+                    onclick="likePost('@Model.PostId')">
+                <i class="bi bi-heart"></i>
+                <span class="like-count">@Model.LikeCount</span>
+            </button>
+        }
+        else
+        {
+            <div class="action-btn-stackoverflow like-btn-stackoverflow disabled">
+                <i class="bi bi-heart"></i>
+                <span class="like-count">@Model.LikeCount</span>
+            </div>
+        }
+        <button type="button" class="action-btn-stackoverflow share-btn-stackoverflow" onclick="showReplyForm('@Model.PostId')">
+            <i class="bi bi-share"></i>
+        </button>
+        @if (Model.UserName == currentUser || isInstructor)
+        {
+            <button type="button" class="action-btn-stackoverflow delete-btn-stackoverflow" onclick="deletePost('@Model.PostId')" title="Xóa">
+                <i class="bi bi-trash"></i>
+            </button>
+        }
+        <button type="button" class="action-btn-stackoverflow report-btn-stackoverflow" onclick="showReportModal('post', '@Model.PostId')" title="Báo cáo">
+            <i class="bi bi-flag"></i>
+        </button>
+    </div>
+
+    <div class="reply-form-container" id="reply-form-@Model.PostId" style="display: none;">
+        <form onsubmit="submitReply(event, '@topicId', '@Model.PostId')">
+            @Html.AntiForgeryToken()
+            <div class="reply-editor-wrapper-small">
+                <div class="reply-quill-editor-small" id="reply-editor-@Model.PostId"></div>
+                <input type="hidden" class="reply-content-hidden" id="reply-content-@Model.PostId" />
+            </div>
+            <div class="reply-form-actions">
+                <button type="submit" class="btn-submit">
+                    <i class="bi bi-send"></i> Gửi phản hồi
+                </button>
+                <button type="button" class="btn-cancel" onclick="hideReplyForm('@Model.PostId')">
+                    Hủy
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* Render replies BÊN NGOÀI reply-card để chúng ở cùng cấp với container ngoài (giống TikTok) *@
+@* Tất cả replies (dù là reply của reply) đều ở cùng một cấp, không thụt lùi lồng nhau *@
+@if (Model.Replies != null && Model.Replies.Any())
+{
+    <div class="replies-list-same-level">
+        @foreach (var child in Model.Replies)
+        {
+            var childViewData = new ViewDataDictionary(ViewData)
+            {
+                ["ReplyTopicId"] = topicId,
+                ["ReplyCurrentUser"] = currentUser,
+                ["ReplyIsInstructor"] = isInstructor,
+                ["ReplyLevel"] = level // Giữ nguyên level để tất cả replies đều ở cùng cấp
+            };
+            @await Html.PartialAsync("_ReplyItem", child, childViewData)
+        }
+    </div>
+}
+

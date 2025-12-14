@@ -27,5 +27,7 @@ namespace LearningManagementSystem.Models.ViewModels
         public string CourseTitle { get; set; }
         public string Content { get; set; }
         public DateTime CommentDate { get; set; }
+        public int? Rating { get; set; }
+        public string CourseId { get; set; }
     }
 }

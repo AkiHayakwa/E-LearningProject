@@ -68,3 +68,51 @@
 .table > tbody > tr:hover {
     background-color: rgba(111, 66, 193, 0.05);
 }
+
+/* === Dark theme overrides === */
+body.dark-theme .card {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    border-color: #1f2a44;
+    box-shadow: 0 12px 30px rgba(2, 6, 23, 0.7);
+}
+
+body.dark-theme .card-header {
+    background-color: #0f172a;
+    border-color: #1f2a44;
+}
+
+body.dark-theme .text-muted,
+body.dark-theme .breadcrumb-item,
+body.dark-theme .breadcrumb-item a {
+    color: #cbd5e1 !important;
+}
+
+body.dark-theme .table {
+    color: #e2e8f0;
+    border-color: #1f2a44;
+}
+
+body.dark-theme .table thead {
+    background-color: #121b33;
+}
+
+body.dark-theme .table thead th,
+body.dark-theme .table tbody td,
+body.dark-theme .table tfoot td {
+    border-color: #1f2a44;
+}
+
+body.dark-theme .table tbody tr {
+    background-color: rgba(15, 23, 42, 0.7);
+}
+
+body.dark-theme .btn-outline-secondary {
+    color: #cbd5e1;
+    border-color: #475569;
+}
+
+body.dark-theme .btn-outline-secondary:hover {
+    background-color: #1e293b;
+    color: #fff;
+}

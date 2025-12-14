@@ -4,81 +4,163 @@
     Layout = "~/Views/Shared/_InstructorLayout.cshtml";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-money-bill-wave"></i> Yêu cầu rút tiền
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <!-- Thông tin số dư -->
-                    <div class="alert alert-info">
-                        <h5><i class="fas fa-info-circle"></i> Số dư hiện tại: <strong>@Model.CurrentBalance.ToString("N0") VNĐ</strong></h5>
-                    </div>
+@section Styles {
+    <style>
+        :root {
+            --theme-primary: #6a11cb;
+            --theme-primary-light: #f0e7f9;
+            --theme-border: #dee2e6;
+        }
 
+        .btn-primary {
+            background-color: var(--theme-primary) !important;
+            border-color: var(--theme-primary) !important;
+        }
+
+        .text-primary {
+            color: var(--theme-primary) !important;
+        }
+
+        .card {
+            border: 1px solid var(--theme-border);
+            box-shadow: none;
+        }
+
+        .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid var(--theme-border);
+        }
+
+        .form-control:focus {
+            border-color: var(--theme-primary);
+            box-shadow: 0 0 0 0.25rem var(--theme-primary-light);
+        }
+        /* Thẻ Ví */
+        .wallet-card {
+            position: relative;
+            background: linear-gradient(135deg, var(--theme-primary) 0%, #2575fc 100%);
+            color: #fff;
+            border: none;
+            overflow: hidden;
+        }
+
+        .wallet-card-icon {
+            position: absolute;
+            bottom: -30px;
+            right: -20px;
+            font-size: 120px;
+            opacity: 0.15;
+            transform: rotate(-15deg);
+        }
+
+        .wallet-card .wallet-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        .wallet-card .wallet-balance {
+            font-size: 2.75rem;
+            font-weight: 700;
+        }
+    </style>
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-dark-800">
+            <i class="fas fa-money-bill-wave me-2 text-primary"></i>
+            @ViewData["Title"]
+        </h1>
+        <a href="@Url.Action("Index", "Wallet")" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left me-1"></i> Quay lại Ví
+        </a>
+    </div>
+
+    <div class="row g-4 g-lg-5">
+
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body p-4">
                     <form asp-action="Withdraw" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        
-                        <div class="form-group">
-                            <label asp-for="Amount" class="control-label">Số tiền muốn rút (VNĐ)</label>
-                            <input asp-for="Amount" class="form-control" placeholder="Nhập số tiền muốn rút" />
-                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="alert alert-info border-0" style="background-color: var(--theme-primary-light); color: #333;">
+                            Số dư có thể rút: <strong class="h5 mb-0">@Model.CurrentBalance.ToString("N0") VNĐ</strong>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Amount" class="form-label fw-bold">Số tiền muốn rút (VNĐ)</label>
+                            <input asp-for="Amount" class="form-control form-control-lg" placeholder="Nhập số tiền" />
+                            <span asp-validation-for="Amount" class="text-danger small"></span>
                             <small class="form-text text-muted">Số tiền tối thiểu: 1,000 VNĐ</small>
                         </div>
 
-                        <div class="form-group">
-                            <label asp-for="BankName" class="control-label">Tên ngân hàng</label>
-                            <input asp-for="BankName" class="form-control" placeholder="Ví dụ: Vietcombank, Techcombank, BIDV..." />
-                            <span asp-validation-for="BankName" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="BankName" class="form-label fw-bold">Tên ngân hàng</label>
+                                <input asp-for="BankName" class="form-control" placeholder="Ví dụ: Vietcombank" />
+                                <span asp-validation-for="BankName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="AccountNumber" class="form-label fw-bold">Số tài khoản</label>
+                                <input asp-for="AccountNumber" class="form-control" placeholder="Nhập số tài khoản" />
+                                <span asp-validation-for="AccountNumber" class="text-danger small"></span>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label asp-for="AccountNumber" class="control-label">Số tài khoản</label>
-                            <input asp-for="AccountNumber" class="form-control" placeholder="Nhập số tài khoản ngân hàng" />
-                            <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="AccountHolderName" class="form-label fw-bold">Tên chủ tài khoản</label>
+                            <input asp-for="AccountHolderName" class="form-control" placeholder="NGUYEN VAN A (Viết hoa không dấu)" />
+                            <span asp-validation-for="AccountHolderName" class="text-danger small"></span>
                         </div>
 
-                        <div class="form-group">
-                            <label asp-for="AccountHolderName" class="control-label">Tên chủ tài khoản (tùy chọn)</label>
-                            <input asp-for="AccountHolderName" class="form-control" placeholder="Tên chủ tài khoản" />
-                            <span asp-validation-for="AccountHolderName" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
+                        <div class="d-flex gap-2 mt-4">
                             <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-paper-plane"></i> Gửi yêu cầu rút tiền
+                                <i class="fas fa-paper-plane me-1"></i> Gửi yêu cầu
                             </button>
                             <a href="@Url.Action("Index", "Wallet")" class="btn btn-secondary btn-lg">
-                                <i class="fas fa-arrow-left"></i> Quay lại
+                                Hủy
                             </a>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <!-- Thông tin quan trọng -->
-            <div class="card mt-4">
-                <div class="card-header bg-warning">
-                    <h5 class="card-title text-white">
-                        <i class="fas fa-exclamation-triangle"></i> Lưu ý quan trọng
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-check text-success"></i> Yêu cầu rút tiền sẽ được xử lý trong vòng 1-2 ngày làm việc</li>
-                        <li><i class="fas fa-check text-success"></i> Phí chuyển khoản sẽ được trừ từ số tiền rút</li>
-                        <li><i class="fas fa-check text-success"></i> Vui lòng kiểm tra kỹ thông tin tài khoản trước khi gửi yêu cầu</li>
-                        <li><i class="fas fa-check text-success"></i> Liên hệ admin nếu có thắc mắc về quá trình rút tiền</li>
-                    </ul>
+            <div class="alert alert-warning mt-4">
+                <h5 class="alert-heading"><i class="fas fa-exclamation-triangle"></i> Lưu ý quan trọng</h5>
+                <ul class="mb-0">
+                    <li>Yêu cầu rút tiền sẽ được xử lý trong vòng 1-2 ngày làm việc.</li>
+                    <li>Vui lòng kiểm tra kỹ thông tin tài khoản trước khi gửi.</li>
+                    <li>Liên hệ admin nếu có thắc mắc về quá trình rút tiền.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card wallet-card sticky-top" style="top: 20px;">
+                <div class="card-body p-4">
+                    <i class="fas fa-wallet wallet-card-icon"></i>
+                    <div class="mb-3">
+                        <span class="wallet-label">Số dư hiện tại</span>
+                        <div class="wallet-balance">@Model.CurrentBalance.ToString("N0") <small>VNĐ</small></div>
+                    </div>
+                    <hr class="border-light opacity-25" />
+                    <div class="wallet-sub-stat">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Số tiền tối thiểu để rút là <strong>1,000 VNĐ</strong>.
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

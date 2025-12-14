@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" role="img" aria-labelledby="title desc">
+  <title id="title">Learning analytics illustration</title>
+  <desc id="desc">Person looking at charts and analytics.</desc>
+  <defs>
+    <linearGradient id="bgGradient" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f9fafb"/>
+      <stop offset="1" stop-color="#eef2ff"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background diagonal -->
+  <rect width="960" height="320" fill="url(#bgGradient)"/>
+  <path d="M520 0L960 0 960 320 360 320z" fill="#e5e7f0"/>
+
+  <!-- shelf with charts (right side) -->
+  <g transform="translate(520 60)">
+    <rect x="40" y="40" width="260" height="18" rx="4" fill="#fff3b0"/>
+    <rect x="40" y="156" width="260" height="20" rx="6" fill="#fff9c2"/>
+
+    <!-- monitor / chart card -->
+    <rect x="40" y="72" width="260" height="90" rx="10" fill="#111827"/>
+
+    <!-- bar chart -->
+    <rect x="168" y="84" width="18" height="60" rx="6" fill="#6366f1"/>
+    <rect x="198" y="76" width="18" height="68" rx="6" fill="#22c55e"/>
+    <rect x="228" y="96" width="18" height="48" rx="6" fill="#fb923c"/>
+    <rect x="258" y="110" width="18" height="34" rx="6" fill="#0ea5e9"/>
+
+    <!-- pie chart disk -->
+    <circle cx="112" cy="90" r="36" fill="#0ea5e9"/>
+    <path d="M112 54A36 36 0 0 1 148 90L112 90Z" fill="#22c55e"/>
+    <path d="M112 54A36 36 0 0 0 92 120L112 90Z" fill="#facc15"/>
+  </g>
+
+  <!-- person (left) -->
+  <g transform="translate(300 70)">
+    <!-- legs -->
+    <path d="M84 132L118 248H94L70 150 46 248H22L56 132z" fill="#fed7aa"/>
+    <!-- body -->
+    <path d="M32 132c0-46 20-74 56-74s56 28 56 74v18H32z" fill="#4f46e5"/>
+    <!-- arm and hand holding pie chart -->
+    <path d="M120 82c10-16 24-24 40-24 22 0 40 18 40 40 0 6-1 10-2 14h-20c2-4 3-8 3-12 0-12-10-22-22-22-8 0-16 4-20 10z" fill="#f97316"/>
+    <!-- head -->
+    <circle cx="88" cy="40" r="26" fill="#fed7aa"/>
+    <path d="M64 40c0-16 10-28 26-28s28 10 30 26c-6 4-14 6-22 6-12 0-24-2-34-4z" fill="#111827"/>
+    <!-- basket -->
+    <g transform="translate(-36 150)">
+      <rect x="0" y="16" width="90" height="48" rx="8" fill="#111827"/>
+      <path d="M8 26h74l-10 30H18z" fill="#4f46e5"/>
+      <path d="M26 16c4-18 10-26 20-26s16 8 20 26" fill="none" stroke="#4f46e5" stroke-width="4"/>
+    </g>
+  </g>
+</svg>
+

@@ -1,0 +1,267 @@
+@model IEnumerable<LearningManagementSystem.Models.WithdrawalRequest>
+@{
+    ViewData["Title"] = "Lịch sử rút tiền";
+    Layout = "~/Views/Shared/_InstructorLayout.cshtml";
+}
+
+@section Styles {
+    <style>
+        :root {
+            --theme-primary: #6a11cb;
+            --theme-border: #dee2e6;
+            --theme-bg-light: #f7f9fa;
+        }
+
+        .btn-primary {
+            background-color: var(--theme-primary) !important;
+            border-color: var(--theme-primary) !important;
+        }
+
+        .text-primary {
+            color: var(--theme-primary) !important;
+        }
+
+        .card {
+            border: 1px solid var(--theme-border);
+            box-shadow: none;
+        }
+
+        .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid var(--theme-border);
+        }
+
+        .table thead th {
+            background-color: var(--theme-bg-light);
+            border-bottom-width: 1px;
+        }
+
+        .table .badge {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        /* Thẻ thống kê */
+        .stat-card .card-body {
+            padding: 1.25rem;
+        }
+
+        .stat-card-icon {
+            font-size: 1.75rem;
+            opacity: 0.5;
+        }
+
+        .stat-card-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .js-show-note {
+            cursor: pointer;
+        }
+    </style>
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-dark-800">
+            <i class="fas fa-exchange-alt me-2 text-primary"></i>
+            @ViewData["Title"]
+        </h1>
+        <div class="d-flex gap-2">
+            <a href="@Url.Action("Withdraw", "Wallet")" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus me-1"></i> Rút tiền mới
+            </a>
+            <a href="@Url.Action("Index", "Wallet")" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left me-1"></i> Quay lại ví
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-muted small">Chờ duyệt</div>
+                        <div class="stat-card-value">@Model.Count(r => r.Status == "Pending")</div>
+                    </div>
+                    <i class="fas fa-clock stat-card-icon text-warning"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-muted small">Đã duyệt</div>
+                        <div class="stat-card-value">@Model.Count(r => r.Status == "Approved")</div>
+                    </div>
+                    <i class="fas fa-check stat-card-icon text-success"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-muted small">Từ chối</div>
+                        <div class="stat-card-value">@Model.Count(r => r.Status == "Rejected")</div>
+                    </div>
+                    <i class="fas fa-times stat-card-icon text-danger"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="text-muted small">Tổng đã rút</div>
+                    <div class="stat-card-value text-success">@Model.Where(r => r.Status == "Approved").Sum(r => r.Amount).ToString("N0") <small>VNĐ</small></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Mã yêu cầu</th>
+                                        <th class="text-end">Số tiền</th>
+                                        <th>Ngân hàng</th>
+                                        <th class="text-center">Trạng thái</th>
+                                        <th class_="text-end">Ngày yêu cầu</th>
+                                        <th class="text-end">Ngày xử lý</th>
+                                        <th class="text-center">Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var request in Model.OrderByDescending(r => r.RequestDate))
+                                    {
+                                        <tr>
+                                            <td>
+                                                <code>@request.WithdrawalRequestId.Substring(0, 8)...</code>
+                                            </td>
+                                            <td class="fw-bold text-end">
+                                                -@request.Amount.ToString("N0") VNĐ
+                                            </td>
+                                            <td>
+                                                <strong>@request.BankName</strong>
+                                                <br><small class="text-muted"><code>@request.AccountNumber</code></small>
+                                                @if (!string.IsNullOrEmpty(request.AccountHolderName))
+                                                {
+                                                    <br>
+                                        
+                                                    <small class="text-muted">@request.AccountHolderName</small>
+                                                }
+                                            </td>
+                                            <td class="text-center">
+                                                @switch (request.Status)
+                                                {
+                                                    case "Pending":
+                                                        <span class="badge bg-warning text-dark">
+                                                            <i class="fas fa-clock me-1"></i> Chờ duyệt
+                                                        </span>
+                                                        break;
+                                                    case "Approved":
+                                                        <span class="badge bg-success">
+                                                            <i class="fas fa-check me-1"></i> Đã duyệt
+                                                        </span>
+                                                        break;
+                                                    case "Rejected":
+                                                        <span class="badge bg-danger">
+                                                            <i class="fas fa-times me-1"></i> Từ chối
+                                                        </span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td class="text-end small">@request.RequestDate.ToString("dd/MM/yy HH:mm")</td>
+                                            <td class="text-end small">
+                                                @if (request.ProcessedDate.HasValue)
+                                                {
+                                                    @request.ProcessedDate.Value.ToString("dd/MM/yy HH:mm")
+                                                    <br>
+                                        
+                                                    <small class="text-muted">Bởi: @request.ProcessedBy</small>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">Chưa xử lý</span>
+                                                }
+                                            </td>
+                                            <td class="text-center">
+                                                @if (!string.IsNullOrEmpty(request.AdminNote))
+                                                {
+                                                    <span class="text-primary js-show-note"
+                                                          data-note="@request.AdminNote"
+                                                          data-bs-toggle="modal"
+                                                          data-bs-target="#noteModal"
+                                                          title="Xem ghi chú">
+                                                        <i class="fas fa-comment"></i>
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted small">Không</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-exchange-alt fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Chưa có yêu cầu rút tiền nào</h5>
+                            <p class="text-muted">Bạn có thể tạo yêu cầu rút tiền mới từ ví của mình.</p>
+                            <a href="@Url.Action("Withdraw", "Wallet")" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Tạo yêu cầu rút tiền
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="noteModalLabel">Ghi chú từ Admin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="noteContent" style="white-space: pre-wrap;"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Dùng class '.js-show-note' thay vì '[title]'
+            $('.js-show-note').click(function() {
+                var note = $(this).data('note'); // Lấy từ 'data-note'
+                $('#noteContent').text(note);
+                // 'new bootstrap.Modal()' là cách chuẩn của BS5, nhưng jQuery 'modal('show')' thường vẫn chạy
+                // $('#noteModal').modal('show'); // (Cách jQuery)
+            });
+        });
+    </script>
+}

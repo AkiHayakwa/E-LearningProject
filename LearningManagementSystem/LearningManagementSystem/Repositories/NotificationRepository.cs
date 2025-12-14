@@ -36,6 +36,31 @@ namespace LearningManagementSystem.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Notification>> GetByUserNameAsync(string userName, int page, int pageSize)
+        {
+            return await _context.Notifications
+                .Where(n => n.UserName == userName)
+                .OrderByDescending(n => n.CreatedDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetUnreadCountAsync(string userName)
+        {
+            return await _context.Notifications
+                .CountAsync(n => n.UserName == userName && !n.IsRead);
+        }
+
+        public async Task<List<Notification>> GetRecentNotificationsAsync(string userName, int count = 5)
+        {
+            return await _context.Notifications
+                .Where(n => n.UserName == userName)
+                .OrderByDescending(n => n.CreatedDate)
+                .Take(count)
+                .ToListAsync();
+        }
+
         public async Task<List<Notification>> GetAllNotificationsAsync()
         {
             return await _context.Notifications
@@ -66,6 +91,23 @@ namespace LearningManagementSystem.Repositories
         {
             _context.Notifications.UpdateRange(notifications);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task MarkAllAsReadAsync(string userName)
+        {
+            var unreadNotifications = await _context.Notifications
+                .Where(n => n.UserName == userName && !n.IsRead)
+                .ToListAsync();
+            
+            foreach (var notification in unreadNotifications)
+            {
+                notification.IsRead = true;
+            }
+            
+            if (unreadNotifications.Any())
+            {
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

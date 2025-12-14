@@ -74,3 +74,41 @@ document.addEventListener('DOMContentLoaded', function () {
         searchInput.addEventListener('input', searchTests);
     }
 });
+
+// Reload trang khi quay lại từ trang TakeTest để cập nhật trạng thái
+window.addEventListener('pageshow', function (event) {
+    // Kiểm tra nếu trang được load từ cache (back/forward button)
+    if (event.persisted) {
+        // Reload trang để cập nhật dữ liệu mới nhất
+        window.location.reload();
+    }
+    
+    // Kiểm tra nếu có flag từ sessionStorage yêu cầu reload
+    const shouldReload = sessionStorage.getItem('reloadAllTests');
+    if (shouldReload === 'true') {
+        sessionStorage.removeItem('reloadAllTests');
+        window.location.reload();
+    }
+});
+
+// Reload khi trang được focus lại (khi quay lại từ tab khác hoặc từ trang TakeTest)
+document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) {
+        // Kiểm tra nếu có flag từ sessionStorage yêu cầu reload
+        const shouldReload = sessionStorage.getItem('reloadAllTests');
+        if (shouldReload === 'true') {
+            sessionStorage.removeItem('reloadAllTests');
+            window.location.reload();
+        }
+    }
+});
+
+// Reload khi window được focus lại
+window.addEventListener('focus', function () {
+    // Kiểm tra nếu có flag từ sessionStorage yêu cầu reload
+    const shouldReload = sessionStorage.getItem('reloadAllTests');
+    if (shouldReload === 'true') {
+        sessionStorage.removeItem('reloadAllTests');
+        window.location.reload();
+    }
+});

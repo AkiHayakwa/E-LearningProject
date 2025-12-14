@@ -9,5 +9,19 @@
         public Dictionary<string, (string SelectedOptionText, string SelectedOptionLabel, bool? IsCorrect, double? Score)> PreviousSubmissions { get; set; }
         public string NewCommentContent { get; set; }
         public int NewCommentRating { get; set; }
+        public StudyTimerStatsViewModel StudyStats { get; set; }
+        public int CommentPage { get; set; } = 1;
+        public int CommentPageSize { get; set; } = 5;
+        public int CommentTotalPages { get; set; } = 1;
+        public int CommentTotalCount { get; set; } = 0;
+    }
+
+    public class StudyTimerStatsViewModel
+    {
+        public int TotalMinutes { get; set; }
+        public int WeeklyMinutes { get; set; }
+        public int CurrentStreakDays { get; set; }
+        public int TotalSessions { get; set; }
+        public DateTime? LastStudiedAt { get; set; }
     }
 }

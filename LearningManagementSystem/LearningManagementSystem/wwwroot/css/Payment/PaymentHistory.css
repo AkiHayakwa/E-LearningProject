@@ -69,3 +69,55 @@
 .shadow-sm {
     box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
 }
+
+/* === Dark theme overrides === */
+body.dark-theme .card {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    border-color: #1f2a44;
+    box-shadow: 0 12px 30px rgba(2, 6, 23, 0.7);
+}
+
+body.dark-theme h2,
+body.dark-theme .table th {
+    color: #f1f5f9 !important;
+}
+
+body.dark-theme .table {
+    color: #e2e8f0;
+    border-color: #1f2a44;
+}
+
+body.dark-theme .table thead {
+    background-color: #121b33;
+}
+
+body.dark-theme .table thead th {
+    background-color: transparent !important;
+    color: #f8fafc !important;
+    border-color: #1f2a44;
+}
+
+body.dark-theme .table tbody tr {
+    background-color: rgba(15, 23, 42, 0.7);
+}
+
+body.dark-theme .table tbody td {
+    background-color: transparent !important;
+    color: #e2e8f0;
+    border-color: #1f2a44;
+}
+
+body.dark-theme .table-hover > tbody > tr:hover {
+    background-color: rgba(59, 130, 246, 0.08);
+}
+
+body.dark-theme .btn-outline-primary {
+    color: #cbd5e1;
+    border-color: #6a11cb;
+}
+
+body.dark-theme .btn-outline-primary:hover {
+    background-color: #6a11cb;
+    color: #fff;
+}

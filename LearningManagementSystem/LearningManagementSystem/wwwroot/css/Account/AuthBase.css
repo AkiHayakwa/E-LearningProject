@@ -1,0 +1,263 @@
+body.auth-layout {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: #f8fafc;
+    color: #0f172a;
+    min-height: 100vh;
+}
+
+body.auth-layout {
+    background-color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body.auth-layout .auth-wrapper {
+    padding: 3rem 1.5rem;
+}
+
+.auth-row {
+    max-width: 1300px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+.auth-illustration {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 32px;
+    padding: 2.5rem;
+    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.08);
+    text-align: center;
+}
+
+.auth-illustration img {
+    width: 100%;
+    height: auto;
+}
+
+.illustration-caption h2 {
+    font-weight: 700;
+    font-size: 1.75rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #111827;
+}
+
+.illustration-caption p {
+    color: #475569;
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.auth-panel {
+    background-color: #ffffff;
+    border-radius: 30px;
+    padding: 3rem;
+    border: 1px solid #e2e8f0;
+}
+
+.brand-badge {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background-color: #ede9fe;
+    color: #5b21b6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.auth-heading {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.auth-subheading {
+    color: #475569;
+    margin-bottom: 1.75rem;
+}
+
+.auth-form .form-label {
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 0.35rem;
+}
+
+.auth-form .auth-input {
+    border-radius: 16px;
+    border: 1px solid #d3dce6;
+    padding: 0.85rem 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: #f8fafc;
+}
+
+.auth-form .auth-input:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    background-color: #fff;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #7c3aed;
+    font-size: 1.1rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:focus {
+    outline: none;
+    color: #6d28d9;
+}
+
+.form-check-input:checked {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+}
+
+.btn-primary {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+    border-radius: 16px;
+    padding: 0.9rem 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.btn-primary:hover {
+    background-color: #6d28d9;
+    border-color: #6d28d9;
+}
+
+.divider {
+    text-align: center;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #94a3b8;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.divider span {
+    background-color: #ffffff;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e2e8f0;
+    z-index: 0;
+}
+
+.social-login {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.social-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid #d3dce6;
+    border-radius: 14px;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: #0f172a;
+    background-color: #fff;
+}
+
+.social-btn.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.social-btn:hover:not(.disabled) {
+    border-color: #7c3aed;
+    color: #7c3aed;
+}
+
+.auth-footer {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #475569;
+}
+
+.auth-footer a,
+.text-link {
+    color: #7c3aed;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-footer a:hover,
+.text-link:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    border-radius: 16px;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background-color: #ecfdf5;
+    color: #047857;
+    border-color: #6ee7b7;
+}
+
+.alert-danger {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border-color: #fecaca;
+}
+
+@media (max-width: 991px) {
+    .auth-row {
+        align-items: center;
+    }
+
+    .auth-panel {
+        margin-top: 1rem;
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .auth-panel,
+    .auth-illustration {
+        padding: 1.5rem;
+    }
+
+    .auth-heading {
+        font-size: 1.5rem;
+    }
+
+    .social-login {
+        flex-direction: column;
+    }
+}
+

@@ -462,6 +462,7 @@
 
             <div class="nav-category">Quản lý nội dung</div>
             <a asp-action="ManageCourses" asp-controller="Course" class="@(ViewContext.RouteData.Values["Action"].ToString() == "ManageCourses" ? "active" : "")"><i class="bi bi-book"></i> <span>Quản lý khóa học</span></a>
+            <a asp-action="Index" asp-controller="Tag" class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Tag" ? "active" : "")"><i class="bi bi-tags"></i> <span>Tag &amp; chuyên mục</span></a>
             <a asp-action="ManageComments" asp-controller="Admin" class="@(ViewContext.RouteData.Values["Action"].ToString() == "ManageComments" ? "active" : "")"><i class="bi bi-chat-left-text"></i> <span>Quản lý bình luận</span></a>
 
             <div class="nav-category">Quản lý thành viên</div>
@@ -470,6 +471,16 @@
 
             <div class="nav-category">Quản lý thanh toán</div>
             <a asp-action="ManagePayment" asp-controller="Payment" class="@(ViewContext.RouteData.Values["Action"].ToString() == "ManagePayment" ? "active" : "")"><i class="bi bi-credit-card"></i> <span>Quản lý thanh toán</span></a>
+            <a asp-action="ManageWithdrawalRequests" asp-controller="Admin" class="@(ViewContext.RouteData.Values["Action"].ToString() == "ManageWithdrawalRequests" ? "active" : "")"><i class="bi bi-cash-coin"></i> <span>Yêu cầu rút tiền</span></a>
+
+            <div class="nav-category">Quản lý diễn đàn</div>
+            <a asp-action="ManageForumReports" asp-controller="Admin" class="@(ViewContext.RouteData.Values["Action"].ToString() == "ManageForumReports" ? "active" : "")"><i class="bi bi-flag-fill"></i> <span>Báo cáo diễn đàn</span></a>
+
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Admin" asp-action="ManageWithdrawalRequests">
+                    <i class="bi bi-cash-stack me-2"></i> Duyệt rút tiền
+                </a>
+            </li>
 
             <div class="nav-category">Thông báo</div>
             <a asp-action="SendNotification" asp-controller="Notification" class="@(ViewContext.RouteData.Values["Action"].ToString() == "SendNotification" ? "active" : "")"><i class="bi bi-megaphone"></i> <span>Quản lý thông báo</span></a>

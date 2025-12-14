@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace LearningManagementSystem.Models.ViewModels
 {
@@ -11,6 +12,8 @@ namespace LearningManagementSystem.Models.ViewModels
         public string ImageUrl { get; set; }
         public bool IsEnrolled { get; set; }
         public decimal? Price { get; set; }
+        public string Level { get; set; }
+        public int? DurationMinutes { get; set; }
 
         public string Title { get; set; }
         public List<Lesson> Lessons { get; set; }
@@ -20,5 +23,7 @@ namespace LearningManagementSystem.Models.ViewModels
         public double? AverageRating { get; set; }
 
         public string InstructorName { get; set; }
+
+        public List<string> TagNames { get; set; } = new();
     }
 }

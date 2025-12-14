@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using LearningManagementSystem.Repositories;
 using LearningManagementSystem.Data;
 using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace LearningManagementSystem.Controllers
 {
@@ -17,6 +18,8 @@ namespace LearningManagementSystem.Controllers
         private readonly IAssignmentRepository _assignmentRepository;
         private readonly IAssignmentQuestionRepository _questionRepository;
         private readonly IAssignmentQuestionOptionRepository _optionRepository;
+        private readonly INotificationRepository _notificationRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
         private readonly ILogger<TestController> _logger;
 
         public TestController(
@@ -24,12 +27,16 @@ namespace LearningManagementSystem.Controllers
             IAssignmentRepository assignmentRepository,
             IAssignmentQuestionRepository questionRepository,
             IAssignmentQuestionOptionRepository optionRepository,
+            INotificationRepository notificationRepository,
+            IEnrollmentRepository enrollmentRepository,
             ILogger<TestController> logger)
         {
             _context = context;
             _assignmentRepository = assignmentRepository;
             _questionRepository = questionRepository;
             _optionRepository = optionRepository;
+            _notificationRepository = notificationRepository;
+            _enrollmentRepository = enrollmentRepository;
             _logger = logger;
         }
 
@@ -100,7 +107,7 @@ namespace LearningManagementSystem.Controllers
         // POST: Instructor/CreateTest
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateTest(Assignment test)
+        public async Task<IActionResult> CreateTest(Assignment test)
         {
             // Tắt validation cho các trường sẽ được gán trong code
             ModelState.Remove("AssignmentId");
@@ -261,6 +268,20 @@ namespace LearningManagementSystem.Controllers
                 _logger.LogInformation("Saving options for AssignmentId: {AssignmentId}", test.AssignmentId);
                 _optionRepository.Save();
                 _logger.LogInformation("Successfully saved options for AssignmentId: {AssignmentId}", test.AssignmentId);
+
+                // Gửi thông báo cho học viên đã đăng ký
+                if (!string.IsNullOrEmpty(test.CourseId))
+                {
+                    var course = await _context.Courses.FindAsync(test.CourseId);
+                    if (course != null)
+                    {
+                        await NotifyEnrolledStudentsAsync(
+                            test.CourseId,
+                            $"Bài kiểm tra mới: {test.Title}",
+                            $"Khóa học '{course.CourseName}' đã có bài kiểm tra mới: {test.Title}. Hãy làm bài kiểm tra ngay nhé!"
+                        );
+                    }
+                }
 
                 TempData["Success"] = "Tạo bài kiểm tra thành công!";
                 return RedirectToAction("ManageTests", "Test", new { courseId = test.CourseId });
@@ -651,6 +672,61 @@ namespace LearningManagementSystem.Controllers
                 _logger.LogError(ex, "Error deleting assignment {AssignmentId}.", id);
                 TempData["Error"] = $"Có lỗi xảy ra khi xóa {(assignment?.AssignmentType == "Test" ? "bài kiểm tra" : "bài tập")}: {ex.Message}";
                 return RedirectToAction(User.IsInRole("Admin") ? "ManageCourses" : "ManageCourses", "Course");
+            }
+        }
+
+        // Helper method để gửi thông báo cho học viên đã đăng ký
+        private async Task NotifyEnrolledStudentsAsync(string courseId, string title, string content)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(courseId))
+                {
+                    _logger.LogWarning("CourseId is null or empty when trying to notify students");
+                    return;
+                }
+
+                // Lấy danh sách học viên đã đăng ký khóa học
+                var enrollments = _enrollmentRepository.GetAll()
+                    .Where(e => e.CourseId == courseId)
+                    .Select(e => e.UserName)
+                    .Distinct()
+                    .ToList();
+
+                if (!enrollments.Any())
+                {
+                    _logger.LogInformation("No enrolled students found for course {CourseId}", courseId);
+                    return;
+                }
+
+                // Tạo thông báo cho từng học viên
+                var notifications = new List<Notification>();
+                foreach (var userName in enrollments)
+                {
+                    var notification = new Notification
+                    {
+                        NotificationId = Guid.NewGuid().ToString(),
+                        UserName = userName,
+                        Title = title,
+                        Content = content,
+                        CreatedDate = DateTime.Now,
+                        IsRead = false
+                    };
+                    notifications.Add(notification);
+                }
+
+                // Lưu tất cả thông báo
+                if (notifications.Any())
+                {
+                    await _notificationRepository.AddRangeAsync(notifications);
+                    _logger.LogInformation("Sent {Count} notifications to enrolled students for course {CourseId}", 
+                        notifications.Count, courseId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error sending notifications to enrolled students for course {CourseId}", courseId);
+                // Không throw exception để không ảnh hưởng đến quá trình tạo bài kiểm tra
             }
         }
     }
